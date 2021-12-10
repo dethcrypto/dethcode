@@ -1,0 +1,8 @@
+*.vsix
+**/.vscode-test-web/
+**/dist
+**/node_modules
+**/out
+dist
+node_modules
+out

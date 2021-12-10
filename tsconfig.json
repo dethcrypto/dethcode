@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true
+  },
+  "exclude": ["node_modules", "**/node_modules", "**/*.vscode-test-web"],
+  "include": ["packages/**/*.ts"]
+}

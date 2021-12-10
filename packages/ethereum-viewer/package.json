@@ -1,0 +1,46 @@
+{
+  "name": "ethereum-viewer",
+  "license": "MIT",
+  "version": "0.1.0",
+  "browser": "./dist/extension.js",
+  "scripts": {
+    "vscode:prepublish": "yarn run package-web",
+    "build": "webpack",
+    "build:prod": "webpack --mode production --devtool hidden-source-map",
+    "watch": "webpack --watch",
+    "pretest": "yarn run build",
+    "lint": "eslint src --ext ts",
+    "serve": "serve --cors -l 5000 --ssl-cert ./certs/localhost.pem --ssl-key ./certs/localhost-key.pem",
+    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+    "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js"
+  },
+  "dependencies": {
+    "fast-json-stable-stringify": "^2.1.0",
+    "p-finally": "^2.0.1",
+    "path-browserify": "^1.0.1",
+    "ts-essentials": "^9.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.3"
+  },
+  "engines": {
+    "vscode": "^1.63.0"
+  },
+  "displayName": "Ethereum Viewer",
+  "description": "View source of deployed Ethereum contracts in VSCode",
+  "publisher": "hasparus",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:ethereum-viewer.helloWorld"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "ethereum-viewer.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  }
+}

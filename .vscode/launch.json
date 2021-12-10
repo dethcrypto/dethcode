@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Web Extension",
+      "type": "pwa-extensionHost",
+      "debugWebWorkerHost": true,
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/ethereum-viewer",
+        "--extensionDevelopmentKind=web"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/ethereum-viewer/dist/**/*.js"],
+      "preLaunchTask": "npm: watch"
+    },
+    {
+      "name": "Extension Tests",
+      "type": "extensionHost",
+      "debugWebWorkerHost": true,
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/ethereum-viewer",
+        "--extensionDevelopmentKind=web",
+        "--extensionTestsPath=${workspaceFolder}/packages/ethereum-viewer/dist/test/run-tests"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/ethereum-viewer/dist/**/*.js"],
+      "preLaunchTask": "npm: watch"
+    }
+  ]
+}

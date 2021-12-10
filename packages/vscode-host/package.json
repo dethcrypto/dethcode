@@ -1,0 +1,8 @@
+{
+  "name": "@dethcrypto/ethereum-viewer-vscode-host",
+  "license": "MIT",
+  "version": "0.1.0",
+  "dependencies": {
+    "@github1s/vscode-web": "0.2.1"
+  }
+}

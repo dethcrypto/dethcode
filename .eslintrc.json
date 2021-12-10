@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["no-only-tests", "simple-import-sort"],
+  "extends": ["typestrict"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "no-only-tests/no-only-tests": "error",
+
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+
+    "@typescript-eslint/no-floating-promises": "warn",
+
+    "@typescript-eslint/no-use-before-define": "off",
+
+    // TypeScript checks this
+    "no-invalid-this": "off"
+  },
+  "ignorePatterns": ["**/*.d.ts", "**/dist/**"]
+}
