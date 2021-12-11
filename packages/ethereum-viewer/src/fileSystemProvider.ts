@@ -84,8 +84,9 @@ export class MemFS implements vscode.FileSystemProvider {
     options: { create: boolean; overwrite: boolean }
   ): void {
     const basename = path.posix.basename(uri.path);
-    const parent = this._lookupParentDirectory(uri);
+    const parent = this._ensureParentDirectory(uri);
     let entry = parent.entries.get(basename);
+
     if (entry instanceof Directory) {
       throw vscode.FileSystemError.FileIsADirectory(uri);
     }
@@ -151,6 +152,10 @@ export class MemFS implements vscode.FileSystemProvider {
   }
 
   createDirectory(uri: vscode.Uri): void {
+    this._createDirectory(uri);
+  }
+
+  _createDirectory(uri: vscode.Uri): Directory {
     const basename = path.posix.basename(uri.path);
     const dirname = uri.with({ path: path.posix.dirname(uri.path) });
     const parent = this._lookupAsDirectory(dirname, false);
@@ -163,6 +168,8 @@ export class MemFS implements vscode.FileSystemProvider {
       { type: vscode.FileChangeType.Changed, uri: dirname },
       { type: vscode.FileChangeType.Created, uri }
     );
+
+    return entry;
   }
 
   // --- lookup
@@ -211,6 +218,30 @@ export class MemFS implements vscode.FileSystemProvider {
   private _lookupParentDirectory(uri: vscode.Uri): Directory {
     const dirname = uri.with({ path: path.posix.dirname(uri.path) });
     return this._lookupAsDirectory(dirname, false);
+  }
+
+  private _ensureParentDirectory(uri: vscode.Uri): Directory {
+    const parts = path.posix.dirname(uri.path).split("/");
+    let entry: Directory = this.root;
+    for (let i = 0; i < parts.length; ++i) {
+      const part = parts[i];
+      if (!part) {
+        continue;
+      }
+      let child: Directory | undefined;
+      if (entry instanceof Directory) {
+        const newChild = entry.entries.get(part);
+        if (newChild instanceof Directory) child = newChild;
+      }
+      if (!child) {
+        const path = parts.slice(0, i + 1).join("/");
+        child = this._createDirectory(vscode.Uri.parse(path));
+      }
+
+      entry = child;
+    }
+
+    return entry;
   }
 
   // --- manage file events

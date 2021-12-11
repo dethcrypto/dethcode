@@ -9,11 +9,11 @@
  *   - Imported noop from ts-essentials.
  */
 
-import stringify from "fast-json-stable-stringify";
 import { noop } from "ts-essentials";
 import * as vscode from "vscode";
 
 import { reuseable, throttle } from "./func";
+import { prettyStringify } from "./stringify";
 
 export class RequestError extends Error {
   constructor(message: string) {
@@ -99,12 +99,12 @@ export const fetch = reuseable(
       // if there is no token saved and the rate limit exceeded,
       // open the authorizing overly for requesting a access token
       return response.json().then((data) => {
-        throw new RequestForbiddenError(stringify(data));
+        throw new RequestForbiddenError(prettyStringify(data));
       });
     }
     if (response.status === 401) {
       return response.json().then((data) => {
-        throw new RequestUnauthorizedError(stringify(data));
+        throw new RequestUnauthorizedError(prettyStringify(data));
       });
     }
     if (response.status === 404) {

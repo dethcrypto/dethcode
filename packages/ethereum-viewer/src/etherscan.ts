@@ -1,14 +1,14 @@
-import stringify from "fast-json-stable-stringify";
 import { assert } from "ts-essentials";
 
 import { fetch } from "./util/fetch";
+import { prettyStringify } from "./util/stringify";
 
 const ETHERSCAN_API_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
 
 export async function fetchFiles(
   network: Network,
   contractAddress: string
-): Promise<FlatFileSystem> {
+): Promise<FileContents> {
   const api = `https://api${
     network === "mainnet" ? "" : `-${network}`
   }.etherscan.io/api`;
@@ -19,7 +19,7 @@ export async function fetchFiles(
 
   assert(
     response.message === "OK",
-    "Failed to fetch contract source\n" + stringify(response)
+    "Failed to fetch contract source\n" + prettyStringify(response)
   );
 
   // @todo no idea why res.result is an array.
@@ -30,8 +30,12 @@ export async function fetchFiles(
     data.SourceCode.slice(1, -1)
   ) as Etherscan.ContractSources;
 
-  const results: FlatFileSystem = {
-    "settings.json": stringify(sourceCode.settings),
+  const results: FileContents = {
+    "settings.json": prettyStringify(
+      sourceCode.settings,
+      // @ts-expect-error bad types
+      { space: "  " }
+    ),
   };
 
   for (const [path, { content }] of Object.entries(sourceCode.sources)) {
@@ -41,7 +45,7 @@ export async function fetchFiles(
   return results;
 }
 
-export interface FlatFileSystem extends Record<FilePath, FileContent> {}
+export interface FileContents extends Record<FilePath, FileContent> {}
 
 export type FilePath = string & { __brand?: "Path" };
 

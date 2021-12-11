@@ -33,7 +33,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:ethereum-viewer.helloWorld"
+    "*"
   ],
   "contributes": {
     "commands": [

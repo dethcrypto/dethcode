@@ -10,10 +10,9 @@
  *   - Removed dependency on `p-finally` as Promise.finally is now widely supported.
  */
 
-import jsonStableStringify from "fast-json-stable-stringify";
+import { stableStringify } from "./stringify";
 
-const defaultComputeCacheKey = (...args: any[]) =>
-  jsonStableStringify([...args]);
+const defaultComputeCacheKey = (...args: any[]) => stableStringify([...args]);
 
 // reuse previous promise when a request call
 // and previous request not completed
