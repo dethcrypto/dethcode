@@ -38,3 +38,5 @@ export const FileSystem = () => {
     },
   };
 };
+
+export type FileSystem = ReturnType<typeof FileSystem>;

@@ -50,6 +50,8 @@ export class Directory implements vscode.FileStat {
 
 export type Entry = File | Directory;
 
+// @todo // No search provider registered for scheme: memfs, waiting
+// Without it you can only search in open file.
 export class MemFS implements vscode.FileSystemProvider {
   root = new Directory("");
 

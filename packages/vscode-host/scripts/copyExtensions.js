@@ -7,7 +7,6 @@ const {
   readdirSync,
   statSync,
   readFileSync,
-  globSync,
   existsSync,
   copySync,
 } = require("./util");

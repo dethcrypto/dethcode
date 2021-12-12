@@ -11,8 +11,7 @@
     "pretest": "yarn run build",
     "lint": "eslint src --ext ts",
     "serve": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem",
-    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-    "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/test/suite/index.js"
+    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",
