@@ -1,0 +1,12 @@
+{
+  "productConfiguration": {
+    "nameShort": "Code Web",
+    "nameLong": "Code Web",
+    "applicationName": "code-web",
+    "dataFolderName": ".vscode-web",
+    "version": "1.2.3"
+  },
+  "folderUri": {
+    "scheme": "memfs"
+  }
+}

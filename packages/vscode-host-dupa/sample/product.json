@@ -1,9 +1,0 @@
-{
-	"productConfiguration": {
-		"nameShort": "VSCode Web Sample",
-		"nameLong": "VSCode Web without FileSystemProvider",
-		"applicationName": "code-web-sample",
-		"dataFolderName": ".vscode-web-sample",
-		"version": "1.2.3"
-	}
-}

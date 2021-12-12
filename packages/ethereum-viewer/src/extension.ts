@@ -14,9 +14,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const network: etherscan.Network = "mainnet";
 
-  const browserUrl = (await vscode.commands.executeCommand(
-    "dethcrypto.vscode-host.get-browser-url"
-  )) as string;
+  // const browserUrl = (await vscode.commands.executeCommand(
+  //   "dethcrypto.vscode-host.get-browser-url"
+  // )) as string;
+
+  // console.log("browserUrl", browserUrl);
 
   if (!initialized) {
     initialized = true;

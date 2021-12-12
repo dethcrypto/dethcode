@@ -17,31 +17,28 @@
     <link
       data-name="vs/workbench/workbench.web.api"
       rel="stylesheet"
-      href="./dist/vscode/vs/workbench/workbench.web.api.css"
+      href="./vscode/vs/workbench/workbench.web.api.css"
     />
     <!-- Prefetch to avoid waterfall -->
     <link rel="prefetch" href="./lib/semver-umd/lib/semver-umd.js" />
-    <!-- Built in extension -->
-    <script src="./dist/extensions.js"></script>
-
-    <!-- playground for demo -->
-    <script src="playground.js"></script>
+    <!-- Built in extensions -->
   </head>
 
   <body aria-label=""></body>
 
   <script>
-    const extElement = document.getElementById(
-      "vscode-workbench-builtin-extensions"
-    );
-    extElement.attributes["data-settings"].value = JSON.stringify([
-      ...playground,
-      ...extensions,
-    ]);
+    fetch("./extensions.json")
+      .then((response) => response.text())
+      .then((extensionsJson) => {
+        console.log({ extensionsJson });
+        document
+          .getElementById("vscode-workbench-builtin-extensions")
+          .setAttribute("data-settings", extensionsJson);
+      });
 
     let baseUri = `${window.location.origin}`;
     self.require = {
-      baseUrl: `${baseUri}/dist/vscode/`,
+      baseUrl: `${baseUri}/vscode/`,
       paths: {
         "vscode-textmate": `${baseUri}/lib/vscode-textmate/release/main`,
         "vscode-oniguruma": `${baseUri}/lib/vscode-oniguruma/release/main`,
@@ -49,9 +46,9 @@
       },
     };
   </script>
-  <script src="./dist/vscode/vs/loader.js"></script>
+  <script src="./vscode/vs/loader.js"></script>
 
-  <script src="./dist/vscode/vs/workbench/workbench.web.api.nls.js"></script>
-  <script src="./dist/vscode/vs/workbench/workbench.web.api.js"></script>
-  <script src="./dist/vscode/vs/code/browser/workbench/workbench.js"></script>
+  <script src="./vscode/vs/workbench/workbench.web.api.nls.js"></script>
+  <script src="./vscode/vs/workbench/workbench.web.api.js"></script>
+  <script src="./vscode/vs/code/browser/workbench/workbench.js"></script>
 </html>

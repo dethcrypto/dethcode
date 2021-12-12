@@ -7,13 +7,12 @@
     "dist/*"
   ],
   "scripts": {
-    "prepare-demo": "node prepare-demo.js",
-    "serve": "serve --cors -l 5000 ./demo",
-    "serve:https": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem ./demo",
+    "serve": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem ./dist",
     "build": "node ./scripts/build",
     "build:prepare-vscode": "node ./scripts/prepareVSCode",
     "build:compile-vscode": "node ./scritps/compileVSCode",
-    "build:copy-extensions": "node ./scripts/copyExtensions"
+    "build:copy-extensions": "node ./scripts/copyExtensions",
+    "build:copy-public": "node ./scripts/copyPublic"
   },
   "repository": {
     "type": "git",
