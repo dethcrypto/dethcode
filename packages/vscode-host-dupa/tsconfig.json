@@ -14,5 +14,5 @@
     },
     "lib": ["ES2015"]
   },
-  "include": ["workbench.ts"]
+  "include": ["src/workbench.ts"]
 }

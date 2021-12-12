@@ -8,20 +8,21 @@ const rmdir = require("rimraf");
 const vscodeVersion = "1.58.0";
 
 if (!fs.existsSync("vscode")) {
-  child_process.execSync(
-    `git clone --depth 1 --branch ${vscodeVersion} https://github.com/microsoft/vscode.git`,
-    {
-      stdio: "inherit",
-    }
-  );
+  child_process.execSync("git clone https://github.com/microsoft/vscode.git", {
+    stdio: "inherit",
+  });
 }
 process.chdir("vscode");
+
+child_process.execSync(`git checkout -q ${vscodeVersion}`, {
+  stdio: "inherit",
+});
 
 child_process.execSync("yarn --verbose", { stdio: "inherit" });
 
 // Use simple workbench
 fs.copyFileSync(
-  "../workbench.ts",
+  "../src/workbench.ts",
   "src/vs/code/browser/workbench/workbench.ts"
 );
 
@@ -94,6 +95,8 @@ for (const extension of extensionsContent) {
     });
   }
 }
+
+console.log("Extensions:", extensions);
 
 const extensionsVar =
   "var extensions =" + JSON.stringify(extensions, { space: "\t", quote: "" });
