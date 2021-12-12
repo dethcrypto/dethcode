@@ -7,12 +7,16 @@ import { prettyStringify } from "./util/stringify";
 
 let initialized = false;
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   const fs = FileSystem();
 
   context.subscriptions.push(fs.register());
 
   const network: etherscan.Network = "mainnet";
+
+  const browserUrl = (await vscode.commands.executeCommand(
+    "dethcrypto.vscode-host.get-browser-url"
+  )) as string;
 
   if (!initialized) {
     initialized = true;
@@ -22,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
       name: network,
     });
 
-    void saveContractFilesToFs(
+    await saveContractFilesToFs(
       network,
       "0x99c9fc46f92e8a1c0dec1b1747d010903e884be1"
     );
