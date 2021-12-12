@@ -1,21 +1,24 @@
 {
-  "name": "vscode-web",
+  "name": "@dethcrypto/ethereum-viewer-vscode-host",
+  "license": "MIT",
   "version": "1.58.0",
-  "description": "Visual Studio Code for browser",
+  "description": "Visual Studio Code host for Ethereum Viewer",
   "files": [
     "dist/*"
   ],
   "scripts": {
-    "build": "node build.js",
     "prepare-demo": "node prepare-demo.js",
-    "demo": "node ./demo/http.js"
+    "serve": "serve --cors -l 5000 ./demo",
+    "serve:https": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem ./demo",
+    "build": "node ./scripts/build",
+    "build:prepare-vscode": "node ./scripts/prepareVSCode",
+    "build:compile-vscode": "node ./scritps/compileVSCode",
+    "build:copy-extensions": "node ./scripts/copyExtensions"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Felx-B/vscode-web.git"
   },
-  "author": "Felix B",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Felx-B/vscode-web/issues"
   },
@@ -26,6 +29,7 @@
     "glob": "^7.1.6",
     "rimraf": "^3.0.2",
     "semver-umd": "^5.5.7",
+    "serve": "^13.0.2",
     "vscode-oniguruma": "^1.4.0",
     "vscode-textmate": "^5.2.0"
   },
