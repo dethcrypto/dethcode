@@ -22,6 +22,12 @@ function copyExtensions() {
     {
       extensionPath: "ethereum-viewer",
       packageJSON: require("../../ethereum-viewer/package.json"),
+      packageNLS: null,
+    },
+    {
+      extensionPath: "solidity-lang",
+      packageJSON: require("../additional-extensions/solidity-lang/package.json"),
+      packageNLS: null,
     },
   ];
 
@@ -37,10 +43,18 @@ function copyExtensions() {
     "../dist/extensions/ethereum-viewer/package.json"
   );
 
+  const withoutNodeModules = { filter: (src) => !src.includes("node_modules") };
+
+  log.info("Copying additional built-in extensions...");
+
+  copySync(
+    "../additional-extensions",
+    "../dist/extensions",
+    withoutNodeModules
+  );
+
   // copy default built-in extensions from VSCode repo
-  copySync("extensions", "../dist/extensions", {
-    filter: (src) => !src.includes("node_modules"),
-  });
+  copySync("extensions", "../dist/extensions", withoutNodeModules);
 
   // #region write extensions manifest
   log.info("Writing extensions manifest...");

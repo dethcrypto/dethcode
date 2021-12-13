@@ -43,13 +43,6 @@ function compileVSCode() {
   execSync("yarn gulp minify-vscode", { stdio: "inherit" });
   execSync("yarn compile-web", { stdio: "inherit" });
 
-  // It seems this is not needed:
-  // // Remove maps
-  // // const mapFiles = glob.sync("out-vscode-min/**/*.js.map", {});
-  // // mapFiles.forEach((mapFile) => {
-  // //   fs.unlinkSync(mapFile);
-  // // });
-
   if (existsSync("../dist")) rimraf("../dist");
   mkdirSync("../dist");
   copySync("out-vscode-min", "../dist/vscode");

@@ -57,5 +57,23 @@ void (async function () {
         handler: (url: string) => window.location.replace(url),
       },
     ],
+    // @todo extensions gallery would be lit, but we'd need a CORS proxy for it
+    // additionalBuiltinExtensions: [
+    //   ...(config.additionalBuiltinExtensions || []),
+    //   // extensions to fetch on startup
+    // ],
+    // productConfiguration: {
+    //   extensionsGallery: {
+    //     serviceUrl: "https://marketplace.visualstudio.com/_apis/public/gallery",
+    //     itemUrl: "https://marketplace.visualstudio.com/items",
+    //     resourceUrlTemplate:
+    //       "https://{publisher}.vscode-unpkg.net/{publisher}/{name}/{version}/{path}",
+    //     controlUrl:
+    //       "https://az764295.vo.msecnd.net/extensions/marketplace.json",
+    //     recommendationsUrl:
+    //       "https://az764295.vo.msecnd.net/extensions/workspaceRecommendations.json.gz",
+    //     ...{ cacheUrl: "https://vscode.blob.core.windows.net/gallery/index" },
+    //   },
+    // },
   });
 })();
