@@ -1,3 +1,4 @@
+import { join } from "path";
 import { assert, StrictOmit } from "ts-essentials";
 
 import { fetch } from "./util/fetch";
@@ -29,7 +30,7 @@ export async function fetchFiles(
     data.SourceCode.slice(1, -1)
   ) as Etherscan.ContractSources;
 
-  const files: FileContents = {
+  let files: FileContents = {
     "settings.json": prettyStringify(
       sourceCode.settings,
       // @ts-expect-error bad types
@@ -45,13 +46,30 @@ export async function fetchFiles(
   delete (info as Partial<Etherscan.ContractInfo>).ABI;
   delete (info as Partial<Etherscan.ContractInfo>).SourceCode;
 
+  files = prefixFiles(files, info.ContractName);
+
   if (data.Implementation) {
     const implementation = await fetchFiles(network, data.Implementation);
-    Object.assign(files, implementation.files);
+    Object.assign(
+      files,
+      prefixFiles(implementation.files, implementation.info.ContractName)
+    );
     info.implementation = implementation.info;
   }
 
   return { files, info };
+}
+
+function prefixFiles(files: FileContents, prefix: string): FileContents {
+  const res: any = {};
+
+  const keys = Object.keys(files);
+
+  for (const k of keys) {
+    res[join(prefix, k)] = files[k];
+  }
+
+  return res;
 }
 
 export interface FetchFilesResult {
