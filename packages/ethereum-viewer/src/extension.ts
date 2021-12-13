@@ -40,6 +40,10 @@ export async function activate(context: vscode.ExtensionContext) {
       // @todo a command that accepts a contract address
     })
   );
+
+  await vscode.commands.executeCommand(
+    "workbench.files.action.showActiveFileInExplorer"
+  );
 }
 
 export function deactivate() {}
