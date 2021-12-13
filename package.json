@@ -5,7 +5,7 @@
     "watch": "pnpm watch --filter ./packages",
     "build": "pnpm build --filter ./packages && cd packages/vscode-host && yarn build",
     "serve": "cd packages/vscode-host && yarn serve",
-    "dev": "cd packages/vscode-host && yarn dev",
+    "copy-and-serve": "cd packages/vscode-host && yarn copy-and-serve",
     "lint": "eslint --ext .ts ./packages/*/src/**/*.ts",
     "lint:fix": "pnpm lint -- --fix"
   },

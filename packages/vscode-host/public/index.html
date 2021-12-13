@@ -30,7 +30,6 @@
     fetch("./extensions.json")
       .then((response) => response.text())
       .then((extensionsJson) => {
-        console.log({ extensionsJson });
         document
           .getElementById("vscode-workbench-builtin-extensions")
           .setAttribute("data-settings", extensionsJson);

@@ -10,10 +10,10 @@
     "serve": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem ./dist",
     "build": "node ./scripts/build",
     "build:prepare-vscode": "node ./scripts/prepareVSCode",
-    "build:compile-vscode": "node ./scritps/compileVSCode",
+    "build:compile-vscode": "node ./scripts/compileVSCode",
     "build:copy-extensions": "node ./scripts/copyExtensions",
     "build:copy-public": "node ./scripts/copyPublic",
-    "dev": "yarn build:copy-extensions && yarn serve"
+    "copy-and-serve": "yarn build:copy-extensions && yarn serve"
   },
   "repository": {
     "type": "git",

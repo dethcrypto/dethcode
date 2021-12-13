@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: pnpm build
       - name: Deploy
-        if: ${{ github.ref == 'ref/head/main' }}
+        if: ${{ github.ref == 'ref/heads/main' }}
         uses: dswistowski/surge-sh-action@v1
         with:
           domain: "ethereum-viewer.surge.sh"
