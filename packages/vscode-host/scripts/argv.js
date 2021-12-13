@@ -2,6 +2,7 @@ exports.argv = {
   production:
     process.env.NODE_ENV === "production" || saysTrue(readArg("production")),
   verbose: saysTrue(readArg("verbose")),
+  force: saysTrue(readArg("force")),
 };
 
 function saysTrue(value) {

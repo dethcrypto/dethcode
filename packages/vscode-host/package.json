@@ -11,6 +11,7 @@
     "build": "node ./scripts/build",
     "build:prepare-vscode": "node ./scripts/prepareVSCode",
     "build:compile-vscode": "node ./scripts/compileVSCode",
+    "build:prepare-extensions": "node ./scripts/prepareAdditionalExtensions",
     "build:copy-extensions": "node ./scripts/copyExtensions",
     "build:copy-public": "node ./scripts/copyPublic",
     "copy-and-serve": "yarn build:copy-extensions && yarn serve"

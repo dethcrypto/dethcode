@@ -1,9 +1,9 @@
 {
   "productConfiguration": {
-    "nameShort": "Code Web",
-    "nameLong": "Code Web",
-    "applicationName": "code-web",
-    "dataFolderName": ".vscode-web",
-    "version": "1.2.3"
+    "nameShort": "Ethereum Viewer",
+    "nameLong": "Ethereum Viewer",
+    "applicationName": "deth-viewer",
+    "dataFolderName": ".deth-viewer",
+    "version": "1.58.0"
   }
 }
