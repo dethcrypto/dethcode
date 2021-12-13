@@ -1,3 +1,5 @@
+// @ts-check
+
 const process = require("process");
 const child_process = require("child_process");
 const fs = require("fs");
@@ -5,6 +7,7 @@ const fsExtra = require("fs-extra");
 const glob = require("glob");
 const rimraf = require("rimraf");
 const path = require("path");
+const { Logger } = require("tslog");
 
 exports.existsSync = fs.existsSync;
 exports.copyFileSync = fs.copyFileSync;
@@ -22,7 +25,7 @@ exports.globSync = glob.sync;
  * @param {string} path
  * @returns void
  */
-exports.rimraf = (path) => rimraf.sync(path, { recursive: true });
+exports.rimraf = (path) => rimraf.sync(path);
 
 /**
  * @param  {...string} args
@@ -45,3 +48,20 @@ exports.execSync = (command, options) => {
     ...options,
   });
 };
+
+/**
+ * @param {string} filepath
+ * @param {(contents: string) => string} change
+ */
+exports.changeFileSync = (filepath, change) => {
+  const newContents = change(
+    fs.readFileSync(filepath, { encoding: "utf8", flag: "r" })
+  );
+  fs.writeFileSync(filepath, newContents);
+  return newContents;
+};
+
+exports.log = new Logger({
+  displayFunctionName: false,
+  displayDateTime: false,
+});

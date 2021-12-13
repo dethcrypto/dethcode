@@ -12,7 +12,8 @@
     "build:prepare-vscode": "node ./scripts/prepareVSCode",
     "build:compile-vscode": "node ./scritps/compileVSCode",
     "build:copy-extensions": "node ./scripts/copyExtensions",
-    "build:copy-public": "node ./scripts/copyPublic"
+    "build:copy-public": "node ./scripts/copyPublic",
+    "dev": "yarn build:copy-extensions && yarn serve"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,8 @@
     "semver-umd": "^5.5.7",
     "serve": "^13.0.2",
     "vscode-oniguruma": "^1.4.0",
-    "vscode-textmate": "^5.2.0"
+    "vscode-textmate": "^5.2.0",
+    "tslog": "^3.3.0"
   },
   "dependencies": {}
 }

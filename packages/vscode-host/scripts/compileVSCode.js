@@ -2,17 +2,19 @@
 
 const {
   chdir,
-  writeFileSync,
-  readFileSync,
+  log,
   copyFileSync,
   existsSync,
   rimraf,
   execSync,
   mkdirSync,
   copySync,
+  changeFileSync,
 } = require("./util");
 
 function compileVSCode() {
+  log.info("Compiling VSCode...");
+
   chdir(__dirname, "..");
 
   // Use simple workbench
@@ -24,21 +26,17 @@ function compileVSCode() {
   chdir("vscode");
 
   // Adapt compilation to web
-  const gulpfilePath = "./build/gulpfile.vscode.js";
-  const originalGulpfile = readFileSync("./build/gulpfile.vscode.js", {
-    encoding: "utf8",
-    flag: "r",
-  });
-  const changedGulpfile = originalGulpfile
-    .replace(
-      /vs\/workbench\/workbench.desktop.main/g,
-      "vs/workbench/workbench.web.api"
-    )
-    .replace(
-      /buildfile.workbenchDesktop/g,
-      "buildfile.workbenchWeb,buildfile.keyboardMaps"
-    );
-  writeFileSync(gulpfilePath, changedGulpfile);
+  changeFileSync("./build/gulpfile.vscode.js", (s) =>
+    s
+      .replace(
+        /vs\/workbench\/workbench.desktop.main/g,
+        "vs/workbench/workbench.web.api"
+      )
+      .replace(
+        /buildfile.workbenchDesktop/g,
+        "buildfile.workbenchWeb,buildfile.keyboardMaps"
+      )
+  );
 
   // Compile
   execSync("yarn gulp compile-build", { stdio: "inherit" });

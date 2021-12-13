@@ -1,8 +1,11 @@
 {
   "license": "MIT",
   "scripts": {
+    "postinstall": "cd packages/vscode-host && yarn",
     "watch": "pnpm watch --filter ./packages",
-    "build": "pnpm build --filter ./packages",
+    "build": "pnpm build --filter ./packages && cd packages/vscode-host && yarn build",
+    "serve": "cd packages/vscode-host && yarn serve",
+    "dev": "cd packages/vscode-host && yarn dev",
     "lint": "eslint --ext .ts ./packages/*/src/**/*.ts",
     "lint:fix": "pnpm lint -- --fix"
   },

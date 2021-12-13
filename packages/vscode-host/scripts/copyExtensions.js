@@ -9,9 +9,12 @@ const {
   readFileSync,
   existsSync,
   copySync,
+  log,
 } = require("./util");
 
 function copyExtensions() {
+  log.info("Copying extensions to ./dist directory...");
+
   chdir(__dirname, "../vscode");
 
   const extensions = [
@@ -23,6 +26,8 @@ function copyExtensions() {
   ];
 
   // copy our additional built-in extensions
+  log.info("Copying ethereum-viewer extension...");
+
   copySync(
     "../../ethereum-viewer/dist",
     "../dist/extensions/ethereum-viewer/dist"
@@ -38,6 +43,8 @@ function copyExtensions() {
   });
 
   // #region write extensions manifest
+  log.info("Writing extensions manifest...");
+
   const extensionsDir = readdirSync("extensions");
   for (const extensionPath of extensionsDir) {
     const fullPath = `extensions/${extensionPath}`;

@@ -1,8 +1,10 @@
 // @ts-check
 
-const { chdir, existsSync, rimraf, copySync } = require("./util");
+const { chdir, existsSync, rimraf, copySync, log } = require("./util");
 
 function copyPublic() {
+  log.info("Copying assets from ./public to ./dist");
+
   chdir(__dirname, "..");
 
   if (existsSync("./dist/lib")) rimraf("./dist/lib");
