@@ -23,7 +23,7 @@ As VSCode depends on Yarn, our `vscode-host` also needs Yarn.
 
 - **`pnpm serve`** - Starts HTTP server with `vscode-host`.
 
-- **`pnpm dev`** - Copies `ethereum-extension` (so you don't need to rebuild) and serves `vscode-host`.
+- **`pnpm dev`** - Copies `ethereum-extension` and serves `vscode-host`. Run alongside `pnpm watch`.
 
 #### Resources
 

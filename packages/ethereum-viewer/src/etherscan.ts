@@ -1,4 +1,4 @@
-import { assert } from "ts-essentials";
+import { assert, StrictOmit } from "ts-essentials";
 
 import { fetch } from "./util/fetch";
 import { prettyStringify } from "./util/stringify";
@@ -8,7 +8,7 @@ const ETHERSCAN_API_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
 export async function fetchFiles(
   network: Network,
   contractAddress: string
-): Promise<FileContents> {
+): Promise<FetchFilesResult> {
   const api = `https://api${
     network === "mainnet" ? "" : `-${network}`
   }.etherscan.io/api`;
@@ -22,7 +22,6 @@ export async function fetchFiles(
     "Failed to fetch contract source\n" + prettyStringify(response)
   );
 
-  // @todo no idea why res.result is an array.
   const data = response.result[0];
 
   // `.SourceCode` is apparently JSON surrounded with one set of curly braces
@@ -30,7 +29,7 @@ export async function fetchFiles(
     data.SourceCode.slice(1, -1)
   ) as Etherscan.ContractSources;
 
-  const results: FileContents = {
+  const files: FileContents = {
     "settings.json": prettyStringify(
       sourceCode.settings,
       // @ts-expect-error bad types
@@ -39,11 +38,32 @@ export async function fetchFiles(
   };
 
   for (const [path, { content }] of Object.entries(sourceCode.sources)) {
-    results[path] = content;
+    files[path] = content;
   }
 
-  return results;
+  const info = data as FetchFilesResult["info"];
+  delete (info as Partial<Etherscan.ContractInfo>).ABI;
+  delete (info as Partial<Etherscan.ContractInfo>).SourceCode;
+
+  if (data.Implementation) {
+    const implementation = await fetchFiles(network, data.Implementation);
+    Object.assign(files, implementation.files);
+    info.implementation = implementation.info;
+  }
+
+  return { files, info };
 }
+
+export interface FetchFilesResult {
+  files: FileContents;
+  info: ContractInfo & { implementation?: ContractInfo };
+}
+
+export interface ContractInfo
+  extends StrictOmit<
+    Etherscan.ContractInfo,
+    "SourceCode" | "ABI" | "Implementation"
+  > {}
 
 export interface FileContents extends Record<FilePath, FileContent> {}
 

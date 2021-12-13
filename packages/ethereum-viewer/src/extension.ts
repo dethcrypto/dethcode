@@ -29,6 +29,7 @@ export async function activate(context: vscode.ExtensionContext) {
     });
 
     await saveContractFilesToFs(
+      fs,
       network,
       "0x99c9fc46f92e8a1c0dec1b1747d010903e884be1"
     );
@@ -39,40 +40,57 @@ export async function activate(context: vscode.ExtensionContext) {
       // @todo a command that accepts a contract address
     })
   );
-
-  async function saveContractFilesToFs(
-    network: etherscan.Network,
-    address: string
-  ) {
-    let files: etherscan.FileContents;
-
-    const USE_ETHERSCAN = true; // Treat this as a toggle for development.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (USE_ETHERSCAN) {
-      files = await etherscan.fetchFiles(network, address);
-    } else {
-      files = fixtures.files;
-    }
-
-    const entries = Object.entries(files);
-    for (const [path, content] of entries) {
-      fs.writeFile(path, content);
-    }
-
-    const [file] = entries.sort(byPathLength)[0];
-
-    showTextDocument(file);
-  }
-
-  function showTextDocument(path: string) {
-    console.log("showing", { path });
-    void vscode.window.showTextDocument(
-      vscode.Uri.from({ scheme: "memfs", path: "/" + path })
-    );
-  }
 }
 
 export function deactivate() {}
+
+async function saveContractFilesToFs(
+  fs: FileSystem,
+  network: etherscan.Network,
+  address: string
+) {
+  let result: etherscan.FetchFilesResult;
+
+  const USE_ETHERSCAN = true; // Treat this as a toggle for development.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (USE_ETHERSCAN) {
+    result = await etherscan.fetchFiles(network, address);
+  } else {
+    result = fixtures.etherscanResult;
+  }
+
+  const entries = Object.entries(result.files);
+  for (const [path, content] of entries) {
+    fs.writeFile(path, content);
+  }
+
+  showMainContractFile(entries, result.info);
+}
+
+function showMainContractFile(
+  entries: [string, etherscan.FileContent][],
+  info: etherscan.FetchFilesResult["info"]
+) {
+  let fileToShow =
+    // @todo @krzkaczor, I'd personally swap this and the next statement — it feels off showing the implementation over proxy.
+    info.implementation &&
+    entries.find(([path]) =>
+      path.endsWith(`/${info.implementation!.ContractName}.sol`)
+    );
+
+  if (!fileToShow)
+    entries.find(([path]) => path.endsWith(`/${info.ContractName}.sol`));
+
+  if (!fileToShow) fileToShow = entries.sort(byPathLength)[0];
+
+  showTextDocument(fileToShow[0]);
+}
+
+function showTextDocument(path: string) {
+  void vscode.window.showTextDocument(
+    vscode.Uri.from({ scheme: "memfs", path: "/" + path })
+  );
+}
 
 // For demonstration purposes:
 
