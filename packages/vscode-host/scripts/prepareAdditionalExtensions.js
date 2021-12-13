@@ -10,7 +10,7 @@ function prepareAdditionalExtensions() {
 
   const extensions = [
     {
-      name: "contractshark.solidity-lang",
+      name: "solidity-lang",
       repo: "https://github.com/hasparus/vscode-solidity-extenstion.git",
       tag: "v1.3.0",
     },

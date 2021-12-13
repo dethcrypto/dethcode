@@ -22,10 +22,12 @@ function copyExtensions() {
     {
       extensionPath: "ethereum-viewer",
       packageJSON: require("../../ethereum-viewer/package.json"),
+      packageNLS: null,
     },
     {
       extensionPath: "solidity-lang",
-      packageJSON: require("../additional-extensions/contractshark.solidity-lang/package.json"),
+      packageJSON: require("../additional-extensions/solidity-lang/package.json"),
+      packageNLS: null,
     },
   ];
 

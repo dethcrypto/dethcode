@@ -57,13 +57,6 @@ void (async function () {
         handler: (url: string) => window.location.replace(url),
       },
     ],
-    enableSyncByDefault: false,
-    webviewEndpoint:
-      window.location.origin +
-      "/vscode/vs/workbench/contrib/webview/browser/pre",
-    webWorkerExtensionHostIframeSrc:
-      "/vscode/vs/workbench/services/extensions/worker/httpWebWorkerExtensionHostIframe.html",
-
     // @todo extensions gallery would be lit, but we'd need a CORS proxy for it
     // additionalBuiltinExtensions: [
     //   ...(config.additionalBuiltinExtensions || []),
