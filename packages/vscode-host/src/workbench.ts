@@ -1,10 +1,10 @@
+import { URI, UriComponents } from "vs/base/common/uri";
 import {
   create,
   IWorkbenchConstructionOptions,
-  IWorkspaceProvider,
   IWorkspace,
+  IWorkspaceProvider,
 } from "vs/workbench/workbench.web.api";
-import { URI, UriComponents } from "vs/base/common/uri";
 
 void (async function () {
   // create workbench

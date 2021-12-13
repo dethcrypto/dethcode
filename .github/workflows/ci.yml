@@ -23,13 +23,10 @@ jobs:
       - name: Build
         run: pnpm build
       - name: Deploy
-        run: ls ./packages/vscode-host/dist
-      - uses: amondnet/vercel-action@v20
+        if: ${{ github.ref == 'ref/head/main' }}
+        uses: dswistowski/surge-sh-action@v1
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          vercel-args: "--prod"
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          alias-domains: |
-            pr-{{PR_NUMBER}}.ethereum-viewer.vercel.app
+          domain: "ethereum-viewer.surge.sh"
+          project: "./packages/vscode-host/dist"
+          login: ${{ secrets.SURGE_LOGIN }}
+          token: ${{ secrets.SURGE_TOKEN }}
