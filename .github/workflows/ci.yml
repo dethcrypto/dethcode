@@ -3,8 +3,7 @@ on:
     types: [opened, synchronize]
   push:
     branches:
-      - develop
-      - stable
+      - main
 
 name: "Deploy"
 
@@ -12,9 +11,26 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.0.1
       - name: Install
         run: pnpm install
       - name: Build
         run: pnpm build
       - name: Deploy
         run: ls ./packages/vscode-host/dist
+      - uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-args: "--prod"
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          alias-domains: |
+            pr-{{PR_NUMBER}}.ethereum-viewer.vercel.app
