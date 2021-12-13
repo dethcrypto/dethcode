@@ -22,8 +22,12 @@ jobs:
       - run: pnpm install
       - name: Build
         run: pnpm build
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Deploy
-        if: ${{ github.ref == 'ref/heads/main' }}
+        # if: ${{ github.ref == 'ref/heads/main' }}
         uses: dswistowski/surge-sh-action@v1
         with:
           domain: "ethereum-viewer.surge.sh"
