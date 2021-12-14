@@ -36,6 +36,7 @@ export const FileSystem = () => {
 
       return decoder.decode(buffer);
     },
+    onDidChangeFile: fs.onDidChangeFile.bind(fs),
   };
 };
 
