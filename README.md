@@ -1,6 +1,6 @@
-# @dethcrypto/ethereum-viewer
+# ethereum-code-viewer
 
-_View source of deployed Ethereum contracts in VSCode._
+_View source of deployed Ethereum smart contracts in VS Code_
 
 ---
 
