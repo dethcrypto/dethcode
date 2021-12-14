@@ -10,6 +10,7 @@ const {
   mkdirSync,
   copySync,
   changeFileSync,
+  globSync,
 } = require("./util");
 
 function compileVSCode() {
@@ -18,10 +19,13 @@ function compileVSCode() {
   chdir(__dirname, "..");
 
   // Use simple workbench
-  copyFileSync(
-    "src/workbench.ts",
-    "vscode/src/vs/code/browser/workbench/workbench.ts"
-  );
+  let copiedFilesReport = "Copied files: \n";
+  globSync("src/**/*.ts").forEach((file) => {
+    const destination = file.replace("src/", "vscode/src/vs/");
+    copyFileSync(file, destination);
+    copiedFilesReport += `${file} -> ${destination}\n`;
+  });
+  log.info(copiedFilesReport);
 
   chdir("vscode");
 

@@ -14,11 +14,11 @@ const USE_ETHERSCAN = true; // Treat this as a toggle for development.
 
 export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(fs.register());
-  context.subscriptions.push(
-    vscode.commands.registerCommand("ethereum-viewer.helloWorld", async () => {
-      // @todo a command that accepts a contract address
-    })
-  );
+  // @todo a command that accepts a contract address
+  // context.subscriptions.push(
+  //   vscode.commands.registerCommand("ethereum-viewer.helloWorld", async () => {
+  //   })
+  // );
 
   if (!initialized) {
     initialized = true;
