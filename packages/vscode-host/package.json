@@ -7,7 +7,8 @@
     "dist/*"
   ],
   "scripts": {
-    "serve": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem ./dist",
+    "serve": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem ./dist -c ../serve.json",
+    "serve:http": "serve --cors -l 5000 ./dist -c ../serve.json",
     "build": "node ./scripts/build",
     "build:prepare-vscode": "node ./scripts/prepareVSCode",
     "build:compile-vscode": "node ./scripts/compileVSCode",

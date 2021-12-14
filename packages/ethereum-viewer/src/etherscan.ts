@@ -23,33 +23,39 @@ export async function fetchFiles(
     "Failed to fetch contract source\n" + prettyStringify(response)
   );
 
-  const data = response.result[0];
+  const {
+    SourceCode: sourceCode,
+    ABI: _abi,
+    Implementation: implementationAddr,
+    ..._info
+  } = response.result[0];
 
-  // `.SourceCode` is apparently JSON surrounded with one set of curly braces
-  let sourceCode = JSON.parse(
-    data.SourceCode.slice(1, -1)
-  ) as Etherscan.ContractSources;
+  const info: FetchFilesResult["info"] = _info;
 
-  let files: FileContents = {
-    "settings.json": prettyStringify(
-      sourceCode.settings,
-      // @ts-expect-error bad types
-      { space: "  " }
-    ),
-  };
+  let files: FileContents = {};
 
-  for (const [path, { content }] of Object.entries(sourceCode.sources)) {
-    files[path] = content;
+  // if there is more than one file, `.SourceCode` is JSON surrounded with one
+  // set of curly braces
+  const isFlattened = !sourceCode.startsWith("{");
+
+  if (isFlattened) {
+    files[info.ContractName + ".sol"] = sourceCode;
+  } else {
+    let parsed = JSON.parse(
+      sourceCode.slice(1, -1)
+    ) as Etherscan.ContractSources;
+
+    files["settings.json"] = prettyStringify(parsed.settings);
+
+    for (const [path, { content }] of Object.entries(parsed.sources)) {
+      files[path] = content;
+    }
+
+    files = prefixFiles(files, info.ContractName);
   }
 
-  const info = data as FetchFilesResult["info"];
-  delete (info as Partial<Etherscan.ContractInfo>).ABI;
-  delete (info as Partial<Etherscan.ContractInfo>).SourceCode;
-
-  files = prefixFiles(files, info.ContractName);
-
-  if (data.Implementation) {
-    const implementation = await fetchFiles(network, data.Implementation);
+  if (implementationAddr) {
+    const implementation = await fetchFiles(network, implementationAddr);
     Object.assign(
       files,
       prefixFiles(implementation.files, implementation.info.ContractName)
@@ -97,8 +103,11 @@ declare namespace Etherscan {
     result: Etherscan.ContractInfo[];
   }
 
+  type MultipleSourceCodes = `{${string}}`;
+  type FlattenedSourceCode = `//${string}}`;
+
   interface ContractInfo {
-    SourceCode: string;
+    SourceCode: MultipleSourceCodes | FlattenedSourceCode;
     ABI: string;
     ContractName: string;
     CompilerVersion: string;
