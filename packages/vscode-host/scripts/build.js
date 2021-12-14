@@ -8,7 +8,7 @@
 // Step 1
 const { prepareVSCode } = require("./prepareVSCode");
 
-// prepareVSCode();
+prepareVSCode();
 
 // Step 2: These can interchange
 const { compileVSCode } = require("./compileVSCode");
@@ -16,8 +16,8 @@ const {
   prepareAdditionalExtensions,
 } = require("./prepareAdditionalExtensions");
 
-// compileVSCode();
-// prepareAdditionalExtensions();
+compileVSCode();
+prepareAdditionalExtensions();
 
 // Step 3
 const { copyExtensions } = require("./copyExtensions");

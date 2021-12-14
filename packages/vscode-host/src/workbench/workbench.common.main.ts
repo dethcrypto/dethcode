@@ -186,9 +186,7 @@ import "vs/workbench/contrib/searchEditor/browser/searchEditor.contribution";
 // Sash
 import "vs/workbench/contrib/sash/browser/sash.contribution";
 // SCM
-// #region changed by dethcrypto
-// import "vs/workbench/contrib/scm/browser/scm.contribution";
-// #endregion changed by dethcrypto
+import "vs/workbench/contrib/scm/browser/scm.contribution";
 // Debug
 import "vs/workbench/contrib/debug/browser/debug.contribution";
 import "vs/workbench/contrib/debug/browser/debugEditorContribution";
