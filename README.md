@@ -38,6 +38,8 @@ Ethereum Code Viewer was born out of frustration, and it's here to fix all of th
 
 - Optimism L1CrossDomainMessenger: [Ethereum Code Viewer](https://etherscan.deth.net/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1#code) | [etherscan](https://etherscan.io/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1#code)
 
+- Dai Stablecoin: [Ethereum Code Viewer](https://etherscan.deth.net/address/0x6b175474e89094c44da98b954eedeac495271d0f#code) | [etherscan](https://etherscan.io/address/0x6b175474e89094c44da98b954eedeac495271d0f#code)
+
 ### Contributing
 
 #### Repository structure and package managers
