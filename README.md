@@ -16,7 +16,7 @@
 
 ## Usage
 
-While browsing smart contract code on [etherscan](https://etherscan.io/) just change URL from `.io` to `deth.net`. This will open Visual Studio Code instance and fetch the verified code.
+While browsing smart contract code on [Etherscan](https://etherscan.io/) just change URL from `.io` to `deth.net`. This will open Visual Studio Code instance and fetch the verified code using Etherscan API.
 
 ![ecv](https://user-images.githubusercontent.com/1814312/146108385-6fa50ae7-14a5-45b2-be3d-201d22409cf7.gif)
 
