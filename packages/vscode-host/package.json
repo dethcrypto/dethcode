@@ -15,6 +15,7 @@
     "build:prepare-extensions": "node ./scripts/prepareAdditionalExtensions",
     "build:copy-extensions": "node ./scripts/copyExtensions",
     "build:copy-public": "node ./scripts/copyPublic",
+    "rebuild": "node ./scripts/rebuild",
     "copy-and-serve": "yarn build:copy-extensions && yarn serve"
   },
   "repository": {

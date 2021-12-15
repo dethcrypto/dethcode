@@ -35,12 +35,5 @@
   "activationEvents": [
     "*"
   ],
-  "contributes": {
-    "commands": [
-      {
-        "command": "ethereum-viewer.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  }
+  "contributes": {}
 }

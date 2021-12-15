@@ -1,12 +1,16 @@
+import { Event } from "vs/base/common/event";
 import { URI, UriComponents } from "vs/base/common/uri";
+import { localize } from "vs/nls";
 import {
   create,
+  ICommand,
   IWorkbenchConstructionOptions,
   IWorkspace,
   IWorkspaceProvider,
 } from "vs/workbench/workbench.web.api";
+import { renderNotification } from "../../../deth/notification";
 
-void (async function () {
+async function main() {
   // create workbench
   let config: IWorkbenchConstructionOptions & {
     folderUri?: UriComponents;
@@ -45,18 +49,28 @@ void (async function () {
     config = { ...config, workspaceProvider };
   }
 
+  const contractAddress = ethViewerCommands["get-contract-address"]();
+
+  setTimeout(() => renderNotification(), 500);
+
   create(document.body, {
     ...config,
-    commands: [
-      {
-        id: "dethcrypto.vscode-host.get-browser-url",
-        handler: () => window.location.href,
-      },
-      {
-        id: "dethcrypto.vscode-host.replace-browser-url",
-        handler: (url: string) => window.location.replace(url),
-      },
-    ],
+    commands: getCommands(),
+    configurationDefaults: {
+      "workbench.colorTheme": "Tomorrow Night Blue",
+    },
+    windowIndicator: {
+      onDidChange: Event.None,
+      label: localize(
+        "playgroundLabel",
+        `$(remote) deth.net` + (contractAddress ? `: ${contractAddress}` : "")
+      ),
+      tooltip: localize(
+        "playgroundTooltip",
+        "See Ethereum Code Viewer on GitHub"
+      ),
+      command: "dethcrypto.vscode-host.open-repo-on-github",
+    },
     // @todo extensions gallery would be lit, but we'd need a CORS proxy for it
     // additionalBuiltinExtensions: [
     //   ...(config.additionalBuiltinExtensions || []),
@@ -76,4 +90,34 @@ void (async function () {
     //   },
     // },
   });
-})();
+}
+
+const ethViewerCommands = {
+  "get-browser-url": () => window.location.href,
+  "replace-browser-url": (url: string) => window.location.replace(url),
+  "get-contract-address": (): string | null => {
+    const url = new URL(window.location.href);
+
+    // surge.sh doesn't seem to support rewrites, so we also read from search params.
+    const fromSearchParams = url.searchParams.get("contract");
+    if (fromSearchParams?.startsWith("0x")) return fromSearchParams;
+
+    let path = url.pathname.slice(1);
+
+    if (path.startsWith("address/")) path = path.slice(8);
+
+    return path.startsWith("0x") ? path : null;
+  },
+  "open-repo-on-github": () => {
+    window.open("https://github.com/dethcrypto/ethereum-code-viewer", "_blank");
+  },
+};
+
+function getCommands(): readonly ICommand[] {
+  return Object.entries(ethViewerCommands).map(([id, handler]) => ({
+    id: `dethcrypto.vscode-host.${id}`,
+    handler,
+  }));
+}
+
+void main();

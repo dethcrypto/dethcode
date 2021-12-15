@@ -14,11 +14,11 @@ const USE_ETHERSCAN = true; // Treat this as a toggle for development.
 
 export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(fs.register());
-  context.subscriptions.push(
-    vscode.commands.registerCommand("ethereum-viewer.helloWorld", async () => {
-      // @todo a command that accepts a contract address
-    })
-  );
+  // @todo a command that accepts a contract address
+  // context.subscriptions.push(
+  //   vscode.commands.registerCommand("ethereum-viewer.helloWorld", async () => {
+  //   })
+  // );
 
   if (!initialized) {
     initialized = true;
@@ -38,7 +38,10 @@ async function main(context: vscode.ExtensionContext) {
 
   let contractAddress: string | null = addresses.DAI;
 
-  if (IN_DETH_HOST) contractAddress = await readContractAddrFromUrl();
+  if (IN_DETH_HOST)
+    contractAddress = await vscode.commands.executeCommand<string | null>(
+      "dethcrypto.vscode-host.get-contract-address"
+    );
 
   if (!contractAddress) {
     return;
@@ -62,29 +65,6 @@ async function main(context: vscode.ExtensionContext) {
   // //   (e) => void showTextDocument(e.uri.path)
   // // );
   // It's causing some errors in the console, but in the end it provides better UX.
-}
-
-async function readContractAddrFromUrl(): Promise<string | null> {
-  const browserUrl = await vscode.commands.executeCommand<string>(
-    "dethcrypto.vscode-host.get-browser-url"
-  );
-
-  const url = new URL(browserUrl);
-
-  // surge.sh doesn't seem to support rewrites, so we also read from search params.
-  const fromSearchParams = url.searchParams.get("contract");
-  if (fromSearchParams?.startsWith("0x")) return fromSearchParams;
-
-  let path = url.pathname.slice(1);
-
-  if (path.startsWith("address/")) {
-    path = path.slice(8);
-    if (path.endsWith("/")) {
-      path = path.slice(0, -1);
-    }
-  }
-
-  return path.startsWith("0x") ? path : null;
 }
 
 async function saveContractFilesToFs(
