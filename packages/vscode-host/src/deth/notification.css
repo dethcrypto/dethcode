@@ -1,0 +1,62 @@
+.deth-notification {
+  position: fixed;
+  top: 2.5em;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 600px;
+  max-width: 100%;
+  z-index: 999;
+  display: flex;
+  box-shadow: 1px 1px 16px 3px #69626242;
+  background: #001733;
+  font-size: 16px;
+  padding: 0.5em;
+}
+
+.deth-notification .notification-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding-left: 0.5em;
+}
+
+.deth-notification .notification-main a {
+  padding-left: 1em;
+  text-decoration: none;
+  color: #ffffff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.deth-notification .notification-main a:hover,
+.deth-notification .notification-main a:focus {
+  text-decoration: underline;
+}
+
+.deth-notification .notification-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 140px;
+}
+
+.deth-notification .notification-footer .notification-confirm-button {
+  border: none;
+  width: 100%;
+  height: 26px;
+  margin-bottom: 2px;
+  text-align: center;
+  outline: 1px solid transparent;
+  outline-offset: 2px !important;
+  color: #ffffff;
+  background-color: #003f8e;
+  cursor: pointer;
+}
+
+.deth-notification .notification-footer .notification-confirm-button:hover,
+.deth-notification .notification-footer .notification-confirm-button:focus {
+  outline-color: #bbdaff;
+}

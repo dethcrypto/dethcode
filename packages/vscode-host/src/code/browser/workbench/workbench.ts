@@ -8,6 +8,7 @@ import {
   IWorkspace,
   IWorkspaceProvider,
 } from "vs/workbench/workbench.web.api";
+import { renderNotification } from "../../../deth/notification";
 
 async function main() {
   // create workbench
@@ -49,6 +50,8 @@ async function main() {
   }
 
   const contractAddress = ethViewerCommands["get-contract-address"]();
+
+  setTimeout(() => renderNotification(), 500);
 
   create(document.body, {
     ...config,

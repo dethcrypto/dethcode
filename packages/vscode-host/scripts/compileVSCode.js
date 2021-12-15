@@ -3,7 +3,6 @@
 const {
   chdir,
   log,
-  copyFileSync,
   existsSync,
   rimraf,
   execSync,
@@ -20,9 +19,9 @@ function compileVSCode() {
 
   // Use simple workbench
   let copiedFilesReport = "Copied files: \n";
-  globSync("src/**/*.ts").forEach((file) => {
+  globSync("src/**/*.*").forEach((file) => {
     const destination = file.replace("src/", "vscode/src/vs/");
-    copyFileSync(file, destination);
+    copySync(file, destination);
     copiedFilesReport += `${file} -> ${destination}\n`;
   });
   log.info(copiedFilesReport);
