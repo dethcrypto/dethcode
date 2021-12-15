@@ -16,9 +16,13 @@
 
 ## Features ⚡
 
-- frictionless - just tweak URL while browsing etherscan: `https://etherscan.io/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec#code` -> `https://etherscan.deth.net/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec#code`
+- frictionless - just tweak URL while browsing etherscan `.io` -> `deth.net`
 - proxy support - automatically follows proxies and displays implementation source code
 - multichain - supports many etherscan instances (testnets, L2s, L1s) (COMING SOON)
+
+## Examples
+
+- Arbitrum ERC20 Gateway: [Ethereum Code Viewer](https://etherscan.deth.net/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec#code) | [etherscan](https://etherscan.io/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec#code)
 
 ### Contributing
 
