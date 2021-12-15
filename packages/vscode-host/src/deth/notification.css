@@ -4,14 +4,14 @@
   left: 0;
   right: 0;
   margin: 0 auto;
-  width: 600px;
+  width: 720px;
   max-width: 100%;
   z-index: 999;
   display: flex;
-  box-shadow: 1px 1px 16px 3px #69626242;
+  box-shadow: 1px 1px 16px 3px rgb(0 0 0 / 20%);
   background: #001733;
-  font-size: 16px;
-  padding: 0.5em;
+  font-size: 14px;
+  padding: 0.5em 1em;
 }
 
 .deth-notification .notification-main {
@@ -20,11 +20,9 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding-left: 0.5em;
 }
 
 .deth-notification .notification-main a {
-  padding-left: 1em;
   text-decoration: none;
   color: #ffffff;
   white-space: nowrap;

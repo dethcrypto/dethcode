@@ -5,13 +5,13 @@
 
 import "vs/css!./notification";
 
-const NOTIFICATION_STORAGE_KEY = "GITHUB1S_NOTIFICATION";
+const NOTIFICATION_STORAGE_KEY = "dethcrypto:ethereum-code-viewer.notification";
 // Change this if a new notification should be shown
 const NOTIFICATION_STORAGE_VALUE = "1";
 
 const notifications = [
   {
-    text: "Donate to dethcrypto GitCoin grant 💰",
+    text: "💸 Enjoy using Ethereum Code Viewer? Consider funding development via GitCoin 💸",
     link: "https://gitcoin.co/grants/4038/typechain-dksth",
   },
 ];
