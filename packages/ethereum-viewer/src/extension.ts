@@ -1,10 +1,11 @@
-import path from "path/posix";
 import * as vscode from "vscode";
 
 import { addresses } from "./addresses";
 import * as etherscan from "./etherscan";
+import { StaticFileSearchProvider } from "./fileSearchProvider";
 import { FileSystem } from "./filesystem";
 import { fixtures } from "./test/fixtures";
+// import { StaticTextSearchProvider } from "./textSearchProvider";
 
 let initialized = false;
 const fs = FileSystem();
@@ -36,7 +37,7 @@ async function main(context: vscode.ExtensionContext) {
     name: network,
   });
 
-  let contractAddress: string | null = addresses.DAI;
+  let contractAddress: string | null = addresses.L1ChugSplashProxy;
 
   if (IN_DETH_HOST)
     contractAddress = await vscode.commands.executeCommand<string | null>(
@@ -55,13 +56,26 @@ async function main(context: vscode.ExtensionContext) {
 
   const mainFile = getMainContractFile(entries, info);
 
+  context.subscriptions.push(
+    vscode.workspace.registerFileSearchProvider(
+      "memfs",
+      new StaticFileSearchProvider(entries.map(([path]) => path))
+    )
+  );
+  // context.subscriptions.push(
+  //   vscode.workspace.registerTextSearchProvider(
+  //     "memfs",
+  //     new StaticTextSearchProvider(entries)
+  //   )
+  // );
+
   // We're instead trying to open the file even if it doesn't exist yet.
   await showTextDocument(mainFile);
   // This seems to be very slow:
   // // onFileChangeOnce(
   // //   context,
   // //   fs,
-  // //   mainFile,
+  // //   mainFile, 
   // //   (e) => void showTextDocument(e.uri.path)
   // // );
   // It's causing some errors in the console, but in the end it provides better UX.

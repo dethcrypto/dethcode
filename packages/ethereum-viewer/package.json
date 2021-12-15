@@ -15,13 +15,14 @@
   },
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",
+    "match-sorter": "^6.3.1",
     "p-finally": "^2.0.1",
     "path-browserify": "^1.0.1",
     "ts-essentials": "^9.0.0"
   },
   "devDependencies": {
-    "typescript": "^4.5.3",
-    "@types/vscode": "^1.63.0"
+    "@types/vscode": "^1.63.0",
+    "typescript": "^4.5.3"
   },
   "engines": {
     "vscode": "^1.63.0"
@@ -31,6 +32,11 @@
   "publisher": "hasparus",
   "categories": [
     "Other"
+  ],
+  "enableProposedApi": true,
+  "enabledApiProposals": [
+    "fileSearchProvider",
+    "textSearchProvider"
   ],
   "activationEvents": [
     "*"
