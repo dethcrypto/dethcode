@@ -48,6 +48,8 @@ async function main() {
     config = { ...config, workspaceProvider };
   }
 
+  const contractAddress = ethViewerCommands["get-contract-address"]();
+
   create(document.body, {
     ...config,
     commands: getCommands(),
@@ -58,7 +60,7 @@ async function main() {
       onDidChange: Event.None,
       label: localize(
         "playgroundLabel",
-        `$(remote) deth.net: ${ethViewerCommands["get-contract-address"]()}`
+        `$(remote) deth.net` + (contractAddress ? `: ${contractAddress}` : "")
       ),
       tooltip: localize(
         "playgroundTooltip",

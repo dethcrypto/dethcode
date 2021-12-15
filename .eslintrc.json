@@ -21,5 +21,13 @@
     // TypeScript checks this
     "no-invalid-this": "off"
   },
-  "ignorePatterns": ["**/*.d.ts", "**/dist/**"]
+  "ignorePatterns": ["**/*.d.ts", "**/dist/**"],
+  "overrides": [
+    {
+      "files": ["./packages/vscode-host/src/**/*.ts"],
+      "rules": {
+        "simple-import-sort/imports": "off"
+      }
+    }
+  ]
 }
