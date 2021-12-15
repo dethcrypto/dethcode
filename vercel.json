@@ -1,5 +1,25 @@
 {
   "version": 2,
   "public": false,
-  "github": { "enabled": false }
+  "github": {
+    "enabled": false
+  },
+  "rewrites": [
+    {
+      "source": "/address/0x([0-9a-fA-F]*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/address/0x([0-9a-fA-F]*?)/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/address/0x([0-9a-fA-F]*?)/:path*",
+      "destination": "/:path*"
+    },
+    {
+      "source": "/address/:path*",
+      "destination": "/:path*"
+    }
+  ]
 }

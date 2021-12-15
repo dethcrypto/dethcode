@@ -64,7 +64,7 @@ async function main(context: vscode.ExtensionContext) {
   // It's causing some errors in the console, but in the end it provides better UX.
 }
 
-async function readContractAddrFromUrl() {
+async function readContractAddrFromUrl(): Promise<string | null> {
   const browserUrl = await vscode.commands.executeCommand<string>(
     "dethcrypto.vscode-host.get-browser-url"
   );
@@ -77,7 +77,12 @@ async function readContractAddrFromUrl() {
 
   let path = url.pathname.slice(1);
 
-  if (path.startsWith("address/")) path = path.slice(8);
+  if (path.startsWith("address/")) {
+    path = path.slice(8);
+    if (path.endsWith("/")) {
+      path = path.slice(0, -1);
+    }
+  }
 
   return path.startsWith("0x") ? path : null;
 }

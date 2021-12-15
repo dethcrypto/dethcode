@@ -19,14 +19,35 @@ jobs:
         with:
           node-version: "14"
           cache: pnpm
+
       - run: pnpm install
-      - name: Build
-        run: pnpm build
-      - name: Deploy
+      - run: pnpm build
+
+      - run: pnpm prepare-deploy
+      # @todo is there a better way to write this? we want prod build from main
+      - uses: ngduc/vercel-deploy-action@master
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: dswistowski/surge-sh-action@v1
         with:
-          domain: "ethereum-viewer.surge.sh"
-          project: "./packages/vscode-host/dist"
-          login: ${{ secrets.SURGE_LOGIN }}
-          token: ${{ secrets.SURGE_TOKEN }}
+          vercel-cli: vercel
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          working-directory: packages/vscode-host/dist
+          vercel-args: "--prod"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - uses: ngduc/vercel-deploy-action@master
+        if: ${{ github.ref != 'refs/heads/main' }}
+        with:
+          vercel-cli: vercel
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          working-directory: packages/vscode-host/dist
+          vercel-args: "--target staging"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
