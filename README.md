@@ -38,9 +38,9 @@ Ethereum Code Viewer was born out of frustration, and it's here to fix all of th
 - Optimism L1CrossDomainMessenger: [Ethereum Code Viewer](https://etherscan.deth.net/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1#code) | [etherscan](https://etherscan.io/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1#code)
 - Dai Stablecoin: [Ethereum Code Viewer](https://etherscan.deth.net/address/0x6b175474e89094c44da98b954eedeac495271d0f#code) | [etherscan](https://etherscan.io/address/0x6b175474e89094c44da98b954eedeac495271d0f#code)
 
-### Contributing
+## Contributing
 
-#### Repository structure and package managers
+### Repository structure and package managers
 
 The repository contains two packages, `ethereum-viewer` extension and the VSCode compilation meant for hosting it online.
 
@@ -55,7 +55,7 @@ mkcert localhost
 mkcert -install
 ```
 
-#### Scripts
+### Scripts
 
 - **`pnpm install`** - Installs dependencies for the workspace, `ethereum-viewer` extension, and triggers `yarn install` for `vscode-host` through the `postinstall` script.
 
@@ -67,9 +67,9 @@ mkcert -install
 
 - **`pnpm dev`** - Copies `ethereum-extension` and serves `vscode-host`. Run alongside `pnpm watch`.
 
-#### Resources
+### Resources
 
-Ethereum Viewer is a VSCode Web Extension using FileSystemProvider API to show sources of deployed Ethereum smart contracts.
+Ethereum Code Viewer is a VSCode Web Extension using FileSystemProvider API to show sources of deployed Ethereum smart contracts.
 The following links might be provide some insight, if you're not familiar with some of the aforementioned terms.
 
 - https://code.visualstudio.com/api/extension-guides/web-extensions
