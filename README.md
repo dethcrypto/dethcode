@@ -47,7 +47,7 @@ The repository contains two packages, `ethereum-viewer` extension and the VSCode
 All packages (currently one) except of `@dethcrypto/ethereum-viewer-vscode-host` located in `packages/vscode-host` are managed by `pnpm`.
 As VSCode depends on Yarn, our `vscode-host` also needs Yarn.
 
-You need to create dummy certs using `mkcert`:
+You need to create dummy certs using [`mkcert`](https://github.com/FiloSottile/mkcert):
 
 ```sh
 cd ./certs
