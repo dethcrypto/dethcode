@@ -54,5 +54,15 @@ describe("ethViewerCommands", () => {
         "0xe9e7cea3dedca5984780bafc599bd69add087d56"
       );
     });
+
+    it("ignores trailing slash after address", () => {
+      givenUrl(
+        "https://ethereum-code-viewer-q6izia4ey-dethcrypto.vercel.app/token/0xda10009cbd5d07dd0cecc66161fc93d7c9000da1/?explorer=optimistic.etherscan"
+      );
+
+      expect(getContractAddress()).toEqual(
+        "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1"
+      );
+    });
   });
 });

@@ -12,6 +12,7 @@ export const ethViewerCommands = {
 
     if (path.startsWith("address/")) path = path.slice(8);
     if (path.startsWith("token/")) path = path.slice(6);
+    if (path.endsWith("/")) path = path.slice(0, -1);
 
     return path.startsWith("0x") ? path : null;
   },

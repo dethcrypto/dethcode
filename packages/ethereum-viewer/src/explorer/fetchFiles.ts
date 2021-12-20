@@ -1,13 +1,14 @@
 import { join } from "path";
 import { assert, StrictOmit } from "ts-essentials";
 
-import { fetch } from "../util/fetch";
+import { fetch as _fetch } from "../util/fetch";
 import { prettyStringify } from "../util/stringify";
 import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
 
 export async function fetchFiles(
   apiName: ApiName,
-  contractAddress: string
+  contractAddress: string,
+  fetch: typeof _fetch = _fetch
 ): Promise<FetchFilesResult> {
   const url =
     explorerApiUrls[apiName] +
@@ -95,8 +96,9 @@ export type FilePath = string & { __brand?: "Path" };
 
 export type FileContent = string & { __brand?: "FileContent" };
 
-declare namespace Etherscan {
+export declare namespace Etherscan {
   interface ContractSourceResponse {
+    status: "1" | "0";
     message: string;
     result: Etherscan.ContractInfo[];
   }
