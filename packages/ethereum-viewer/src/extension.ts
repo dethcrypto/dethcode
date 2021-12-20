@@ -1,7 +1,9 @@
 import * as vscode from "vscode";
 
 import { addresses } from "./addresses";
+import { executeHostCommand } from "./commands";
 import * as etherscan from "./etherscan";
+import { networkApiUrls, networkNames } from "./etherscan";
 import { StaticFileSearchProvider } from "./fileSearchProvider";
 import { FileSystem } from "./filesystem";
 import { fixtures } from "./test/fixtures";
@@ -30,7 +32,8 @@ export async function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 async function main(context: vscode.ExtensionContext) {
-  const network: etherscan.Network = "mainnet";
+  const apiName = await detectEtherscanApiName();
+  const network = networkNames[apiName];
 
   vscode.workspace.updateWorkspaceFolders(0, 0, {
     uri: vscode.Uri.parse("memfs:/"),
@@ -40,9 +43,7 @@ async function main(context: vscode.ExtensionContext) {
   let contractAddress: string | null = addresses.L1ChugSplashProxy;
 
   if (IN_DETH_HOST)
-    contractAddress = await vscode.commands.executeCommand<string | null>(
-      "dethcrypto.vscode-host.get-contract-address"
-    );
+    contractAddress = await executeHostCommand("get-contract-address");
 
   if (!contractAddress) {
     return;
@@ -50,7 +51,7 @@ async function main(context: vscode.ExtensionContext) {
 
   const [entries, info] = await saveContractFilesToFs(
     fs,
-    network,
+    apiName,
     contractAddress
   );
 
@@ -62,12 +63,6 @@ async function main(context: vscode.ExtensionContext) {
       new StaticFileSearchProvider(entries.map(([path]) => path))
     )
   );
-  // context.subscriptions.push(
-  //   vscode.workspace.registerTextSearchProvider(
-  //     "memfs",
-  //     new StaticTextSearchProvider(entries)
-  //   )
-  // );
 
   // We're instead trying to open the file even if it doesn't exist yet.
   await showTextDocument(mainFile);
@@ -81,9 +76,26 @@ async function main(context: vscode.ExtensionContext) {
   // It's causing some errors in the console, but in the end it provides better UX.
 }
 
+async function detectEtherscanApiName(): Promise<etherscan.ApiName> {
+  if (IN_DETH_HOST) {
+    const detectedName = await executeHostCommand("get-api-name");
+    if (!detectedName || !(detectedName in networkApiUrls)) {
+      await vscode.window.showErrorMessage(
+        `${detectedName} is not a valid network. Using mainnet etherscan instead.`
+      );
+
+      return "etherscan";
+    } else {
+      return detectedName as etherscan.ApiName;
+    }
+  } else {
+    return "etherscan";
+  }
+}
+
 async function saveContractFilesToFs(
   fs: FileSystem,
-  network: etherscan.Network,
+  network: etherscan.ApiName,
   address: string
 ) {
   let result: etherscan.FetchFilesResult;

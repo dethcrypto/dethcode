@@ -1,20 +1,18 @@
 import { join } from "path";
 import { assert, StrictOmit } from "ts-essentials";
 
-import { fetch } from "./util/fetch";
-import { prettyStringify } from "./util/stringify";
+import { fetch } from "../util/fetch";
+import { prettyStringify } from "../util/stringify";
+import { networkApiUrls } from ".";
+import { ApiName } from "./networks";
 
 const ETHERSCAN_API_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
 
 export async function fetchFiles(
-  network: Network,
+  network: ApiName,
   contractAddress: string
 ): Promise<FetchFilesResult> {
-  const api = `https://api${
-    network === "mainnet" ? "" : `-${network}`
-  }.etherscan.io/api`;
-
-  const url = `${api}?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${ETHERSCAN_API_KEY}`;
+  const url = `${networkApiUrls[network]}?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${ETHERSCAN_API_KEY}`;
 
   const response = (await fetch(url)) as Etherscan.ContractSourceResponse;
 
@@ -94,8 +92,6 @@ export interface FileContents extends Record<FilePath, FileContent> {}
 export type FilePath = string & { __brand?: "Path" };
 
 export type FileContent = string & { __brand?: "FileContent" };
-
-export type Network = "mainnet" | "ropsten" | "rinkeby" | "kovan" | "goerli";
 
 declare namespace Etherscan {
   interface ContractSourceResponse {
