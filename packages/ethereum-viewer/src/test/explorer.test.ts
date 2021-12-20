@@ -1,14 +1,13 @@
 import { assert } from "ts-essentials";
 
-import { Etherscan, fetchFiles } from "../explorer";
+import { fetchFiles } from "../explorer";
+import { ContractSourceResponse } from "../explorer/api-types";
 import type { fetch } from "../util/fetch";
 
 describe(fetchFiles.name, () => {
   it("calls optimistic.etherscan", async () => {
     let url: string | undefined;
-    const f: typeof fetch = async (
-      _url
-    ): Promise<Etherscan.ContractSourceResponse> => {
+    const f: typeof fetch = async (_url): Promise<ContractSourceResponse> => {
       url = _url;
       return {
         status: "1",
@@ -46,7 +45,7 @@ describe(fetchFiles.name, () => {
   });
 
   it("returns file with error message when contract is unverified", async () => {
-    const f = async (): Promise<Etherscan.ContractSourceResponse> => {
+    const f = async (): Promise<ContractSourceResponse> => {
       return {
         status: "1",
         message: "OK",

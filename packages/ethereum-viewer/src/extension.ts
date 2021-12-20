@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 
-import { addresses } from "./addresses";
 import { registerContributedCommands } from "./contributedCommands";
 import { executeHostCommand } from "./executeHostCommand";
 import * as explorer from "./explorer";

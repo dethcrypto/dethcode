@@ -1,8 +1,9 @@
-import { window, commands, ExtensionContext, QuickPickItem } from "vscode";
-import { networkNames, explorerApiUrls, ApiName } from "./explorer";
+import { commands, ExtensionContext, QuickPickItem,window } from "vscode";
+
+import { ApiName,explorerApiUrls, networkNames } from "./explorer";
+import { FileSystem } from "./filesystem";
 import { openContractSource } from "./openContractSource";
 import { unsafeEntries } from "./util/unsafeEntries";
-import { FileSystem } from "./filesystem";
 
 export function registerContributedCommands(
   context: ExtensionContext,
@@ -16,9 +17,7 @@ export function registerContributedCommands(
       });
 
       if (!address) {
-        await window.showWarningMessage(
-          "Sorry, we can't open a contract with no address 🤷‍♂️"
-        );
+        // cancelling is not an error
         return;
       }
 

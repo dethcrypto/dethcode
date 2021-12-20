@@ -1,5 +1,4 @@
 import { strictEqual } from "assert";
-import * as vscode from "vscode";
 
 import { FileSystem } from "../filesystem";
 

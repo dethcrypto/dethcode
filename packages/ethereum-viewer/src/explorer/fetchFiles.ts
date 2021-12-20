@@ -3,6 +3,7 @@ import { assert, StrictOmit } from "ts-essentials";
 
 import { fetch as _fetch } from "../util/fetch";
 import { prettyStringify } from "../util/stringify";
+import * as types from "./api-types";
 import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
 
 export async function fetchFiles(
@@ -18,7 +19,7 @@ export async function fetchFiles(
     `&address=${contractAddress}` +
     `&apikey=${explorerApiKeys[apiName]}`;
 
-  const response = (await fetch(url)) as Etherscan.ContractSourceResponse;
+  const response = (await fetch(url)) as types.ContractSourceResponse;
 
   assert(
     response.message === "OK",
@@ -36,11 +37,10 @@ export async function fetchFiles(
 
   let files: FileContents = {};
 
-  // if there is more than one file, `.SourceCode` is JSON surrounded with one
-  // set of curly braces
-  const isFlattened = !sourceCode.startsWith("{");
-
-  if (!info.ContractName && abi === "Contract source code not verified") {
+  if (
+    !sourceCode ||
+    (!info.ContractName && abi === "Contract source code not verified")
+  ) {
     return {
       files: {
         "error.md": contractNotVerifiedErrorMsg(apiName, contractAddress),
@@ -49,12 +49,8 @@ export async function fetchFiles(
     };
   }
 
-  if (isFlattened) {
-    files[info.ContractName + ".sol"] = sourceCode;
-  } else {
-    let parsed = JSON.parse(
-      sourceCode.slice(1, -1)
-    ) as Etherscan.ContractSources;
+  if (types.sourceHasSettings(sourceCode)) {
+    let parsed = types.parseSourceCode(sourceCode);
 
     files["settings.json"] = prettyStringify(parsed.settings);
 
@@ -63,6 +59,16 @@ export async function fetchFiles(
     }
 
     files = prefixFiles(files, info.ContractName);
+  } else if (types.sourceHasMulitpleFiles(sourceCode)) {
+    const parsed = types.parseSourceCode(sourceCode);
+
+    for (const [path, { content }] of Object.entries(parsed)) {
+      files[path] = content;
+    }
+
+    files = prefixFiles(files, info.ContractName);
+  } else {
+    files[info.ContractName + ".sol"] = sourceCode;
   }
 
   if (implementationAddr) {
@@ -96,63 +102,12 @@ export interface FetchFilesResult {
 
 export interface ContractInfo
   extends StrictOmit<
-    Etherscan.ContractInfo,
+    types.ContractInfo,
     "SourceCode" | "ABI" | "Implementation"
   > {}
 
-export interface FileContents extends Record<FilePath, FileContent> {}
-
-export type FilePath = string & { __brand?: "Path" };
-
-export type FileContent = string & { __brand?: "FileContent" };
-
-export declare namespace Etherscan {
-  interface ContractSourceResponse {
-    status: "1" | "0";
-    message: string;
-    result: Etherscan.ContractInfo[];
-  }
-
-  type UnverifiedSourceCode = "";
-  type MultipleSourceCodes = `{}`;
-  type FlattenedSourceCode = FileContent;
-
-  interface ContractInfo {
-    SourceCode:
-      | MultipleSourceCodes
-      | FlattenedSourceCode
-      | UnverifiedSourceCode;
-    ABI: string;
-    ContractName: string;
-    CompilerVersion: string;
-    OptimizationUsed: string;
-    Runs: string;
-    ConstructorArguments: string;
-    EVMVersion: string;
-    Library: string;
-    LicenseType: string;
-    Proxy: string;
-    Implementation: string;
-    SwarmSource: string;
-  }
-
-  interface ContractSources {
-    language: string;
-    settings: {
-      evmVersion: string;
-      libraries: string[];
-      metadata: object;
-      optimizer: object;
-      outputSelection: object;
-      remappings: string[];
-    };
-    sources: Record<FilePath, File>;
-  }
-
-  type File = { content: FileContent };
-
-  type Abi = object[];
-}
+export interface FileContents
+  extends Record<types.FilePath, types.FileContent> {}
 
 function contractNotVerifiedErrorMsg(
   apiName: ApiName,
