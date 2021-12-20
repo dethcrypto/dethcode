@@ -113,11 +113,15 @@ export declare namespace Etherscan {
     result: Etherscan.ContractInfo[];
   }
 
+  type UnverifiedSourceCode = "";
   type MultipleSourceCodes = `{}`;
-  type FlattenedSourceCode = `//${string}}`;
+  type FlattenedSourceCode = FileContent;
 
   interface ContractInfo {
-    SourceCode: MultipleSourceCodes | FlattenedSourceCode;
+    SourceCode:
+      | MultipleSourceCodes
+      | FlattenedSourceCode
+      | UnverifiedSourceCode;
     ABI: string;
     ContractName: string;
     CompilerVersion: string;
@@ -165,7 +169,7 @@ Take a look at ${websiteUrl}/address/${contractAddress}.
 function apiUrlToWebsite(url: string) {
   // This is a bit of a hack, but they all have the same URL scheme.
   return url
-    .replace("//api-", "//")
+    .replace("//api.", "//")
     .replace("//api-", "//")
     .replace(/\/api$/, "");
 }

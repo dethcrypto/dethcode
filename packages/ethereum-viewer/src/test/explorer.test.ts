@@ -44,4 +44,39 @@ describe(fetchFiles.name, () => {
       `url should match expected value "${expected}", but instead received "${url}"`
     );
   });
+
+  it("returns file with error message when contract is unverified", async () => {
+    const f = async (): Promise<Etherscan.ContractSourceResponse> => {
+      return {
+        status: "1",
+        message: "OK",
+        result: [
+          {
+            SourceCode: "",
+            ABI: "Contract source code not verified",
+            ContractName: "",
+            CompilerVersion: "",
+            OptimizationUsed: "",
+            Runs: "",
+            ConstructorArguments: "",
+            EVMVersion: "Default",
+            Library: "",
+            LicenseType: "Unknown",
+            Proxy: "0",
+            Implementation: "",
+            SwarmSource: "",
+          },
+        ],
+      };
+    };
+
+    const { files } = await fetchFiles("etherscan", "0x0", f);
+
+    const expected =
+      "Oops! It seems this contract source code is not verified on https://etherscan.io.";
+    assert(
+      files["error.md"].includes(expected),
+      `Expected ${files["error.md"]} to contain ${expected}`
+    );
+  });
 });
