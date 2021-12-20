@@ -2,7 +2,7 @@
   <img src="https://github.com/dethcrypto/ethereum-code-viewer/blob/main/docs/logo.png?raw=true" width="300" alt="ethereum code viewer">
   <h3 align="center">Ethereum Code Viewer</h3>
   <p align="center">View source of deployed Ethereum smart contracts in VS Code</p>
-  <p align="center">While on Etherscan, change <code>.io</code> to <code>.deth.net</code> and browse comfortably contracts in ephemeral VS Code instance</p>
+  <p align="center">While on Etherscan, change <code>.io</code> to <code>.deth.net</code> and browse contracts comfortably in ephemeral VS Code instance</p>
 
   <p align="center">
     <a href="https://github.com/dethcrypto/ethereum-code-viewer/actions"><img alt="Build Status" src="https://github.com/dethcrypto/ethereum-code-viewer/actions/workflows/ci.yml/badge.svg"></a>
