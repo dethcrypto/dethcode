@@ -22,6 +22,8 @@ jobs:
 
       - run: pnpm install
       - run: pnpm build
+      - run: pnpm test
+      - run: pnpm lint
 
       - run: pnpm prepare-deploy
       # @todo is there a better way to write this? we want prod build from main
