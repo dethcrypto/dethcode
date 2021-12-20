@@ -10,8 +10,9 @@ export async function fetchFiles(
   contractAddress: string,
   fetch: typeof _fetch = _fetch
 ): Promise<FetchFilesResult> {
+  const apiUrl = explorerApiUrls[apiName];
   const url =
-    explorerApiUrls[apiName] +
+    apiUrl +
     "?module=contract" +
     "&action=getsourcecode" +
     `&address=${contractAddress}` +
@@ -26,7 +27,7 @@ export async function fetchFiles(
 
   const {
     SourceCode: sourceCode,
-    ABI: _abi,
+    ABI: abi,
     Implementation: implementationAddr,
     ..._info
   } = response.result[0];
@@ -38,6 +39,15 @@ export async function fetchFiles(
   // if there is more than one file, `.SourceCode` is JSON surrounded with one
   // set of curly braces
   const isFlattened = !sourceCode.startsWith("{");
+
+  if (!info.ContractName && abi === "Contract source code not verified") {
+    return {
+      files: {
+        "error.md": contractNotVerifiedErrorMsg(apiName, contractAddress),
+      },
+      info,
+    };
+  }
 
   if (isFlattened) {
     files[info.ContractName + ".sol"] = sourceCode;
@@ -103,7 +113,7 @@ export declare namespace Etherscan {
     result: Etherscan.ContractInfo[];
   }
 
-  type MultipleSourceCodes = `{${string}}`;
+  type MultipleSourceCodes = `{}`;
   type FlattenedSourceCode = `//${string}}`;
 
   interface ContractInfo {
@@ -138,4 +148,24 @@ export declare namespace Etherscan {
   type File = { content: FileContent };
 
   type Abi = object[];
+}
+
+function contractNotVerifiedErrorMsg(
+  apiName: ApiName,
+  contractAddress: string
+) {
+  const websiteUrl = apiUrlToWebsite(explorerApiUrls[apiName]);
+  return `\
+Oops! It seems this contract source code is not verified on ${websiteUrl}.
+
+Take a look at ${websiteUrl}/address/${contractAddress}.
+`;
+}
+
+function apiUrlToWebsite(url: string) {
+  // This is a bit of a hack, but they all have the same URL scheme.
+  return url
+    .replace("//api-", "//")
+    .replace("//api-", "//")
+    .replace(/\/api$/, "");
 }
