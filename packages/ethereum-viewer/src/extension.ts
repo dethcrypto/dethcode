@@ -10,7 +10,7 @@ import { fixtures } from "./test/fixtures";
 let initialized = false;
 const fs = FileSystem();
 
-const IN_DETH_HOST = vscode.env.appName === "Ethereum Viewer";
+const IN_DETH_HOST = vscode.env.appName === "Ethereum Code Viewer";
 const USE_ETHERSCAN = true; // Treat this as a toggle for development.
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -75,7 +75,7 @@ async function main(context: vscode.ExtensionContext) {
   // // onFileChangeOnce(
   // //   context,
   // //   fs,
-  // //   mainFile, 
+  // //   mainFile,
   // //   (e) => void showTextDocument(e.uri.path)
   // // );
   // It's causing some errors in the console, but in the end it provides better UX.

@@ -1,7 +1,7 @@
 {
   "productConfiguration": {
-    "nameShort": "Ethereum Viewer",
-    "nameLong": "Ethereum Viewer",
+    "nameShort": "Ethereum Code Viewer",
+    "nameLong": "Ethereum Code Viewer",
     "applicationName": "deth-viewer",
     "dataFolderName": ".deth-viewer",
     "version": "1.58.0"

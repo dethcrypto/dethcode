@@ -27,7 +27,7 @@
   "engines": {
     "vscode": "^1.63.0"
   },
-  "displayName": "Ethereum Viewer",
+  "displayName": "Ethereum Code Viewer",
   "description": "View source of deployed Ethereum contracts in VSCode",
   "publisher": "hasparus",
   "categories": [
