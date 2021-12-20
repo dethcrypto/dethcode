@@ -2,7 +2,7 @@
   <img src="https://github.com/dethcrypto/ethereum-code-viewer/blob/main/docs/logo.png?raw=true" width="300" alt="ethereum code viewer">
   <h3 align="center">Ethereum Code Viewer</h3>
   <p align="center">View source of deployed Ethereum smart contracts in VS Code</p>
-  <p align="center">Comfortably browse contracts verified on etherscan</p>
+  <p align="center">While on Etherscan, change <code>.io</code> to <code>.deth.net</code> and browse contracts comfortably in ephemeral VS Code instance</p>
 
   <p align="center">
     <a href="https://github.com/dethcrypto/ethereum-code-viewer/actions"><img alt="Build Status" src="https://github.com/dethcrypto/ethereum-code-viewer/actions/workflows/ci.yml/badge.svg"></a>
@@ -16,7 +16,7 @@
 
 ## Usage
 
-While browsing smart contract code on [Etherscan](https://etherscan.io/) just change URL from `.io` to `deth.net`. This will open Visual Studio Code instance and fetch the verified code using Etherscan API.
+While browsing smart contract code on [Etherscan](https://etherscan.io/) just change URL from `.io` to `.deth.net`. This will open Visual Studio Code instance and fetch the verified code using Etherscan API.
 
 ![ecv](https://user-images.githubusercontent.com/1814312/146108385-6fa50ae7-14a5-45b2-be3d-201d22409cf7.gif)
 
@@ -47,12 +47,25 @@ The repository contains two packages, `ethereum-viewer` extension and the VSCode
 All packages (currently one) except of `@dethcrypto/ethereum-viewer-vscode-host` located in `packages/vscode-host` are managed by `pnpm`.
 As VSCode depends on Yarn, our `vscode-host` also needs Yarn.
 
-You need to create dummy certs using [`mkcert`](https://github.com/FiloSottile/mkcert):
+### Step by step instructions
 
 ```sh
+# You need to create dummy certs using mkcert - https://github.com/FiloSottile/mkcert
 cd ./certs
 mkcert localhost
 mkcert -install
+cd ..
+
+# install deps
+pnpm install
+
+# install vscode deps
+cd packages/vscode-host/
+yarn
+cd ../../
+
+yarn build # this builds whole vscode and can take A LOT of time
+yarn serve
 ```
 
 ### Scripts
