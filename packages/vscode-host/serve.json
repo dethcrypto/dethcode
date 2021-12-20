@@ -1,3 +1,8 @@
 {
-  "rewrites": [{ "source": "/:contractAddress", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/(address/|token/)?0x([0-9a-fA-F])*",
+      "destination": "/index.html"
+    }
+  ]
 }

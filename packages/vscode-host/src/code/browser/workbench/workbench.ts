@@ -12,7 +12,7 @@ import {
   CommandId,
   ethViewerCommands,
   getCommands,
-} from "../../../deth/commands";
+} from "../../../deth/commands/getCommands";
 
 async function main() {
   // create workbench

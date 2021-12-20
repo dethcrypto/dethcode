@@ -3,16 +3,18 @@ import { assert, StrictOmit } from "ts-essentials";
 
 import { fetch } from "../util/fetch";
 import { prettyStringify } from "../util/stringify";
-import { networkApiUrls } from ".";
-import { ApiName } from "./networks";
-
-const ETHERSCAN_API_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
+import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
 
 export async function fetchFiles(
-  network: ApiName,
+  apiName: ApiName,
   contractAddress: string
 ): Promise<FetchFilesResult> {
-  const url = `${networkApiUrls[network]}?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${ETHERSCAN_API_KEY}`;
+  const url =
+    explorerApiUrls[apiName] +
+    "?module=contract" +
+    "&action=getsourcecode" +
+    `&address=${contractAddress}` +
+    `&apikey=${explorerApiKeys[apiName]}`;
 
   const response = (await fetch(url)) as Etherscan.ContractSourceResponse;
 
@@ -53,7 +55,7 @@ export async function fetchFiles(
   }
 
   if (implementationAddr) {
-    const implementation = await fetchFiles(network, implementationAddr);
+    const implementation = await fetchFiles(apiName, implementationAddr);
     Object.assign(
       files,
       prefixFiles(implementation.files, implementation.info.ContractName)

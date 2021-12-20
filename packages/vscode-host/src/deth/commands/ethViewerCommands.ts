@@ -1,5 +1,3 @@
-import type * as workbench from "vs/workbench/workbench.web.api";
-
 export const ethViewerCommands = {
   getBrowserUrl: () => window.location.href,
   replaceBrowserUrl: (url: string) => window.location.replace(url),
@@ -13,6 +11,7 @@ export const ethViewerCommands = {
     let path = url.pathname.slice(1);
 
     if (path.startsWith("address/")) path = path.slice(8);
+    if (path.startsWith("token/")) path = path.slice(6);
 
     return path.startsWith("0x") ? path : null;
   },
@@ -21,43 +20,23 @@ export const ethViewerCommands = {
 
     if (hostname.endsWith(".deth.net")) return hostname.slice(0, -9);
 
-    return new URLSearchParams(window.location.search).get("api");
+    return new URLSearchParams(window.location.search).get("explorer");
   },
   openRepoOnGithub: () => {
     window.open("https://github.com/dethcrypto/ethereum-code-viewer", "_blank");
   },
 };
 
-type EthViewerCommands = typeof ethViewerCommands;
+export type EthViewerCommands = typeof ethViewerCommands;
 
-export type CommandId = `dethcrypto.vscode-host.${string}`;
-
-export const CommandId = (id: keyof EthViewerCommands): CommandId =>
-  `dethcrypto.vscode-host.${id}`;
-
-export function getCommands(): readonly Command[] {
-  return Object.entries(ethViewerCommands).map(([id, handler]) => ({
-    id: CommandId(id as keyof EthViewerCommands),
-    handler,
-  }));
-}
-
-export type DethCommands = UnionToIntersection<
+export type ExecuteHostCommand = UnionToIntersection<
   {
-    [K in keyof EthViewerCommands]: {
-      executeCommand(
-        command: K,
-        ...args: Parameters<EthViewerCommands[K]>
-      ): Thenable<ReturnType<EthViewerCommands[K]>>;
-    };
+    [K in keyof EthViewerCommands]: (
+      command: K,
+      ...args: Parameters<EthViewerCommands[K]>
+    ) => Thenable<ReturnType<EthViewerCommands[K]>>;
   }[keyof EthViewerCommands]
 >;
-
-export interface Command extends workbench.ICommand {
-  id: CommandId;
-}
-
-// Utility types
 
 export declare type UnionToIntersection<U> = (
   U extends any ? (k: U) => void : never

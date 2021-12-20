@@ -1,7 +1,7 @@
 /**
  * mapping from Ethereum Code Viewer subdomain to Etherscan-like API URL
  */
-export const networkApiUrls = {
+export const explorerApiUrls = {
   etherscan: "https://api.etherscan.io/api",
   "ropsten.etherscan": "https://api-ropsten.etherscan.io/api",
   "rinkeby.etherscan": "https://api-rinkeby.etherscan.io/api",
@@ -26,12 +26,12 @@ export const networkApiUrls = {
 /**
  * subdomain of ethereum code viewer
  */
-export type ApiName = keyof typeof networkApiUrls;
+export type ApiName = keyof typeof explorerApiUrls;
 
 /**
  * mapping from Ethereum Code Viewer subdomain to memfs root directory name
  */
-export const networkNames = {
+export const networkNames: Record<ApiName, string> = {
   etherscan: "mainnet",
   "ropsten.etherscan": "ropsten",
   "rinkeby.etherscan": "rinkeby",
@@ -41,7 +41,7 @@ export const networkNames = {
   "testnet.bscscan": "bscTestnet",
   hecoinfo: "heco",
   "testnet.hecoinfo": "hecoTestnet",
-  ftmscan: "opera",
+  ftmscan: "fantom",
   "testnet.ftmscan": "ftmTestnet",
   "optimistic.etherscan": "optimism",
   "kovan-optimistic.etherscan": "optimismKovan",
@@ -50,5 +50,43 @@ export const networkNames = {
   arbiscan: "arbitrumOne",
   "testnet.arbiscan": "arbitrumTestnet",
   snowtrace: "avalanche",
-  "testnet.snowtrace": "fuji",
-} as const;
+  "testnet.snowtrace": "avalancheTestnet",
+};
+
+const ETHERSCAN_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
+const BSCSCAN_KEY = "HFUM7BBA5MRUQCN5UMEQPUZBUPPRHIQT3Y";
+const FTMSCAN_KEY = "EH9NPZVF1HMNAQMAUZKA4VF7EC23X37DGS";
+const HECOINFO_KEY = "XEUTJF2439EP4HHD23H2AFEFQJHFGSG57R";
+const SNOWTRACE_KEY = "IQEHAJ43W674REN5XV79WF47X37VEB8PIC";
+const ARBISCAN_KEY = "X3ZWJBXC14HTIR3B9DNYGEUICEIKKZ9ENZ";
+const POLYGONSCAN_KEY = "RV4YXDXEMIHXMC7ZXB8T82G4F56FRZ1SZQ";
+
+// @todo this should be possible to override using VSCode settings
+export const explorerApiKeys: Record<ApiName, string> = {
+  etherscan: ETHERSCAN_KEY,
+  "ropsten.etherscan": ETHERSCAN_KEY,
+  "rinkeby.etherscan": ETHERSCAN_KEY,
+  "goerli.etherscan": ETHERSCAN_KEY,
+  "kovan.etherscan": ETHERSCAN_KEY,
+
+  "optimistic.etherscan": ETHERSCAN_KEY,
+  "kovan-optimistic.etherscan": ETHERSCAN_KEY,
+
+  arbiscan: ARBISCAN_KEY,
+  "testnet.arbiscan": ARBISCAN_KEY,
+
+  bscscan: BSCSCAN_KEY,
+  "testnet.bscscan": BSCSCAN_KEY,
+
+  ftmscan: FTMSCAN_KEY,
+  "testnet.ftmscan": FTMSCAN_KEY,
+
+  hecoinfo: HECOINFO_KEY,
+  "testnet.hecoinfo": HECOINFO_KEY,
+
+  polygonscan: POLYGONSCAN_KEY,
+  "testnet.polygonscan": POLYGONSCAN_KEY,
+
+  snowtrace: SNOWTRACE_KEY,
+  "testnet.snowtrace": SNOWTRACE_KEY,
+};

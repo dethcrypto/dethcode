@@ -2,8 +2,8 @@ import * as vscode from "vscode";
 
 import { addresses } from "./addresses";
 import { executeHostCommand } from "./commands";
-import * as etherscan from "./etherscan";
-import { networkApiUrls, networkNames } from "./etherscan";
+import * as explorer from "./explorer";
+import { explorerApiUrls, networkNames } from "./explorer";
 import { StaticFileSearchProvider } from "./fileSearchProvider";
 import { FileSystem } from "./filesystem";
 import { fixtures } from "./test/fixtures";
@@ -13,7 +13,7 @@ let initialized = false;
 const fs = FileSystem();
 
 const IN_DETH_HOST = vscode.env.appName === "Ethereum Code Viewer";
-const USE_ETHERSCAN = true; // Treat this as a toggle for development.
+const IS_ONLINE = true; // Treat this as a toggle for development.
 
 export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(fs.register());
@@ -32,7 +32,7 @@ export async function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 async function main(context: vscode.ExtensionContext) {
-  const apiName = await detectEtherscanApiName();
+  const apiName = await detectExplorerApiName();
   const network = networkNames[apiName];
 
   vscode.workspace.updateWorkspaceFolders(0, 0, {
@@ -43,7 +43,7 @@ async function main(context: vscode.ExtensionContext) {
   let contractAddress: string | null = addresses.L1ChugSplashProxy;
 
   if (IN_DETH_HOST)
-    contractAddress = await executeHostCommand("get-contract-address");
+    contractAddress = await executeHostCommand("getContractAddress");
 
   if (!contractAddress) {
     return;
@@ -76,18 +76,21 @@ async function main(context: vscode.ExtensionContext) {
   // It's causing some errors in the console, but in the end it provides better UX.
 }
 
-async function detectEtherscanApiName(): Promise<etherscan.ApiName> {
+async function detectExplorerApiName(): Promise<explorer.ApiName> {
   if (IN_DETH_HOST) {
-    const detectedName = await executeHostCommand("get-api-name");
-    if (!detectedName || !(detectedName in networkApiUrls)) {
+    const detectedName = await executeHostCommand("getApiName");
+
+    if (detectedName === null) return "etherscan";
+
+    if (!(detectedName in explorerApiUrls)) {
       await vscode.window.showErrorMessage(
-        `${detectedName} is not a valid network. Using mainnet etherscan instead.`
+        `"${detectedName}" is not a valid network. Using mainnet etherscan instead.`
       );
 
       return "etherscan";
-    } else {
-      return detectedName as etherscan.ApiName;
     }
+
+    return detectedName as explorer.ApiName;
   } else {
     return "etherscan";
   }
@@ -95,14 +98,14 @@ async function detectEtherscanApiName(): Promise<etherscan.ApiName> {
 
 async function saveContractFilesToFs(
   fs: FileSystem,
-  network: etherscan.ApiName,
+  apiName: explorer.ApiName,
   address: string
 ) {
-  let result: etherscan.FetchFilesResult;
+  let result: explorer.FetchFilesResult;
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (USE_ETHERSCAN) {
-    result = await etherscan.fetchFiles(network, address);
+  if (IS_ONLINE) {
+    result = await explorer.fetchFiles(apiName, address);
   } else {
     result = fixtures.etherscanResult;
   }
@@ -117,10 +120,9 @@ async function saveContractFilesToFs(
 
 function getMainContractFile(
   files: [string, ...unknown[]][],
-  info: etherscan.FetchFilesResult["info"]
+  info: explorer.FetchFilesResult["info"]
 ): string {
   let fileToShow =
-    // @todo @krzkaczor, I'd personally swap this and the next statement — it feels off showing the implementation over proxy.
     info.implementation &&
     files.find(([path]) =>
       path.endsWith(`/${info.implementation!.ContractName}.sol`)
