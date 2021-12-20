@@ -1,11 +1,10 @@
 import * as vscode from "vscode";
-import { addresses } from "./addresses";
 
 import { registerContributedCommands } from "./contributedCommands";
 import { executeHostCommand } from "./executeHostCommand";
 import * as explorer from "./explorer";
 import { explorerApiUrls, networkNames } from "./explorer";
-import { FileSystem } from "./filesystem";
+import { FileSystem } from "./fs";
 import { openContractSource } from "./openContractSource";
 
 let initialized = false;

@@ -8,13 +8,17 @@ import {
 } from "vscode";
 
 import * as explorer from "./explorer";
-import { StaticFileSearchProvider } from "./fileSearchProvider";
-import { FileSystem } from "./filesystem";
+import {
+  FileSystem,
+  MemFSTextSearchProvider,
+  StaticFileSearchProvider,
+} from "./fs";
 import { fixtures } from "./test/fixtures";
 
 const IS_ONLINE = true; // Treat this as a toggle for development.
 
-let searchProviderDisposable: Disposable | undefined;
+let fileSearchProviderDisposable: Disposable | undefined;
+let textSearchProviderDisposable: Disposable | undefined;
 
 export interface OpenContractSourceArgs {
   fs: FileSystem;
@@ -30,12 +34,19 @@ export async function openContractSource(
 
   const mainFile = getMainContractFile(entries, info);
 
-  searchProviderDisposable?.dispose();
-  searchProviderDisposable = workspace.registerFileSearchProvider(
+  fileSearchProviderDisposable?.dispose();
+  fileSearchProviderDisposable = workspace.registerFileSearchProvider(
     "memfs",
     new StaticFileSearchProvider(entries.map(([path]) => path))
   );
-  context.subscriptions.push(searchProviderDisposable);
+  context.subscriptions.push(fileSearchProviderDisposable);
+
+  textSearchProviderDisposable?.dispose();
+  textSearchProviderDisposable = workspace.registerTextSearchProvider(
+    "memfs",
+    new MemFSTextSearchProvider(entries)
+  );
+  context.subscriptions.push(textSearchProviderDisposable);
 
   // We're trying to open the file even if it doesn't exist yet.
   await showTextDocument(mainFile);
