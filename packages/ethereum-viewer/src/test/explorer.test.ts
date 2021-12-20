@@ -1,12 +1,15 @@
-import { executeHostCommand } from "../commands";
+import { assert } from "ts-essentials";
+
 import { Etherscan, fetchFiles } from "../explorer";
 import type { fetch } from "../util/fetch";
 
-describe.only(fetchFiles.name, () => {
+describe(fetchFiles.name, () => {
   it("calls optimistic.etherscan", async () => {
+    let url: string | undefined;
     const f: typeof fetch = async (
-      url
+      _url
     ): Promise<Etherscan.ContractSourceResponse> => {
+      url = _url;
       return {
         status: "1",
         message: "OK",
@@ -30,8 +33,15 @@ describe.only(fetchFiles.name, () => {
         ],
       };
     };
-    // await fetchFiles("bscscan", "0x0", fetch);
-  });
 
-  it("calls snowtrace", () => {});
+    await fetchFiles("optimistic.etherscan", "0x0", f);
+
+    const expected =
+      "https://api-optimistic.etherscan.io/api?module=contract&action=getsourcecode&address=0x0&apikey=862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
+
+    assert(
+      url === expected,
+      `url should match expected value "${expected}", but instead received "${url}"`
+    );
+  });
 });
