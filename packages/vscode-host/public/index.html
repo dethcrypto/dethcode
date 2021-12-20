@@ -22,17 +22,17 @@
     <link
       data-name="vs/workbench/workbench.web.api"
       rel="stylesheet"
-      href="./vscode/vs/workbench/workbench.web.api.css"
+      href="/vscode/vs/workbench/workbench.web.api.css"
     />
     <!-- Prefetch to avoid waterfall -->
-    <link rel="prefetch" href="./lib/semver-umd/lib/semver-umd.js" />
+    <link rel="prefetch" href="/lib/semver-umd/lib/semver-umd.js" />
     <!-- Built in extensions -->
   </head>
 
   <body aria-label=""></body>
 
   <script>
-    fetch("./extensions.json")
+    fetch("/extensions.json")
       .then((response) => response.text())
       .then((extensionsJson) => {
         document
@@ -50,9 +50,9 @@
       },
     };
   </script>
-  <script src="./vscode/vs/loader.js"></script>
+  <script src="/vscode/vs/loader.js"></script>
 
-  <script src="./vscode/vs/workbench/workbench.web.api.nls.js"></script>
-  <script src="./vscode/vs/workbench/workbench.web.api.js"></script>
-  <script src="./vscode/vs/code/browser/workbench/workbench.js"></script>
+  <script src="/vscode/vs/workbench/workbench.web.api.nls.js"></script>
+  <script src="/vscode/vs/workbench/workbench.web.api.js"></script>
+  <script src="/vscode/vs/code/browser/workbench/workbench.js"></script>
 </html>

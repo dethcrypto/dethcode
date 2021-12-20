@@ -1,20 +1,22 @@
 import { join } from "path";
 import { assert, StrictOmit } from "ts-essentials";
 
-import { fetch } from "./util/fetch";
-import { prettyStringify } from "./util/stringify";
-
-const ETHERSCAN_API_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
+import { fetch as _fetch } from "../util/fetch";
+import { prettyStringify } from "../util/stringify";
+import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
 
 export async function fetchFiles(
-  network: Network,
-  contractAddress: string
+  apiName: ApiName,
+  contractAddress: string,
+  fetch: typeof _fetch = _fetch
 ): Promise<FetchFilesResult> {
-  const api = `https://api${
-    network === "mainnet" ? "" : `-${network}`
-  }.etherscan.io/api`;
-
-  const url = `${api}?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${ETHERSCAN_API_KEY}`;
+  const apiUrl = explorerApiUrls[apiName];
+  const url =
+    apiUrl +
+    "?module=contract" +
+    "&action=getsourcecode" +
+    `&address=${contractAddress}` +
+    `&apikey=${explorerApiKeys[apiName]}`;
 
   const response = (await fetch(url)) as Etherscan.ContractSourceResponse;
 
@@ -25,7 +27,7 @@ export async function fetchFiles(
 
   const {
     SourceCode: sourceCode,
-    ABI: _abi,
+    ABI: abi,
     Implementation: implementationAddr,
     ..._info
   } = response.result[0];
@@ -37,6 +39,15 @@ export async function fetchFiles(
   // if there is more than one file, `.SourceCode` is JSON surrounded with one
   // set of curly braces
   const isFlattened = !sourceCode.startsWith("{");
+
+  if (!info.ContractName && abi === "Contract source code not verified") {
+    return {
+      files: {
+        "error.md": contractNotVerifiedErrorMsg(apiName, contractAddress),
+      },
+      info,
+    };
+  }
 
   if (isFlattened) {
     files[info.ContractName + ".sol"] = sourceCode;
@@ -55,7 +66,7 @@ export async function fetchFiles(
   }
 
   if (implementationAddr) {
-    const implementation = await fetchFiles(network, implementationAddr);
+    const implementation = await fetchFiles(apiName, implementationAddr);
     Object.assign(
       files,
       prefixFiles(implementation.files, implementation.info.ContractName)
@@ -95,19 +106,22 @@ export type FilePath = string & { __brand?: "Path" };
 
 export type FileContent = string & { __brand?: "FileContent" };
 
-export type Network = "mainnet" | "ropsten" | "rinkeby" | "kovan" | "goerli";
-
-declare namespace Etherscan {
+export declare namespace Etherscan {
   interface ContractSourceResponse {
+    status: "1" | "0";
     message: string;
     result: Etherscan.ContractInfo[];
   }
 
-  type MultipleSourceCodes = `{${string}}`;
-  type FlattenedSourceCode = `//${string}}`;
+  type UnverifiedSourceCode = "";
+  type MultipleSourceCodes = `{}`;
+  type FlattenedSourceCode = FileContent;
 
   interface ContractInfo {
-    SourceCode: MultipleSourceCodes | FlattenedSourceCode;
+    SourceCode:
+      | MultipleSourceCodes
+      | FlattenedSourceCode
+      | UnverifiedSourceCode;
     ABI: string;
     ContractName: string;
     CompilerVersion: string;
@@ -138,4 +152,24 @@ declare namespace Etherscan {
   type File = { content: FileContent };
 
   type Abi = object[];
+}
+
+function contractNotVerifiedErrorMsg(
+  apiName: ApiName,
+  contractAddress: string
+) {
+  const websiteUrl = apiUrlToWebsite(explorerApiUrls[apiName]);
+  return `\
+Oops! It seems this contract source code is not verified on ${websiteUrl}.
+
+Take a look at ${websiteUrl}/address/${contractAddress}.
+`;
+}
+
+function apiUrlToWebsite(url: string) {
+  // This is a bit of a hack, but they all have the same URL scheme.
+  return url
+    .replace("//api.", "//")
+    .replace("//api-", "//")
+    .replace(/\/api$/, "");
 }

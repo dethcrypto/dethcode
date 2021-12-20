@@ -1,7 +1,9 @@
 import * as vscode from "vscode";
 
 import { addresses } from "./addresses";
-import * as etherscan from "./etherscan";
+import { executeHostCommand } from "./commands";
+import * as explorer from "./explorer";
+import { explorerApiUrls, networkNames } from "./explorer";
 import { StaticFileSearchProvider } from "./fileSearchProvider";
 import { FileSystem } from "./filesystem";
 import { fixtures } from "./test/fixtures";
@@ -10,8 +12,8 @@ import { fixtures } from "./test/fixtures";
 let initialized = false;
 const fs = FileSystem();
 
-const IN_DETH_HOST = vscode.env.appName === "Ethereum Viewer";
-const USE_ETHERSCAN = true; // Treat this as a toggle for development.
+const IN_DETH_HOST = vscode.env.appName === "Ethereum Code Viewer";
+const IS_ONLINE = true; // Treat this as a toggle for development.
 
 export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(fs.register());
@@ -30,7 +32,8 @@ export async function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 async function main(context: vscode.ExtensionContext) {
-  const network: etherscan.Network = "mainnet";
+  const apiName = await detectExplorerApiName();
+  const network = networkNames[apiName];
 
   vscode.workspace.updateWorkspaceFolders(0, 0, {
     uri: vscode.Uri.parse("memfs:/"),
@@ -40,9 +43,7 @@ async function main(context: vscode.ExtensionContext) {
   let contractAddress: string | null = addresses.L1ChugSplashProxy;
 
   if (IN_DETH_HOST)
-    contractAddress = await vscode.commands.executeCommand<string | null>(
-      "dethcrypto.vscode-host.get-contract-address"
-    );
+    contractAddress = await executeHostCommand("getContractAddress");
 
   if (!contractAddress) {
     return;
@@ -50,7 +51,7 @@ async function main(context: vscode.ExtensionContext) {
 
   const [entries, info] = await saveContractFilesToFs(
     fs,
-    network,
+    apiName,
     contractAddress
   );
 
@@ -62,12 +63,6 @@ async function main(context: vscode.ExtensionContext) {
       new StaticFileSearchProvider(entries.map(([path]) => path))
     )
   );
-  // context.subscriptions.push(
-  //   vscode.workspace.registerTextSearchProvider(
-  //     "memfs",
-  //     new StaticTextSearchProvider(entries)
-  //   )
-  // );
 
   // We're instead trying to open the file even if it doesn't exist yet.
   await showTextDocument(mainFile);
@@ -75,22 +70,42 @@ async function main(context: vscode.ExtensionContext) {
   // // onFileChangeOnce(
   // //   context,
   // //   fs,
-  // //   mainFile, 
+  // //   mainFile,
   // //   (e) => void showTextDocument(e.uri.path)
   // // );
   // It's causing some errors in the console, but in the end it provides better UX.
 }
 
+async function detectExplorerApiName(): Promise<explorer.ApiName> {
+  if (IN_DETH_HOST) {
+    const detectedName = await executeHostCommand("getApiName");
+
+    if (detectedName === null) return "etherscan";
+
+    if (!(detectedName in explorerApiUrls)) {
+      await vscode.window.showErrorMessage(
+        `"${detectedName}" is not a valid network. Using mainnet etherscan instead.`
+      );
+
+      return "etherscan";
+    }
+
+    return detectedName as explorer.ApiName;
+  } else {
+    return "etherscan";
+  }
+}
+
 async function saveContractFilesToFs(
   fs: FileSystem,
-  network: etherscan.Network,
+  apiName: explorer.ApiName,
   address: string
 ) {
-  let result: etherscan.FetchFilesResult;
+  let result: explorer.FetchFilesResult;
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (USE_ETHERSCAN) {
-    result = await etherscan.fetchFiles(network, address);
+  if (IS_ONLINE) {
+    result = await explorer.fetchFiles(apiName, address);
   } else {
     result = fixtures.etherscanResult;
   }
@@ -105,10 +120,9 @@ async function saveContractFilesToFs(
 
 function getMainContractFile(
   files: [string, ...unknown[]][],
-  info: etherscan.FetchFilesResult["info"]
+  info: explorer.FetchFilesResult["info"]
 ): string {
   let fileToShow =
-    // @todo @krzkaczor, I'd personally swap this and the next statement — it feels off showing the implementation over proxy.
     info.implementation &&
     files.find(([path]) =>
       path.endsWith(`/${info.implementation!.ContractName}.sol`)

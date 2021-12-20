@@ -13,5 +13,5 @@
       "vs/*": ["./vscode/src/vs/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "./vscode/src/vs/vscode.d.ts"]
 }

@@ -3,12 +3,16 @@ import { URI, UriComponents } from "vs/base/common/uri";
 import { localize } from "vs/nls";
 import {
   create,
-  ICommand,
   IWorkbenchConstructionOptions,
   IWorkspace,
   IWorkspaceProvider,
 } from "vs/workbench/workbench.web.api";
 import { renderNotification } from "../../../deth/notification";
+import {
+  CommandId,
+  ethViewerCommands,
+  getCommands,
+} from "../../../deth/commands/getCommands";
 
 async function main() {
   // create workbench
@@ -49,7 +53,7 @@ async function main() {
     config = { ...config, workspaceProvider };
   }
 
-  const contractAddress = ethViewerCommands["get-contract-address"]();
+  const contractAddress = ethViewerCommands.getContractAddress();
 
   setTimeout(() => renderNotification(), 500);
 
@@ -69,7 +73,7 @@ async function main() {
         "playgroundTooltip",
         "See Ethereum Code Viewer on GitHub"
       ),
-      command: "dethcrypto.vscode-host.open-repo-on-github",
+      command: CommandId("openRepoOnGithub"),
     },
     // @todo extensions gallery would be lit, but we'd need a CORS proxy for it
     // additionalBuiltinExtensions: [
@@ -90,34 +94,6 @@ async function main() {
     //   },
     // },
   });
-}
-
-const ethViewerCommands = {
-  "get-browser-url": () => window.location.href,
-  "replace-browser-url": (url: string) => window.location.replace(url),
-  "get-contract-address": (): string | null => {
-    const url = new URL(window.location.href);
-
-    // surge.sh doesn't seem to support rewrites, so we also read from search params.
-    const fromSearchParams = url.searchParams.get("contract");
-    if (fromSearchParams?.startsWith("0x")) return fromSearchParams;
-
-    let path = url.pathname.slice(1);
-
-    if (path.startsWith("address/")) path = path.slice(8);
-
-    return path.startsWith("0x") ? path : null;
-  },
-  "open-repo-on-github": () => {
-    window.open("https://github.com/dethcrypto/ethereum-code-viewer", "_blank");
-  },
-};
-
-function getCommands(): readonly ICommand[] {
-  return Object.entries(ethViewerCommands).map(([id, handler]) => ({
-    id: `dethcrypto.vscode-host.${id}`,
-    handler,
-  }));
 }
 
 void main();
