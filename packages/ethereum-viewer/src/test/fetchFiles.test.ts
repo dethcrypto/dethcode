@@ -33,7 +33,7 @@ describe(fetchFiles.name, () => {
       };
     };
 
-    await fetchFiles("optimistic.etherscan", "0x0", f);
+    await fetchFiles("optimistic.etherscan", "0x0", { fetch: f });
 
     const expected =
       "https://api-optimistic.etherscan.io/api?module=contract&action=getsourcecode&address=0x0&apikey=862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
@@ -69,13 +69,103 @@ describe(fetchFiles.name, () => {
       };
     };
 
-    const { files } = await fetchFiles("etherscan", "0x0", f);
+    const { files } = await fetchFiles("etherscan", "0x0", { fetch: f });
 
     const expected =
       "Oops! It seems this contract source code is not verified on https://etherscan.io.";
     assert(
       files["error.md"].includes(expected),
       `Expected ${files["error.md"]} to contain ${expected}`
+    );
+  });
+
+  it("does not fall into infinite recursion when contract has itself as implementation", async () => {
+    const addr = "0xc36442b4a4522e871399cd717abdd847ab11fe88";
+    let callsCounter = 0;
+    const f = async (): Promise<ContractSourceResponse> => {
+      callsCounter++;
+      return {
+        status: "1",
+        message: "OK",
+        result: [
+          {
+            SourceCode: "// woop",
+            ABI: "[]",
+            ContractName: "ImplementsItself",
+            CompilerVersion: "v0.7.6+commit.7338295f",
+            OptimizationUsed: "1",
+            Runs: "2000",
+            ConstructorArguments: "",
+            EVMVersion: "Default",
+            Library: "",
+            LicenseType: "",
+            Proxy: "1",
+            Implementation: addr,
+            SwarmSource: "",
+          },
+        ],
+      };
+    };
+
+    await fetchFiles("etherscan", addr, { fetch: f });
+
+    assert(
+      callsCounter === 1,
+      `fetchFiles should have been called once, but was called ${callsCounter} times`
+    );
+  });
+
+  it("does not follow .Implementation without end", async () => {
+    const makeContract = ({
+      Implementation,
+    }: {
+      Implementation: string;
+    }): ContractSourceResponse => ({
+      status: "1",
+      message: "OK",
+      result: [
+        {
+          SourceCode: "//",
+          ABI: "[]",
+          ContractName: "ImplementsItself",
+          CompilerVersion: "v0.7.6+commit.7338295f",
+          OptimizationUsed: "1",
+          Runs: "2000",
+          ConstructorArguments: "",
+          EVMVersion: "Default",
+          Library: "",
+          LicenseType: "",
+          Proxy: "1",
+          Implementation: Implementation,
+          SwarmSource: "",
+        },
+      ],
+    });
+
+    const contracts = {
+      "0x00": makeContract({ Implementation: "0x01" }),
+      "0x01": makeContract({ Implementation: "0x02" }),
+      "0x02": makeContract({ Implementation: "0x03" }),
+      "0x03": makeContract({ Implementation: "0x04" }),
+      "0x04": makeContract({ Implementation: "0x05" }),
+    };
+
+    const fetchedAddresses: string[] = [];
+    const f = async (url: string): Promise<ContractSourceResponse> => {
+      const address = new URL(url).searchParams.get("address")!;
+
+      fetchedAddresses.push(address);
+
+      return contracts[address as keyof typeof contracts];
+    };
+
+    await fetchFiles("etherscan", "0x00", { fetch: f });
+
+    const actual = JSON.stringify(fetchedAddresses);
+    const expected = JSON.stringify(["0x00", "0x01", "0x02", "0x03"]);
+    assert(
+      actual === expected,
+      `Actual: ${actual}\n` + `Expected: ${expected}`
     );
   });
 });
