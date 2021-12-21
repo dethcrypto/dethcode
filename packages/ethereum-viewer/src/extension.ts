@@ -34,7 +34,7 @@ async function main(context: vscode.ExtensionContext) {
     name: network,
   });
 
-  let address: string | null = null;
+  let address: string | undefined;
 
   if (IN_DETH_HOST) address = await executeHostCommand("getContractAddress");
 
@@ -49,7 +49,7 @@ async function detectExplorerApiName(): Promise<explorer.ApiName> {
   if (IN_DETH_HOST) {
     const detectedName = await executeHostCommand("getApiName");
 
-    if (detectedName === null) return "etherscan";
+    if (!detectedName) return "etherscan";
 
     if (!(detectedName in explorerApiUrls)) {
       await vscode.window.showErrorMessage(
