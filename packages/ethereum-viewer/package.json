@@ -41,5 +41,11 @@
   "activationEvents": [
     "*"
   ],
-  "contributes": {}
+  "contributes": {
+    "commands": {
+      "command": "ethereum-viewer.open",
+      "category": "Ethereum Code Viewer",
+      "title": "Open smart contract source code"
+    }
+  }
 }

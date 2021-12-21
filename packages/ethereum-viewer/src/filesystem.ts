@@ -11,10 +11,12 @@ export const FileSystem = () => {
   const decoder = new TextDecoder();
 
   return {
-    register() {
-      return vscode.workspace.registerFileSystemProvider("memfs", fs, {
-        isCaseSensitive: true,
-      });
+    register(context: vscode.ExtensionContext) {
+      context.subscriptions.push(
+        vscode.workspace.registerFileSystemProvider("memfs", fs, {
+          isCaseSensitive: true,
+        })
+      );
     },
     writeFile(path: string, content: string) {
       if (!path.startsWith("/")) path = "/" + path;

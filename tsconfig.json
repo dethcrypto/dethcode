@@ -4,6 +4,7 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "lib": [
       "ES2016",
       "ES2017.Object",

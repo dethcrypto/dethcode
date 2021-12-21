@@ -133,7 +133,7 @@ export class EthereumViewerWelcomePage {
     if (enabled) {
       showOnStartup.setAttribute("checked", "checked");
     }
-    showOnStartup.addEventListener("click", (e) => {
+    showOnStartup.addEventListener("click", (_e) => {
       this.configurationService.updateValue(
         configurationKey,
         showOnStartup.checked ? "welcomePage" : "newUntitledFile"

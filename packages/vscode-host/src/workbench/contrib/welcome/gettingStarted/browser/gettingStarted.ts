@@ -1496,7 +1496,7 @@ export class GettingStartedPage extends EditorPane {
       )
     );
 
-    const categoryElements = category.content.steps.map((step, i, arr) => {
+    const categoryElements = category.content.steps.map((step) => {
       const codicon = $(
         ".codicon" +
           (step.done
@@ -1716,7 +1716,7 @@ export class GettingStartedPage extends EditorPane {
 }
 
 export class GettingStartedInputSerializer implements IEditorInputSerializer {
-  public canSerialize(editorInput: GettingStartedInput): boolean {
+  public canSerialize(_editorInput: GettingStartedInput): boolean {
     return true;
   }
 
@@ -1783,7 +1783,7 @@ class GettingStartedIndexList<T> extends Disposable {
     return this.domElement;
   }
 
-  layout(size: Dimension) {
+  layout(_size: Dimension) {
     this.scrollbar.scanDomNode();
   }
 
