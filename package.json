@@ -10,7 +10,7 @@
     "lint:fix": "pnpm lint -- --fix",
     "prepare-deploy": "cp ./vercel.json ./packages/vscode-host/dist",
     "test": "mocha",
-    "check": "echo a"
+    "check": "pnpm test && pnpm lint"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.14",
