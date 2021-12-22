@@ -1,7 +1,7 @@
-import { commands, ExtensionContext, QuickPickItem,window } from "vscode";
+import { commands, ExtensionContext, QuickPickItem, window } from "vscode";
 
-import { ApiName,explorerApiUrls, networkNames } from "./explorer";
-import { FileSystem } from "./filesystem";
+import { ApiName, explorerApiUrls, networkNames } from "./explorer";
+import { FileSystem } from "./fs";
 import { openContractSource } from "./openContractSource";
 import { unsafeEntries } from "./util/unsafeEntries";
 

@@ -10,8 +10,7 @@
     "watch": "webpack --watch",
     "pretest": "yarn run build",
     "lint": "eslint src --ext ts",
-    "serve": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem",
-    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+    "serve": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem"
   },
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",

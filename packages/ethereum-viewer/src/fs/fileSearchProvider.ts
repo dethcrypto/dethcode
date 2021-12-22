@@ -12,7 +12,6 @@ import {
 export class StaticFileSearchProvider
   implements FileSearchProvider, Disposable
 {
-  static scheme = "github1s";
   private readonly disposable?: Disposable;
 
   // HACK: We don't support searching for added files.

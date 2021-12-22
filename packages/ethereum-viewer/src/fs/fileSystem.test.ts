@@ -1,6 +1,6 @@
 import { strictEqual } from "assert";
 
-import { FileSystem } from "../filesystem";
+import { FileSystem } from "./fileSystem";
 
 describe(FileSystem.name, () => {
   it("creates file", () => {

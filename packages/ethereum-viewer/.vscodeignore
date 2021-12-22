@@ -4,6 +4,7 @@
 **/*.map
 **/*.ts
 dist/test/**
+dist/**/*.test.ts
 node_modules/**
 out/**
 src/**
