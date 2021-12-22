@@ -1,7 +1,7 @@
 export const ethViewerCommands = {
   getBrowserUrl: () => window.location.href,
   replaceBrowserUrl: (url: string) => window.location.replace(url),
-  getContractAddress: (): string | null => {
+  getContractAddress: (): string | undefined => {
     const url = new URL(window.location.href);
 
     // surge.sh doesn't seem to support rewrites, so we also read from search params.
@@ -14,14 +14,16 @@ export const ethViewerCommands = {
     if (path.startsWith("token/")) path = path.slice(6);
     if (path.endsWith("/")) path = path.slice(0, -1);
 
-    return path.startsWith("0x") ? path : null;
+    return path.startsWith("0x") ? path : undefined;
   },
-  getApiName: (): string | null => {
+  getApiName: (): string | undefined => {
     const { hostname } = window.location;
 
     if (hostname.endsWith(".deth.net")) return hostname.slice(0, -9);
 
-    return new URLSearchParams(window.location.search).get("explorer");
+    return (
+      new URLSearchParams(window.location.search).get("explorer") || undefined
+    );
   },
   openRepoOnGithub: () => {
     window.open("https://github.com/dethcrypto/ethereum-code-viewer", "_blank");

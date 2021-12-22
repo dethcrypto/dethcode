@@ -6,10 +6,22 @@ import { prettyStringify } from "../util/stringify";
 import * as types from "./api-types";
 import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
 
+interface FetchFilesOptions {
+  /**
+   * For unit testing.
+   * @internal
+   */
+  fetch?: typeof _fetch;
+  /**
+   * If more than 0, we fetch implementation contract and merge its files.
+   */
+  proxyDepth?: number;
+}
+
 export async function fetchFiles(
   apiName: ApiName,
   contractAddress: string,
-  fetch: typeof _fetch = _fetch
+  { fetch = _fetch, proxyDepth = 3 }: FetchFilesOptions = {}
 ): Promise<FetchFilesResult> {
   const apiUrl = explorerApiUrls[apiName];
   const url =
@@ -71,8 +83,16 @@ export async function fetchFiles(
     files[info.ContractName + ".sol"] = sourceCode;
   }
 
-  if (implementationAddr) {
-    const implementation = await fetchFiles(apiName, implementationAddr);
+  if (
+    implementationAddr &&
+    proxyDepth > 0 &&
+    implementationAddr !== contractAddress
+  ) {
+    const implementation = await fetchFiles(apiName, implementationAddr, {
+      fetch,
+      proxyDepth: proxyDepth - 1,
+    });
+
     Object.assign(
       files,
       prefixFiles(implementation.files, implementation.info.ContractName)
