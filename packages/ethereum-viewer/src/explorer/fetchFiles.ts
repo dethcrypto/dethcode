@@ -4,6 +4,7 @@ import { assert, StrictOmit } from "ts-essentials";
 import { fetch as _fetch } from "../util/fetch";
 import { prettyStringify } from "../util/stringify";
 import * as types from "./api-types";
+import { apiUrlToWebsite } from "./apiUrlToWebsite";
 import { fileExtension } from "./fileExtension";
 import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
 
@@ -118,7 +119,11 @@ function prefixFiles(files: FileContents, prefix: string): FileContents {
 
 export interface FetchFilesResult {
   files: FileContents;
-  info: ContractInfo & { implementation?: ContractInfo };
+  info: ContractInfoWithImplementation;
+}
+
+export interface ContractInfoWithImplementation extends ContractInfo {
+  implementation?: ContractInfo;
 }
 
 export interface ContractInfo
@@ -140,12 +145,4 @@ Oops! It seems this contract source code is not verified on ${websiteUrl}.
 
 Take a look at ${websiteUrl}/address/${contractAddress}.
 `;
-}
-
-function apiUrlToWebsite(url: string) {
-  // This is a bit of a hack, but they all have the same URL scheme.
-  return url
-    .replace("//api.", "//")
-    .replace("//api-", "//")
-    .replace(/\/api$/, "");
 }

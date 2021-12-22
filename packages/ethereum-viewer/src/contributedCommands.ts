@@ -3,6 +3,7 @@ import { commands, ExtensionContext, QuickPickItem, window } from "vscode";
 import { ApiName, explorerApiUrls, networkNames } from "./explorer";
 import { FileSystem } from "./fs";
 import { openContractSource } from "./openContractSource";
+import { renderStatusBarItems } from "./statusBar";
 import { unsafeEntries } from "./util/unsafeEntries";
 
 export function registerContributedCommands(
@@ -49,7 +50,13 @@ export function registerContributedCommands(
 
       const { apiName } = picked;
 
-      await openContractSource(context, { fs, address, apiName });
+      const info = await openContractSource(context, { fs, address, apiName });
+
+      renderStatusBarItems({
+        contractAddress: address,
+        contractName: info.ContractName || "contract",
+        apiName,
+      });
     },
   };
 

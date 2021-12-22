@@ -51,7 +51,7 @@ const webExtensionConfig: webpack.Configuration = {
   performance: {
     hints: false,
   },
-  devtool: "nosources-source-map",
+  devtool: "eval-cheap-module-source-map",
   infrastructureLogging: {
     level: "log",
   },

@@ -49,16 +49,9 @@ export async function openContractSource(
   );
   context.subscriptions.push(textSearchProviderDisposable);
 
-  // We're trying to open the file even if it doesn't exist yet.
   await showTextDocument(mainFile);
-  // Because the following seems to be very slow:
-  // // onFileChangeOnce(
-  // //   context,
-  // //   fs,
-  // //   mainFile,
-  // //   (e) => void showTextDocument(e.uri.path)
-  // // );
-  // It's causing some errors in the console, but in the end it provides better UX.
+
+  return info;
 }
 
 async function saveContractFilesToFs({
@@ -106,6 +99,15 @@ function getMainContractFile(
 }
 
 async function showTextDocument(path: string) {
+  // We're trying to open the file even if it doesn't exist yet.
+  // Because the following seems to be very slow:
+  // // onFileChangeOnce(
+  // //   context,
+  // //   fs,
+  // //   mainFile,
+  // //   (e) => void showTextDocument(e.uri.path)
+  // // );
+  // It's causing some errors in the console, but in the end it provides better UX.
   await window.showTextDocument(
     Uri.from({ scheme: "memfs", path: "/" + path })
   );

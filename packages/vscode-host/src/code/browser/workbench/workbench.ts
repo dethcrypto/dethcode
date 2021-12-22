@@ -53,9 +53,9 @@ async function main() {
     config = { ...config, workspaceProvider };
   }
 
-  const contractAddress = ethViewerCommands.getContractAddress();
-
   setTimeout(() => renderNotification(), 500);
+
+  const apiName = ethViewerCommands.getApiName() || "etherscan";
 
   create(document.body, {
     ...config,
@@ -65,10 +65,7 @@ async function main() {
     },
     windowIndicator: {
       onDidChange: Event.None,
-      label: localize(
-        "playgroundLabel",
-        `$(remote) deth.net` + (contractAddress ? `: ${contractAddress}` : "")
-      ),
+      label: localize("playgroundLabel", `$(remote) ${apiName}.deth.net`),
       tooltip: localize(
         "playgroundTooltip",
         "See Ethereum Code Viewer on GitHub"
