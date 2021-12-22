@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "checkJs": true,
+    "noEmit": true,
+    "module": "CommonJS"
+  },
+  "include": [
+    "*.ts",
+    "../ethereum-viewer/src/explorer/**/*.ts",
+    "../vscode-host/src/deth/**/*.ts",
+    "../vscode-host/src/test/**/*.ts"
+  ]
+}
