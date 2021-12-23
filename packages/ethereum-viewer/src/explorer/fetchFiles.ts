@@ -4,6 +4,7 @@ import { assert, StrictOmit } from "ts-essentials";
 import { fetch as _fetch } from "../util/fetch";
 import { prettyStringify } from "../util/stringify";
 import * as types from "./api-types";
+import { fileExtension } from "./fileExtension";
 import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
 
 interface FetchFilesOptions {
@@ -80,7 +81,7 @@ export async function fetchFiles(
 
     files = prefixFiles(files, info.ContractName);
   } else {
-    files[info.ContractName + ".sol"] = sourceCode;
+    files[info.ContractName + fileExtension(info)] = sourceCode;
   }
 
   if (
