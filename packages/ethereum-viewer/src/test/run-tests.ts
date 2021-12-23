@@ -6,12 +6,14 @@ export function run(): Promise<void> {
     mocha.setup({
       ui: "bdd",
       reporter: undefined,
+      color: true,
     });
 
     // bundles all files in the current directory matching `*.test`
     const importAll = (r: __WebpackModuleApi.RequireContext) =>
       r.keys().forEach(r);
-    importAll(require.context(".", true, /\.test$/));
+
+    importAll(require.context("..", true, /\.test$/));
 
     try {
       // Run the mocha test
