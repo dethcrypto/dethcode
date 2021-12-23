@@ -12,23 +12,26 @@ const {
   log,
 } = require("./util");
 
+const { additionalExtensions } = require("./prepareAdditionalExtensions");
+
 function copyExtensions() {
   log.info("Copying extensions to ./dist directory...");
 
   chdir(__dirname, "../vscode");
 
   const extensions = [
-    // our additional built-in extensions
+    // main built-in extension, responsible for fetching and displaying contracts
     {
       extensionPath: "ethereum-viewer",
       packageJSON: require("../../ethereum-viewer/package.json"),
       packageNLS: null,
     },
-    {
-      extensionPath: "solidity-lang",
-      packageJSON: require("../additional-extensions/solidity-lang/package.json"),
+    // additional built-in extensions, Solidity and Vyper language support
+    ...additionalExtensions.map((ext) => ({
+      extensionPath: ext.name,
+      packageJSON: ext.getPackageJSON(),
       packageNLS: null,
-    },
+    })),
   ];
 
   // copy our additional built-in extensions

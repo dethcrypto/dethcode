@@ -1,3 +1,4 @@
 packages:
   - "packages/*"
   - "!packages/vscode-host"
+  - "!packages/vscode-host/**"

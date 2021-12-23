@@ -1076,6 +1076,7 @@ export class GettingStartedPage extends EditorPane {
           return `src="${src}"`;
         }
 
+        console.log(">> joinPath", { base, src })
         const path = joinPath(base, src);
         const transformed = asWebviewUri(path).toString();
         return `src="${transformed}"`;
