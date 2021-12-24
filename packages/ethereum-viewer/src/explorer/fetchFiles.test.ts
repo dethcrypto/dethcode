@@ -1,8 +1,8 @@
 import { assert } from "ts-essentials";
 
-import { fetchFiles } from "../explorer";
-import { ContractSourceResponse } from "../explorer/api-types";
 import type { fetch } from "../util/fetch";
+import { ContractSourceResponse } from "./api-types";
+import { fetchFiles } from "./fetchFiles";
 
 describe(fetchFiles.name, () => {
   it("calls optimistic.etherscan", async () => {

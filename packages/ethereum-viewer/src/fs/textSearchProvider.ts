@@ -2,6 +2,7 @@ import {
   CancellationToken,
   Disposable,
   Progress,
+  ProviderResult,
   Range,
   TextSearchComplete,
   TextSearchMatch,
@@ -28,7 +29,7 @@ export class MemFSTextSearchProvider implements TextSearchProvider, Disposable {
     options: TextSearchOptions,
     progress: Progress<TextSearchResult>,
     _token: CancellationToken
-  ): TextSearchComplete {
+  ): ProviderResult<TextSearchComplete> {
     const limit = new Limit(options.maxResults || Infinity);
 
     // @todo handle options.includes, options.folder and options.excludes
@@ -36,6 +37,7 @@ export class MemFSTextSearchProvider implements TextSearchProvider, Disposable {
     for (const [path, content] of this.files) {
       const uri = Uri.from({ scheme: "memfs", path: "/" + path });
       searchInFile(query, options, progress, uri, content, limit);
+      if (limit.isHit()) break;
     }
 
     return { limitHit: limit.isHit() };
@@ -61,15 +63,24 @@ function searchInFile(
 
   const lines = content.split("\n");
 
-  for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+  for (
+    let lineIndex = 0;
+    lineIndex < lines.length && !limit.isHit();
+    lineIndex++
+  ) {
     const line = lines[lineIndex];
     const matches: TextSearchMatch[] = [];
 
     if (query.isRegExp) {
       const regex = new RegExp(fixNewline(pattern), "g");
-      const hits = Array.from(line.matchAll(regex)).filter(hasIndex);
+
+      let hits = Array.from(line.matchAll(regex)).filter(hasIndex);
       if (!hits.length) continue;
+
       limit.increase(hits.length);
+      if (limit.isHit()) {
+        hits = hits.slice(0, limit.max - limit.current());
+      }
 
       matches.push({
         uri,
@@ -90,45 +101,51 @@ function searchInFile(
         },
       });
     } else {
-      const index = line.indexOf(pattern);
+      let indices = getIndicesOf(pattern, line);
+      if (!indices.length) continue;
 
-      if (index !== -1) {
-        matches.push({
-          uri,
-          // @todo group all matches in the document under one progress.report
-          ranges: new Range(
-            lineIndex,
-            index,
-            lineIndex,
-            index + pattern.length
-          ),
-          preview: {
-            text: originalLines[lineIndex],
-            matches: new Range(0, index, 0, index + pattern.length),
-          },
-        });
+      limit.increase(indices.length);
+      if (limit.isHit()) {
+        indices = indices.slice(0, limit.max - limit.current());
       }
+
+      matches.push({
+        uri,
+        ranges: indices.map(
+          (index) =>
+            new Range(lineIndex, index, lineIndex, index + pattern.length)
+        ),
+        preview: {
+          text: originalLines[lineIndex],
+          matches: indices.map(
+            (index) => new Range(0, index, 0, index + pattern.length)
+          ),
+        },
+      });
     }
 
     matches.forEach((m) => {
       progress.report(m);
     });
-
-    if (limit.isHit()) break;
   }
 }
 
 class Limit {
-  private current: number;
-  constructor(private readonly max: number) {
-    this.current = 0;
+  private _current: number;
+  constructor(public readonly max: number) {
+    this._current = 0;
   }
 
   isHit() {
-    return this.current >= this.max;
+    return this._current >= this.max;
   }
+
   increase(value: number) {
-    this.current += value;
+    this._current += value;
+  }
+
+  public current() {
+    return this._current;
   }
 }
 
@@ -136,6 +153,19 @@ function hasIndex(
   hit: RegExpMatchArray
 ): hit is RegExpMatchArray & { index: number } {
   return hit.index !== undefined;
+}
+
+function getIndicesOf(pattern: string, text: string) {
+  let startIndex = 0;
+  let index: number;
+  let indices = [];
+
+  while ((index = text.indexOf(pattern, startIndex)) > -1) {
+    indices.push(index);
+    startIndex = index + 1;
+  }
+
+  return indices;
 }
 
 /**
