@@ -64,8 +64,8 @@ cd packages/vscode-host/
 yarn
 cd ../../
 
-yarn build # this builds whole vscode and can take A LOT of time
-yarn serve
+pnpm build # this builds whole vscode and can take A LOT of time
+pnpm serve
 ```
 
 ### Scripts
