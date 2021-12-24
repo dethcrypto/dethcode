@@ -8,6 +8,7 @@ import {
 } from "vscode";
 
 import * as explorer from "./explorer";
+import { fileExtension } from "./explorer/fileExtension";
 import {
   FileSystem,
   MemFSTextSearchProvider,
@@ -86,15 +87,17 @@ function getMainContractFile(
   files: [string, ...unknown[]][],
   info: explorer.FetchFilesResult["info"]
 ): string {
+  const ext = fileExtension(info);
+
   let fileToShow =
     info.implementation &&
     files.find(([path]) =>
-      path.endsWith(`/${info.implementation!.ContractName}.sol`)
+      path.endsWith(`/${info.implementation!.ContractName}${ext}`)
     );
 
   if (!fileToShow)
     fileToShow = files.find(([path]) =>
-      path.endsWith(`/${info.ContractName}.sol`)
+      path.endsWith(`/${info.ContractName}${ext}`)
     );
 
   if (!fileToShow) fileToShow = files.sort(byPathLength)[0];
