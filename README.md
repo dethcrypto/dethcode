@@ -24,7 +24,7 @@ While browsing smart contract code on [Etherscan](https://etherscan.io/) just ch
 
 - frictionless - just tweak URL while browsing etherscan `.io` -> `deth.net`
 - proxy support - automatically follows proxies and displays implementation source code
-- multichain - supports different etherscan instances: testnets, L2s, L1s. [All supported chain](https://github.com/dethcrypto/ethereum-code-viewer/blob/main/packages/ethereum-viewer/src/explorer/networks.ts)
+- multichain - supports different etherscan instances: testnets, L2s, L1s ([all supported chains](https://github.com/dethcrypto/ethereum-code-viewer/blob/main/packages/ethereum-viewer/src/explorer/networks.ts))
 
 ## Motivation
 
