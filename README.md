@@ -20,11 +20,19 @@ While browsing smart contract code on [Etherscan](https://etherscan.io/) just ch
 
 ![ecv](https://user-images.githubusercontent.com/1814312/146108385-6fa50ae7-14a5-45b2-be3d-201d22409cf7.gif)
 
+Or save the following code snippet as a bookmarklet to quickly go from any [supported chain explorer][supported_explorers] to Ethereum Code Viewer.
+
+```
+javascript: location.href = location.href.replace(/\.\w+(\/)/, ".deth.net/")
+```
+
 ## Features ⚡
 
 - frictionless - just tweak URL while browsing etherscan `.io` -> `deth.net`
 - proxy support - automatically follows proxies and displays implementation source code
-- multichain - supports different etherscan instances: testnets, L2s, L1s ([all supported chains](https://github.com/dethcrypto/ethereum-code-viewer/blob/main/packages/ethereum-viewer/src/explorer/networks.ts))
+- multichain - supports different etherscan instances: testnets, L2s, L1s ([all supported chains][supported_explorers])
+
+[supported_explorers]: https://github.com/dethcrypto/ethereum-code-viewer/blob/main/docs/supported-explorers.md
 
 ## Motivation
 
