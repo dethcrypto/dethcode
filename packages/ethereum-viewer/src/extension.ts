@@ -6,6 +6,7 @@ import * as explorer from "./explorer";
 import { explorerApiUrls, networkNames } from "./explorer";
 import { FileSystem } from "./fs";
 import { openContractSource } from "./openContractSource";
+import { renderStatusBarItems } from "./statusBar";
 
 let initialized = false;
 const fs = FileSystem();
@@ -42,7 +43,23 @@ async function main(context: vscode.ExtensionContext) {
     return;
   }
 
-  await openContractSource(context, { fs, apiName, address });
+  renderStatusBarItems({
+    contractAddress: address,
+    contractName: "contract",
+    apiName,
+  });
+
+  const info = await openContractSource(context, {
+    fs,
+    apiName,
+    address,
+  });
+
+  renderStatusBarItems({
+    contractAddress: address,
+    contractName: info.ContractName || "contract",
+    apiName,
+  });
 }
 
 async function detectExplorerApiName(): Promise<explorer.ApiName> {
