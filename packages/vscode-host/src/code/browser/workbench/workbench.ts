@@ -62,6 +62,10 @@ async function main() {
     commands: getCommands(),
     configurationDefaults: {
       "workbench.colorTheme": "Tomorrow Night Blue",
+
+      // Omits ${rootName} "Untitled (Workspace)" from the title
+      "window.title":
+        "${dirty}${activeEditorShort}${separator}${appName}${separator}${remoteName}",
     },
     windowIndicator: {
       onDidChange: Event.None,
