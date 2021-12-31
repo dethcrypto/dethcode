@@ -1,0 +1,14 @@
+{
+  "name": "@dethcrypto/ethereum-viewer-app-entrypoint",
+  "description": "The website hosted on convenience URL entry points powering the 'simple domain change' use case.",
+  "private": true,
+  "scripts": {
+    "serve": "serve --cors -l 5000 --ssl-cert ../../certs/localhost.pem --ssl-key ../../certs/localhost-key.pem ./dist -c ../serve.json",
+    "build": "node scripts/build.js",
+    "build:production": "node scripts/build.js --production"
+  },
+  "devDependencies": {
+    "fs-extra": "^10.0.0",
+    "serve": "^13.0.2"
+  }
+}

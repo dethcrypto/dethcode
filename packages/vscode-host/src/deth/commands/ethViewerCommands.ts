@@ -19,6 +19,7 @@ export const ethViewerCommands = {
   getApiName: (): string | undefined => {
     const { hostname } = window.location;
 
+    // @todo this can be deprecated after we deploy and configure iframe entrypoints
     if (hostname.endsWith(".deth.net")) return hostname.slice(0, -9);
 
     return (

@@ -8,3 +8,5 @@ node_modules
 out
 
 .vercel
+
+**/*.pnpm-debug.log
