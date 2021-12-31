@@ -34,24 +34,5 @@
     ></iframe>
   </body>
 
-  <script>
-    // on load, we copy pathname and search params to the iframe
-    const iframe = document.getElementById("frame");
-    const url = new URL(iframe.getAttribute("src"));
-    const { hostname, pathname, search } = window.location;
-
-    url.pathname = pathname;
-    url.searchParams = new URLSearchParams(search);
-
-    // prefix of the hostname is passed to `explorer` search param
-    // @see vscode-host/src/deth/commands/ethViewerCommands.ts
-    if (hostname.endsWith(".deth.net") && !url.searchParams.get("explorer")) {
-      url.searchParams.set("explorer", hostname.slice(0, -9));
-    }
-
-    iframe.setAttribute("src", url.href);
-    // @todo in the future, we should also listen for postMessage events when
-    // the ECV app inside of the iframe updates the URL, but it's not happening
-    // right now
-  </script>
+  <script src="./index.js"></script>
 </html>

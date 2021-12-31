@@ -13,8 +13,11 @@ import {
   ethViewerCommands,
   getCommands,
 } from "../../../deth/commands/getCommands";
+import { patchForWorkingInIframe } from "../../../deth/in-iframe";
 
 async function main() {
+  patchForWorkingInIframe();
+
   // create workbench
   let config: IWorkbenchConstructionOptions & {
     folderUri?: UriComponents;

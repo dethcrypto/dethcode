@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "outFile": "./dist/index.js",
+    "lib": ["DOM", "ESNext"],
+    "target": "ESNext"
+  },
+  "include": ["src/**/*.ts"]
+}
