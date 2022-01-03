@@ -13,7 +13,7 @@ import {
   ethViewerCommands,
   getCommands,
 } from "../../../deth/commands/getCommands";
-import { patchForWorkingInIframe } from "../../../deth/in-iframe";
+import { patchForWorkingInIframe } from "../../../deth/in-iframe/patchForWorkingInIframe";
 
 async function main() {
   patchForWorkingInIframe();

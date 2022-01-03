@@ -69,8 +69,6 @@ void (function exposeFunctions() {
 
     channel.port1.start();
     channel.port1.onmessage = (event) => {
-      log("received message from iframe:", event.data);
-
       if (event.data && "type" in event.data) {
         const data = event.data as ExposedFunctionCall;
         const fun = exposedFunctions[data.type];
@@ -85,6 +83,8 @@ void (function exposeFunctions() {
 
           channel.port1.postMessage({ type: "result", fun: data.type, res });
         });
+      } else {
+        log("received unexpected message from iframe:", event.data);
       }
     };
   });

@@ -1,1 +1,0 @@
-export { patchForWorkingInIframe } from './patchForWorkingInIframe'
