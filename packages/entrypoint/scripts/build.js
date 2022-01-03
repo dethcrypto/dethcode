@@ -1,6 +1,6 @@
 // @ts-check
 
-const { execSync } = require("child_process");
+const esbuild = require("esbuild");
 const { copySync, readFileSync, writeFileSync, rmSync } = require("fs-extra");
 
 const { argv } = require("./argv");
@@ -19,4 +19,8 @@ indexHtml = indexHtml.replace(
 );
 writeFileSync("./dist/index.html", indexHtml, { encoding: "utf8" });
 
-execSync("tsc", { encoding: "utf-8", stdio: "inherit" });
+esbuild.build({
+  entryPoints: ["./src/index.ts"],
+  outfile: "./dist/index.js",
+  sourcemap: true,
+});

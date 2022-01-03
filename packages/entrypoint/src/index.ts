@@ -1,3 +1,7 @@
+import type { UnionToIntersection } from "ts-essentials";
+
+import type { ExposedFunctions } from "../../vscode-host/src/deth/in-iframe/lib";
+
 const log = console.log.bind(console, "\x1b[32m [ecv:top]");
 
 // on load, we copy pathname and search params to the iframe
@@ -23,25 +27,34 @@ iframe.setAttribute("src", url.href);
 void (function exposeFunctions() {
   let channel: MessageChannel;
 
-  const exposedFunctions = {
+  const exposedFunctions: ExposedFunctions.Async = {
     /**
      * see VSCode's BrowserKeyboardMapperFactoryBase._getBrowserKeyMapping
      */
     async getLayoutMap() {
       const keyboard = (navigator as any).keyboard as NavigatorKeyboard | null;
 
-      if (!keyboard) return;
+      if (!keyboard) {
+        throw new Error(
+          '"navigator.keyboard" is not available — it should not be called from the editor'
+        );
+      }
 
       const keyboardLayoutMap = await keyboard.getLayoutMap();
       // KeyboardLayoutMap can't be cloned, so it can't be sent with postMessage
       return new Map(keyboardLayoutMap);
     },
+    async setTitle(title: string) {
+      document.title = title;
+    },
   };
 
   type ExposedFunctionCall = {
-    type: "getLayoutMap";
-    args: Parameters<typeof exposedFunctions["getLayoutMap"]>;
-  };
+    [P in keyof ExposedFunctions]: {
+      type: P;
+      args: Parameters<ExposedFunctions[P]>;
+    };
+  }[keyof ExposedFunctions];
 
   iframe.addEventListener("load", function onLoad() {
     iframe.removeEventListener("load", onLoad);
@@ -60,7 +73,14 @@ void (function exposeFunctions() {
 
       if (event.data && "type" in event.data) {
         const data = event.data as ExposedFunctionCall;
-        void exposedFunctions[data.type](...data.args).then((res) => {
+        const fun = exposedFunctions[data.type];
+
+        // This isn't very pretty, but it's a way to preserve a semblance of
+        // and avoid a huge switch case with this command-dispatch pattern
+        type Fun = UnionToIntersection<typeof fun>;
+        type Args = Parameters<Fun>;
+
+        void (fun as Fun)(...(data.args as Args)).then((res) => {
           log(`returned from ${data.type}:`, res, event.data);
 
           channel.port1.postMessage({ type: "result", fun: data.type, res });
@@ -77,14 +97,4 @@ interface NavigatorKeyboard {
 interface KeyboardLayoutMap
   extends Iterable<
     [label: string, key: string] /* example: ['BracketRight', ']'] */
-  > {}
-interface KeyboardMapping
-  extends Record<
-    string,
-    {
-      value: string;
-      withShift: string;
-      withAltGr: string;
-      withShiftAltGr: string;
-    }
   > {}
