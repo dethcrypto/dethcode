@@ -19,4 +19,4 @@ indexHtml = indexHtml.replace(
 );
 writeFileSync("./dist/index.html", indexHtml, { encoding: "utf8" });
 
-execSync("tsc");
+execSync("tsc", { encoding: "utf-8", stdio: "inherit" });

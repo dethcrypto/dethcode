@@ -3,7 +3,8 @@
     "strict": true,
     "outFile": "./dist/index.js",
     "lib": ["DOM", "ESNext"],
-    "target": "ESNext"
+    "target": "ESNext",
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts"]
 }

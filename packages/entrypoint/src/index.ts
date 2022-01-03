@@ -1,3 +1,5 @@
+const log = console.log.bind(console, "\x1b[32m [ecv:top]");
+
 // on load, we copy pathname and search params to the iframe
 const iframe = document.getElementById("frame")! as HTMLIFrameElement;
 const url = new URL(iframe.getAttribute("src")!);
@@ -12,15 +14,14 @@ if (hostname.endsWith(".deth.net") && !url.searchParams.get("explorer")) {
   url.searchParams.set("explorer", hostname.slice(0, -9));
 }
 
+log("setting iframe src:", url.href);
 iframe.setAttribute("src", url.href);
 // @todo in the future, we should also listen for postMessage events when
 // the ECV app inside of the iframe updates the URL, but it's not happening
 // right now
 
-// TODO FOR NOW: Expose top-level API for
-
 void (function exposeFunctions() {
-  const channel = new MessageChannel();
+  let channel: MessageChannel;
 
   const exposedFunctions = {
     /**
@@ -29,45 +30,40 @@ void (function exposeFunctions() {
     async getLayoutMap() {
       const keyboard = (navigator as any).keyboard as NavigatorKeyboard | null;
 
-      if (!keyboard) return [];
+      if (!keyboard) return;
 
-      let res: KeyboardMapping = {};
-      for (const key of await keyboard.getLayoutMap()) {
-        res[key[0]] = {
-          value: key[1],
-          withShift: "",
-          withAltGr: "",
-          withShiftAltGr: "",
-        };
-      }
-
-      return res;
+      const keyboardLayoutMap = await keyboard.getLayoutMap();
+      // KeyboardLayoutMap can't be cloned, so it can't be sent with postMessage
+      return new Map(keyboardLayoutMap);
     },
   };
 
   type ExposedFunctionCall = {
-    fun: "getLayoutMap";
+    type: "getLayoutMap";
     args: Parameters<typeof exposedFunctions["getLayoutMap"]>;
   };
 
-  iframe.addEventListener("load", () => {
+  iframe.addEventListener("load", function onLoad() {
+    iframe.removeEventListener("load", onLoad);
+
+    channel = new MessageChannel();
     const iframeWindow = iframe.contentWindow!;
 
+    log("iframe loaded, passing channel port");
+    // The code responsible for interaction with this port lies in
+    // vscode-host/src/deth/in-iframe.ts
     iframeWindow.postMessage({ type: "port-open" }, "*", [channel.port2]);
 
+    channel.port1.start();
     channel.port1.onmessage = (event) => {
-      console.log("[ecv] Received message from iframe:", event.data);
+      log("received message from iframe:", event.data);
 
       if (event.data && "type" in event.data) {
         const data = event.data as ExposedFunctionCall;
-        void exposedFunctions[data.fun](...data.args).then((res) => {
-          console.log(`[ecv] Returned from ${data.fun}:`, res, event.data);
+        void exposedFunctions[data.type](...data.args).then((res) => {
+          log(`returned from ${data.type}:`, res, event.data);
 
-          iframeWindow.postMessage(
-            { type: "result", args: [data.fun, res] },
-            "*",
-            [channel.port2]
-          );
+          channel.port1.postMessage({ type: "result", fun: data.type, res });
         });
       }
     };
