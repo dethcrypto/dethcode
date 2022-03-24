@@ -19,12 +19,16 @@ export const ethViewerCommands = {
   getApiName: (): string | undefined => {
     const { hostname } = window.location;
 
+    const searchParam = new URLSearchParams(window.location.search).get(
+      "explorer"
+    );
+
+    if (searchParam) return searchParam;
+
     // @todo this can be deprecated after we deploy and configure iframe entrypoints
     if (hostname.endsWith(".deth.net")) return hostname.slice(0, -9);
 
-    return (
-      new URLSearchParams(window.location.search).get("explorer") || undefined
-    );
+    return undefined;
   },
   openRepoOnGithub: () => {
     window.open("https://github.com/dethcrypto/ethereum-code-viewer", "_blank");
