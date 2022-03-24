@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Ethereum Code Viewer</title>
+
+    <!-- Disable pinch zooming -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+
+    <style>
+      body,
+      html {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <iframe
+      src="{{APPLICATION_URL}}"
+      id="frame"
+      sandbox="allow-scripts allow-popups allow-same-origin"
+    ></iframe>
+  </body>
+
+  <script src="./index.js"></script>
+</html>

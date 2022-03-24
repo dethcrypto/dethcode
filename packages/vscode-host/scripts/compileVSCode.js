@@ -20,6 +20,8 @@ function compileVSCode() {
   // Use simple workbench
   let copiedFilesReport = "Copied files: \n";
   globSync("src/**/*.*").forEach((file) => {
+    if (file.endsWith(".test.ts") || file.includes("src/test/")) return;
+
     const destination = file.replace("src/", "vscode/src/vs/");
     copySync(file, destination);
     copiedFilesReport += `${file} -> ${destination}\n`;

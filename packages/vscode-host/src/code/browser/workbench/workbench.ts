@@ -13,8 +13,11 @@ import {
   ethViewerCommands,
   getCommands,
 } from "../../../deth/commands/getCommands";
+import { patchForWorkingInIframe } from "../../../deth/in-iframe/patchForWorkingInIframe";
 
 async function main() {
+  patchForWorkingInIframe();
+
   // create workbench
   let config: IWorkbenchConstructionOptions & {
     folderUri?: UriComponents;
@@ -62,6 +65,10 @@ async function main() {
     commands: getCommands(),
     configurationDefaults: {
       "workbench.colorTheme": "Tomorrow Night Blue",
+
+      // Omits ${rootName} "Untitled (Workspace)" from the title
+      "window.title":
+        "${dirty}${activeEditorShort}${separator}${appName}${separator}${remoteName}",
     },
     windowIndicator: {
       onDidChange: Event.None,

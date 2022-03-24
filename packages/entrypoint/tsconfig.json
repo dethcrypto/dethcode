@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["DOM", "ESNext"],
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"]
+}
