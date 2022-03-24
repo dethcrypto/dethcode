@@ -7,7 +7,7 @@ const { argv } = require("./argv");
 
 const PRODUCTION_URL = "https://code.deth.net";
 const DEVELOPMENT_URL = "https://localhost:5001";
-const isProd = argv.production || process.env.CI === "1";
+const isProd = argv.production || process.env.CI === "true";
 
 console.log("Is production build? ", isProd);
 
