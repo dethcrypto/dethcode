@@ -13,7 +13,7 @@ import * as setTitle from "./setTitle";
  * @see /packages/entrypoint/README.md
  */
 export function patchForWorkingInIframe() {
-  // We don't have to do anything here if the user visited ecv.deth.net directly.
+  // We don't have to do anything here if the user visited code.deth.net directly.
   if (window.parent === window) return;
 
   // If the message channel is not open yet, we store a listener for it.

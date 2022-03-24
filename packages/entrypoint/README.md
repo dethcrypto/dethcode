@@ -23,6 +23,6 @@ explorer][explorers], change the TLD (i.e. `.io`, `.com`) to `.deth.net`. )
   as the iframe `src`.
 
 - **`pnpm build:production`** - Builds the website to `./dist` directory, using
-  *https://ecv.deth.net* as the iframe `src`.
+  *https://code.deth.net* as the iframe `src`.
 
 - **`pnpm dev`** - runs `build` and `serve`.
