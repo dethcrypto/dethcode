@@ -69,9 +69,11 @@ async function detectExplorerApiName(): Promise<explorer.ApiName> {
     if (!detectedName) return "etherscan";
 
     if (!(detectedName in explorerApiUrls)) {
-      await vscode.window.showErrorMessage(
-        `"${detectedName}" is not a valid network. Using mainnet etherscan instead.`
-      );
+      if (detectedName !== "code") {
+        await vscode.window.showErrorMessage(
+          `"${detectedName}" is not a valid network. Using mainnet etherscan instead.`
+        );
+      }
 
       return "etherscan";
     }

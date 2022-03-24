@@ -12,6 +12,8 @@ const { hostname, pathname, search } = window.location;
 url.pathname = pathname;
 url.search = search;
 
+log("Starting on", { hostname, pathname, search });
+
 // prefix of the hostname is passed to `explorer` search param
 // @see vscode-host/src/deth/commands/ethViewerCommands.ts
 if (hostname.endsWith(".deth.net") && !url.searchParams.get("explorer")) {

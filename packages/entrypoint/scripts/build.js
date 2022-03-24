@@ -9,6 +9,7 @@ const PRODUCTION_URL = "https://code.deth.net";
 const DEVELOPMENT_URL = "https://localhost:5001";
 const isProd = argv.production || process.env.CI === "true";
 
+console.log("Building entrypoint...");
 console.log("Is production build? ", isProd);
 
 rmSync("./dist", { recursive: true, force: true });
