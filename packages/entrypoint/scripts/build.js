@@ -5,7 +5,7 @@ const { copySync, readFileSync, writeFileSync, rmSync } = require("fs-extra");
 
 const { argv } = require("./argv");
 
-const PRODUCTION_URL = "https://ecv.deth.net";
+const PRODUCTION_URL = "https://code.deth.net";
 const DEVELOPMENT_URL = "https://localhost:5001";
 
 rmSync("./dist", { recursive: true, force: true });

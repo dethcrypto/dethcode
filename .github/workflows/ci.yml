@@ -26,12 +26,13 @@ jobs:
       - run: pnpm lint
 
       - run: pnpm prepare-deploy
-      # @todo is there a better way to write this? we want prod build from main
+
+      # deploy app
       - uses: ngduc/vercel-deploy-action@master
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           vercel-cli: vercel
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          vercel-project-id: ${{ secrets.VERCEL_APP_PROJECT_ID}}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           scope: ${{ secrets.VERCEL_ORG_ID }}
@@ -43,12 +44,26 @@ jobs:
         if: ${{ github.ref != 'refs/heads/main' }}
         with:
           vercel-cli: vercel
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          vercel-project-id: ${{ secrets.VERCEL_APP_PROJECT_ID}}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           scope: ${{ secrets.VERCEL_ORG_ID }}
           working-directory: packages/vscode-host/dist
           vercel-args: "--target staging"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+      # deploy entrypoint (no preview)
+      - uses: ngduc/vercel-deploy-action@master
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          vercel-cli: vercel
+          vercel-project-id: ${{ secrets.VERCEL_ENTRYPOINT_PROJECT_ID}}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          working-directory: packages/entrypoint/dist
+          vercel-args: "--prod"
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
