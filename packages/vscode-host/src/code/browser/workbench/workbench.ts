@@ -73,10 +73,7 @@ async function main() {
     windowIndicator: {
       onDidChange: Event.None,
       label: localize("playgroundLabel", `$(remote) ${apiName}.deth.net`),
-      tooltip: localize(
-        "playgroundTooltip",
-        "See Ethereum Code Viewer on GitHub"
-      ),
+      tooltip: localize("playgroundTooltip", "See DethCode on GitHub"),
       command: CommandId("openRepoOnGithub"),
     },
     // @todo extensions gallery would be lit, but we'd need a CORS proxy for it

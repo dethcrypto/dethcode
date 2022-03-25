@@ -11,7 +11,7 @@ import { renderStatusBarItems } from "./statusBar";
 let initialized = false;
 const fs = FileSystem();
 
-const IN_DETH_HOST = vscode.env.appName === "Ethereum Code Viewer";
+const IN_DETH_HOST = vscode.env.appName === "DethCode";
 
 export async function activate(context: vscode.ExtensionContext) {
   fs.register(context);

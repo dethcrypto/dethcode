@@ -23,7 +23,7 @@ if (hostname.endsWith(".deth.net") && !url.searchParams.get("explorer")) {
 log("setting iframe src:", url.href);
 iframe.setAttribute("src", url.href);
 // @todo in the future, we should also listen for postMessage events when
-// the ECV app inside of the iframe updates the URL, but it's not happening
+// the DethCode app inside of the iframe updates the URL, but it's not happening
 // right now
 
 void (function exposeFunctions() {

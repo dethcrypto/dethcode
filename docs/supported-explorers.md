@@ -1,4 +1,4 @@
-Ethereum Code Viewer supports the following blockchain explorers:
+DethCode supports the following blockchain explorers:
 
 <!-- Run `yarn supported-explorers` in packages/ethereum-viewer to generate this list. -->
 

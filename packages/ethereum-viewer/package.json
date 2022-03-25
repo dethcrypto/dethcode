@@ -27,7 +27,7 @@
   "engines": {
     "vscode": "^1.63.0"
   },
-  "displayName": "Ethereum Code Viewer",
+  "displayName": "DethCode",
   "description": "View source of deployed Ethereum contracts in VSCode",
   "publisher": "hasparus",
   "categories": [
@@ -44,7 +44,7 @@
   "contributes": {
     "commands": {
       "command": "ethereum-viewer.open",
-      "category": "Ethereum Code Viewer",
+      "category": "DethCode",
       "title": "Open smart contract source code"
     }
   }
