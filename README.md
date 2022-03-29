@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="https://github.com/dethcrypto/ethereum-code-viewer/blob/main/docs/logo.png?raw=true" width="300" alt="">
+  <br />
+  <img src="https://github.com/dethcrypto/ethereum-code-viewer/blob/main/docs/logo.svg?raw=true" width="300" alt="">
+  <br /><br />
   <h3 align="center">DethCode</h3>
   <p align="center">View source of deployed Ethereum smart contracts in VS Code</p>
   <p align="center">While on Etherscan, change <code>.io</code> to <code>.deth.net</code> and browse contracts comfortably in ephemeral VS Code instance</p>
