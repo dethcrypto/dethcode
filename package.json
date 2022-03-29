@@ -26,6 +26,7 @@
     "earljs": "^0.1.12",
     "esbuild": "^0.14.10",
     "esbuild-register": "^3.3.2",
+    "typescript-register": "npm:esbuild-register@^3.3.2",
     "eslint": "^7",
     "eslint-config-typestrict": "^1.0.2",
     "eslint-plugin-import": "^2.25.2",
