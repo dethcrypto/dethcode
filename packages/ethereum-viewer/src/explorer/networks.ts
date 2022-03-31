@@ -1,5 +1,5 @@
 /**
- * mapping from Ethereum Code Viewer subdomain to Etherscan-like API URL
+ * mapping from DethCode subdomain to Etherscan-like API URL
  */
 export const explorerApiUrls = {
   etherscan: "https://api.etherscan.io/api",
@@ -24,12 +24,12 @@ export const explorerApiUrls = {
 };
 
 /**
- * subdomain of ethereum code viewer
+ * subdomain of DethCode
  */
 export type ApiName = keyof typeof explorerApiUrls;
 
 /**
- * mapping from Ethereum Code Viewer subdomain to memfs root directory name
+ * mapping from DethCode subdomain to memfs root directory name
  */
 export const networkNames: Record<ApiName, string> = {
   etherscan: "mainnet",

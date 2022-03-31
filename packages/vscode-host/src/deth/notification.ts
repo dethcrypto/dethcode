@@ -11,7 +11,7 @@ const NOTIFICATION_STORAGE_VALUE = "1";
 
 const notifications = [
   {
-    text: "💸 Enjoy using Ethereum Code Viewer? Consider funding development via GitCoin 💸",
+    text: "💸 Enjoy using DethCode? Consider funding development via GitCoin 💸",
     link: "https://gitcoin.co/grants/4038/typechain-dksth",
   },
 ];

@@ -1,8 +1,8 @@
 The website hosted on convenience URL entry points powering the "simple domain
 change" use case.
 
-( To open Ethereum Code Viewer from a [supported blockchain
-explorer][explorers], change the TLD (i.e. `.io`, `.com`) to `.deth.net`. )
+( To open DethCode from a [supported blockchain explorer][explorers], change the
+TLD (i.e. `.io`, `.com`) to `.deth.net`. )
 
 [explorers]: ../../docs/supported-explorers.md
 

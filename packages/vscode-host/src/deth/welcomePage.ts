@@ -35,7 +35,7 @@ const buildTemplate = () => `
              localize("welcomePage.help", "Help")
            )}</h2>
            <ul>
-             <li><a href="https://github.com/dethcrypto/ethereum-code-viewer" target="_blank">Ethereum Code Viewer Repository</a></li>
+             <li><a href="https://github.com/dethcrypto/ethereum-code-viewer" target="_blank">DethCode Repository</a></li>
              <li><a href="https://gitcoin.co/grants/4038/typechain-dksth" target="_blank">Typchain & Deth Grant on GitCoin</a></li>
              <li><a href="https://github.com/microsoft/vscode" target="_blank">VS Code Repository</a></li>
              <li><a href="https://code.visualstudio.com/docs" target="_blank">VS Code Documentation</a></li>
