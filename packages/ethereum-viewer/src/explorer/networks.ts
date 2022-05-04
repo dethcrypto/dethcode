@@ -21,6 +21,8 @@ export const explorerApiUrls = {
   "testnet.arbiscan": "https://api-testnet.arbiscan.io/api",
   snowtrace: "https://api.snowtrace.io/api",
   "testnet.snowtrace": "https://api-testnet.snowtrace.io/api",
+  cronoscan: "https://api.cronoscan.com/api",
+  "testnet.cronoscan": "https://api-testnet.cronoscan.com/api",
 };
 
 /**
