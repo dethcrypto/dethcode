@@ -22,6 +22,14 @@ describe("ethViewerCommands", () => {
 
       expect(getApiName()).toEqual("etherscan");
     });
+
+    it('strips leading "www." from hostname', () => {
+      givenUrl(
+        "https://www.bscscan.deth.net/token/0x2170ed0880ac9a755fd29b2688956bd959f933f8"
+      );
+
+      expect(getApiName()).toEqual("bscscan");
+    });
   });
 
   describe(getContractAddress.name, () => {

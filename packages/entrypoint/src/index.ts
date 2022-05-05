@@ -17,7 +17,10 @@ log("Starting on", { hostname, pathname, search });
 // prefix of the hostname is passed to `explorer` search param
 // @see vscode-host/src/deth/commands/ethViewerCommands.ts
 if (hostname.endsWith(".deth.net") && !url.searchParams.get("explorer")) {
-  url.searchParams.set("explorer", hostname.slice(0, -9));
+  url.searchParams.set(
+    "explorer",
+    hostname.slice(0, -9 /* length of '.deth.net' */)
+  );
 }
 
 log("setting iframe src:", url.href);
