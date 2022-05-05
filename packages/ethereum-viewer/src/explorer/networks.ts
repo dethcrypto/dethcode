@@ -21,6 +21,7 @@ export const explorerApiUrls = {
   "testnet.arbiscan": "https://api-testnet.arbiscan.io/api",
   snowtrace: "https://api.snowtrace.io/api",
   "testnet.snowtrace": "https://api-testnet.snowtrace.io/api",
+  cronoscan: "https://api.cronoscan.com/api",
 };
 
 /**
@@ -51,6 +52,7 @@ export const networkNames: Record<ApiName, string> = {
   "testnet.arbiscan": "arbitrumTestnet",
   snowtrace: "avalanche",
   "testnet.snowtrace": "avalancheTestnet",
+  cronoscan: "cronos",
 };
 
 const ETHERSCAN_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
@@ -60,6 +62,7 @@ const HECOINFO_KEY = "XEUTJF2439EP4HHD23H2AFEFQJHFGSG57R";
 const SNOWTRACE_KEY = "IQEHAJ43W674REN5XV79WF47X37VEB8PIC";
 const ARBISCAN_KEY = "X3ZWJBXC14HTIR3B9DNYGEUICEIKKZ9ENZ";
 const POLYGONSCAN_KEY = "RV4YXDXEMIHXMC7ZXB8T82G4F56FRZ1SZQ";
+const CRONOSCAN_KEY = "BGAN1CWT8E1A2XRS3FU61UP7XXFMHBWNSY"
 
 // @todo this should be possible to override using VSCode settings
 export const explorerApiKeys: Record<ApiName, string> = {
@@ -89,4 +92,6 @@ export const explorerApiKeys: Record<ApiName, string> = {
 
   snowtrace: SNOWTRACE_KEY,
   "testnet.snowtrace": SNOWTRACE_KEY,
+  
+   cronoscan: CRONOSCAN_KEY,
 };
