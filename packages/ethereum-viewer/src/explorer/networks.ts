@@ -95,6 +95,6 @@ export const explorerApiKeys: Record<ApiName, string> = {
   snowtrace: SNOWTRACE_KEY,
   "testnet.snowtrace": SNOWTRACE_KEY,
   
-   cronoscan: FTMSCAN_KEY,
-  "testnet.cronoscan": FTMSCAN_KEY,
+   cronoscan: CRONOSCAN_KEY,
+  "testnet.cronoscan": CRONOSCAN_KEY,
 };
