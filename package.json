@@ -10,7 +10,7 @@
     "copy-and-serve": "cd packages/vscode-host && yarn copy-and-serve",
     "lint": "eslint --ext .ts ./packages/*/src/**/*.ts",
     "lint:fix": "pnpm lint -- --fix",
-    "prepare-deploy": "cp ./vercel.json ./packages/vscode-host/dist && cp ./vercel.json /packages/entrypoint/dist",
+    "prepare-deploy": "cp ./vercel.json ./packages/vscode-host/dist && cp ./vercel.json ./packages/entrypoint/dist",
     "test": "mocha",
     "check": "pnpm test && pnpm lint"
   },
