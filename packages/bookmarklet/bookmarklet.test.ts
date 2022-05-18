@@ -34,18 +34,4 @@ describe(`bookmarklet: ${toDethNet.name}`, () => {
       `https://etherscan.deth.net/address/${address}`
     );
   });
-
-  it("preserves explorer api name for all explorers", () => {
-    for (const apiName of Object.keys(explorerApiUrls)) {
-      const websiteUrl =
-        apiUrlToWebsite(
-          explorerApiUrls[apiName as keyof typeof explorerApiUrls]
-        ) + "/address/0x0000000000000000000000000000000000000000";
-
-      const ecvUrl = toDethNet(websiteUrl);
-
-      givenUrl(ecvUrl);
-      expect(ethViewerCommands.getApiName()).toEqual(apiName);
-    }
-  });
 });
