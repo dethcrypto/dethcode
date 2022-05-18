@@ -17,7 +17,7 @@ export const ethViewerCommands = {
     return path.startsWith("0x") ? path : undefined;
   },
   getApiName: (): string | undefined => {
-    const { hostname, search } = window.location;
+    const { search } = window.location;
 
     const searchParam = new URLSearchParams(search).get("explorer");
 
