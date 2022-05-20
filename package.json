@@ -2,11 +2,11 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "cd packages/vscode-host && yarn",
-    "watch": "pnpm watch --filter ./packages",
-    "build": "pnpm build --filter ./packages && cd packages/vscode-host && yarn build",
+    "watch": "pnpm --filter './packages/**' watch",
+    "build": "pnpm --filter './packages/**' build && cd packages/vscode-host && yarn build",
     "serve": "run-p serve:**",
     "serve:host": "cd packages/vscode-host && yarn serve",
-    "serve:entrypoint": "pnpm serve --filter ./packages/entrypoint",
+    "serve:entrypoint": "pnpm --filter './packages/entrypoint' serve",
     "copy-and-serve": "cd packages/vscode-host && yarn copy-and-serve",
     "lint": "eslint --ext .ts ./packages/*/src/**/*.ts",
     "lint:fix": "pnpm lint -- --fix",
@@ -43,5 +43,9 @@
     "typescript": "^4.5.3",
     "webpack": "^5.52.1",
     "webpack-cli": "^4.8.0"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "pnpm": ">=7.0.0"
   }
 }
