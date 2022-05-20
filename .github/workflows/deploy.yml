@@ -1,0 +1,66 @@
+name: "Deploy"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.1.0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: "pnpm"
+
+      - run: pnpm install
+      - run: pnpm build
+
+      - run: pnpm prepare-deploy
+
+      # deploy app
+      - uses: ngduc/vercel-deploy-action@master
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          vercel-cli: vercel
+          vercel-project-id: ${{ secrets.VERCEL_APP_PROJECT_ID}}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          working-directory: packages/vscode-host/dist
+          vercel-args: "--prod"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - uses: ngduc/vercel-deploy-action@master
+        if: ${{ github.ref != 'refs/heads/main' }}
+        with:
+          vercel-cli: vercel
+          vercel-project-id: ${{ secrets.VERCEL_APP_PROJECT_ID}}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          working-directory: packages/vscode-host/dist
+          vercel-args: "--target staging"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+      # deploy entrypoint (no preview)
+      - uses: ngduc/vercel-deploy-action@master
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          vercel-cli: vercel
+          vercel-project-id: ${{ secrets.VERCEL_ENTRYPOINT_PROJECT_ID}}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          working-directory: packages/entrypoint/dist
+          vercel-args: "--prod"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
