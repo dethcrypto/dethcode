@@ -15,7 +15,7 @@ const {
 const { additionalExtensions } = require("./prepareAdditionalExtensions");
 
 function copyExtensions() {
-  log.info("Copying extensions to ./dist directory...");
+  log.info("============ Copying extensions to ./dist directory...");
 
   chdir(__dirname, "../vscode");
 

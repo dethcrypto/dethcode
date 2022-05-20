@@ -23,7 +23,7 @@ const additionalExtensions = [
 ];
 
 function prepareAdditionalExtensions() {
-  log.info("Cloning additional built-in extensions...");
+  log.info("============  Cloning additional built-in extensions...");
 
   chdir(__dirname, "../additional-extensions");
 
