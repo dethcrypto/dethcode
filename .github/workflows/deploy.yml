@@ -24,6 +24,13 @@ jobs:
 
       - run: pnpm prepare-deploy
 
+      # deployment per branch
+      - uses: superactions/deploy-branch-action@action
+        if: ${{ github.ref != 'refs/heads/main' }}
+        with:
+          directory: packages/vscode-host/dist
+
+      # --- production deployments (only on main)
       # deploy app
       - uses: ngduc/vercel-deploy-action@master
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -35,19 +42,6 @@ jobs:
           scope: ${{ secrets.VERCEL_ORG_ID }}
           working-directory: packages/vscode-host/dist
           vercel-args: "--prod"
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-      - uses: ngduc/vercel-deploy-action@master
-        if: ${{ github.ref != 'refs/heads/main' }}
-        with:
-          vercel-cli: vercel
-          vercel-project-id: ${{ secrets.VERCEL_APP_PROJECT_ID}}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          working-directory: packages/vscode-host/dist
-          vercel-args: "--target staging"
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
