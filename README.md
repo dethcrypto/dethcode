@@ -5,7 +5,7 @@
   <h2 align="center">DethCode</h2>
   <p align="center">
     <a href="https://github.com/dethcrypto/ethereum-code-viewer/actions"><img alt="Build Status" src="https://github.com/dethcrypto/ethereum-code-viewer/actions/workflows/ci.yml/badge.svg"></a>
-    <a href="https://discord.gg/wQDkeDgzgv"><img alt="Join our Discord!" src="https://img.shields.io/discord/895381864922091630.svg?color=7289da&label=deth&logo=discord&style=flat-square"></a>
+    <a href="hhttps://discord.gg/kc3RnmHQRa"><img alt="Join our Discord!" src="https://img.shields.io/discord/895381864922091630.svg?color=7289da&label=deth&logo=discord&style=flat-square"></a>
   </p>
   <p align="center"><strong>View source of deployed Ethereum smart contracts in VS Code</strong></p>
   <p align="center">While on Etherscan, change <code>.io</code> to <code>.deth.net</code> and browse contracts comfortably in ephemeral VS Code instance</p>
