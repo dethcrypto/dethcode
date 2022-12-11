@@ -50,11 +50,16 @@ export function registerContributedCommands(
 
       const { apiName } = picked;
 
-      const info = await openContractSource(context, { fs, address, apiName });
+      const contractName = await openContractSource(
+        context,
+        fs,
+        apiName,
+        address
+      );
 
       renderStatusBarItems({
         contractAddress: address,
-        contractName: info.ContractName || "contract",
+        contractName,
         apiName,
       });
     },

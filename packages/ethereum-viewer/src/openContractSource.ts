@@ -21,19 +21,17 @@ const IS_ONLINE = true; // Treat this as a toggle for development.
 let fileSearchProviderDisposable: Disposable | undefined;
 let textSearchProviderDisposable: Disposable | undefined;
 
-export interface OpenContractSourceArgs {
-  fs: FileSystem;
-  apiName: explorer.ApiName;
-  address: string;
-}
-
 export async function openContractSource(
   context: ExtensionContext,
-  args: OpenContractSourceArgs
-) {
-  const [entries, info] = await saveContractFilesToFs(args);
-
-  const mainFile = getMainContractFile(entries, info);
+  fs: FileSystem,
+  apiName: explorer.ApiName,
+  address: string
+): Promise<string> {
+  const { entries, mainFile, contractName } = await saveContractFilesToFs(
+    fs,
+    apiName,
+    address
+  );
 
   fileSearchProviderDisposable?.dispose();
   fileSearchProviderDisposable = workspace.registerFileSearchProvider(
@@ -51,29 +49,60 @@ export async function openContractSource(
 
   await showTextDocument(mainFile);
 
-  return info;
+  return contractName;
 }
 
-async function saveContractFilesToFs({
-  fs,
-  address,
-  apiName,
-}: OpenContractSourceArgs) {
+async function saveContractFilesToFs(
+  fs: FileSystem,
+  apiName: explorer.ApiName,
+  address: string
+) {
+  if (address.includes(",")) {
+    const addresses = address.split(",");
+    const results = await Promise.all(
+      addresses.map((a) =>
+        saveSingleContractFilesToFs(fs, apiName, a, a + "/", false)
+      )
+    );
+    return {
+      entries: results.flatMap((r) => r.entries),
+      mainFile: results[0].mainFile,
+      contractName: results[0].contractName,
+    };
+  }
+  return saveSingleContractFilesToFs(fs, apiName, address, undefined, true);
+}
+
+async function saveSingleContractFilesToFs(
+  fs: FileSystem,
+  apiName: explorer.ApiName,
+  address: string,
+  prefix: string | undefined,
+  allowProxies: boolean
+) {
   let result: explorer.FetchFilesResult;
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (IS_ONLINE) {
-    result = await explorer.fetchFiles(apiName, address);
+    result = await explorer.fetchFiles(apiName, address, {
+      proxyDepth: allowProxies ? undefined : 0,
+    });
   } else {
     result = fixtures.etherscanResult;
   }
 
   const entries = Object.entries(result.files);
   for (const [path, content] of entries) {
-    fs.writeFile(path, content);
+    fs.writeFile(prefix ? prefix + path : path, content);
   }
 
-  return [entries, result.info] as const;
+  const mainFile = getMainContractFile(entries, result.info);
+
+  return {
+    entries,
+    mainFile: prefix ? prefix + mainFile : mainFile,
+    contractName: result.info.ContractName ?? "contract",
+  };
 }
 
 function getMainContractFile(
