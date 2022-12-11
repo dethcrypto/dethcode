@@ -23,7 +23,7 @@ cd ..
 # install deps
 pnpm install
 
-pnpm build # this builds whole vscode and can take A LOT of time
+pnpm build # this builds whole vscode and can take A LOT of time. If you are having issues, read below
 pnpm serve
 ```
 
@@ -34,6 +34,13 @@ pnpm serve
   through the `postinstall` script.
 
 - **`pnpm build`** - Builds all packages.
+
+  If you are having issues with MacOS and Python try the following:
+  ```
+  $ brew install sqlite
+  $ npm config set sqlite /opt/homebrew/opt/sqlite
+  $ npm config set python python3
+  ```
 
 - **`pnpm watch`** - Starts webpack for `ethereum-extension` in watch mode.
 

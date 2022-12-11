@@ -49,15 +49,11 @@ async function main(context: vscode.ExtensionContext) {
     apiName,
   });
 
-  const info = await openContractSource(context, {
-    fs,
-    apiName,
-    address,
-  });
+  const contractName = await openContractSource(context, fs, apiName, address);
 
   renderStatusBarItems({
     contractAddress: address,
-    contractName: info.ContractName || "contract",
+    contractName,
     apiName,
   });
 }

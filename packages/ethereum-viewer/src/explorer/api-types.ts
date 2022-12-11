@@ -31,7 +31,7 @@ export function sourceHasSettings(
   return s.startsWith("{{");
 }
 
-export function sourceHasMulitpleFiles(
+export function sourceHasMultipleFiles(
   s: SourceCode
 ): s is SourceCode.MultipleSources {
   return s.startsWith("{");

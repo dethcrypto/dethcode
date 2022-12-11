@@ -21,19 +21,17 @@ const IS_ONLINE = true; // Treat this as a toggle for development.
 let fileSearchProviderDisposable: Disposable | undefined;
 let textSearchProviderDisposable: Disposable | undefined;
 
-export interface OpenContractSourceArgs {
-  fs: FileSystem;
-  apiName: explorer.ApiName;
-  address: string;
-}
-
 export async function openContractSource(
   context: ExtensionContext,
-  args: OpenContractSourceArgs
-) {
-  const [entries, info] = await saveContractFilesToFs(args);
-
-  const mainFile = getMainContractFile(entries, info);
+  fs: FileSystem,
+  apiName: explorer.ApiName,
+  address: string
+): Promise<string> {
+  const { entries, mainFile, contractName } = await saveContractFilesToFs(
+    fs,
+    apiName,
+    address
+  );
 
   fileSearchProviderDisposable?.dispose();
   fileSearchProviderDisposable = workspace.registerFileSearchProvider(
@@ -51,47 +49,93 @@ export async function openContractSource(
 
   await showTextDocument(mainFile);
 
-  return info;
+  return contractName;
 }
 
-async function saveContractFilesToFs({
-  fs,
-  address,
-  apiName,
-}: OpenContractSourceArgs) {
+async function saveContractFilesToFs(
+  fs: FileSystem,
+  apiName: explorer.ApiName,
+  address: string
+) {
+  if (address.includes(",")) {
+    const addresses = address.split(",");
+    const results = await Promise.all(
+      addresses.map((a) =>
+        saveSingleContractFilesToFs(fs, apiName, a, {
+          prefix: a + "/",
+          allowProxies: false,
+          includeMainInfo: true,
+        })
+      )
+    );
+    return {
+      entries: results.flatMap((r) => r.entries),
+      mainFile: results[0].mainFile,
+      contractName: results[0].contractName,
+    };
+  }
+  return saveSingleContractFilesToFs(fs, apiName, address, {
+    allowProxies: true,
+    includeMainInfo: false,
+  });
+}
+
+async function saveSingleContractFilesToFs(
+  fs: FileSystem,
+  apiName: explorer.ApiName,
+  address: string,
+  options: {
+    prefix?: string;
+    allowProxies: boolean;
+    includeMainInfo: boolean;
+  }
+) {
   let result: explorer.FetchFilesResult;
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (IS_ONLINE) {
-    result = await explorer.fetchFiles(apiName, address);
+    result = await explorer.fetchFiles(apiName, address, {
+      proxyDepth: options.allowProxies ? undefined : 0,
+      skipPrefix: !!options.prefix,
+    });
   } else {
     result = fixtures.etherscanResult;
   }
 
+  const withPrefix = (file: string) =>
+    options.prefix ? options.prefix + file : file;
+
   const entries = Object.entries(result.files);
   for (const [path, content] of entries) {
-    fs.writeFile(path, content);
+    fs.writeFile(withPrefix(path), content);
   }
 
-  return [entries, result.info] as const;
+  const mainFile = getMainContractFile(entries, result.info);
+
+  if (options.includeMainInfo) {
+    fs.writeFile(withPrefix("main.md"), `Main file: ${mainFile}`);
+  }
+
+  return {
+    entries,
+    mainFile: withPrefix(mainFile),
+    contractName: result.info.ContractName ?? "contract",
+  };
 }
 
 function getMainContractFile(
-  files: [string, ...unknown[]][],
+  files: [string, string][],
   info: explorer.FetchFilesResult["info"]
 ): string {
   const ext = fileExtension(info);
+  const name = info.implementation?.ContractName ?? info.ContractName;
 
-  let fileToShow =
-    info.implementation &&
-    files.find(([path]) =>
-      path.endsWith(`/${info.implementation!.ContractName}${ext}`)
-    );
+  let fileToShow = files.find(([path]) => path.endsWith(`/${name}${ext}`));
 
-  if (!fileToShow)
-    fileToShow = files.find(([path]) =>
-      path.endsWith(`/${info.ContractName}${ext}`)
-    );
+  if (!fileToShow) {
+    const regexp = new RegExp(`contract\\s+${name}`);
+    fileToShow = files.find(([path, source]) => regexp.test(source));
+  }
 
   if (!fileToShow) fileToShow = files.sort(byPathLength)[0];
 
