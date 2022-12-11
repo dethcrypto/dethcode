@@ -18,12 +18,16 @@ interface FetchFilesOptions {
    * If more than 0, we fetch implementation contract and merge its files.
    */
   proxyDepth?: number;
+  /**
+   * If true multiple files are not prefixed.
+   */
+  skipPrefix?: boolean;
 }
 
 export async function fetchFiles(
   apiName: ApiName,
   contractAddress: string,
-  { fetch = _fetch, proxyDepth = 3 }: FetchFilesOptions = {}
+  { fetch = _fetch, proxyDepth = 3, skipPrefix = false }: FetchFilesOptions = {}
 ): Promise<FetchFilesResult> {
   const apiUrl = explorerApiUrls[apiName];
   const url =
@@ -72,15 +76,15 @@ export async function fetchFiles(
       files[path] = content;
     }
 
-    files = prefixFiles(files, info.ContractName);
-  } else if (types.sourceHasMulitpleFiles(sourceCode)) {
+    if (!skipPrefix) files = prefixFiles(files, info.ContractName);
+  } else if (types.sourceHasMultipleFiles(sourceCode)) {
     const parsed = types.parseSourceCode(sourceCode);
 
     for (const [path, { content }] of Object.entries(parsed)) {
       files[path] = content;
     }
 
-    files = prefixFiles(files, info.ContractName);
+    if (!skipPrefix) files = prefixFiles(files, info.ContractName);
   } else {
     files[info.ContractName + fileExtension(info)] = sourceCode;
   }
