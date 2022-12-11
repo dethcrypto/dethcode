@@ -6,7 +6,7 @@
   },
   "rewrites": [
     {
-      "source": "/(address/|token/)?0x([0-9a-fA-F])*(\\/)?",
+      "source": "/(address/|token/)?([0x0-9a-fA-F\\,])*(\\/)?",
       "destination": "/index.html"
     }
   ]
