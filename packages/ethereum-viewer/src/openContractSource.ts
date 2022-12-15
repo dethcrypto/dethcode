@@ -105,15 +105,14 @@ async function saveSingleContractFilesToFs(
   const withPrefix = (file: string) =>
     options.prefix ? options.prefix + file : file;
 
-  const entries = Object.entries(result.files);
-  for (const [path, content] of entries) {
-    fs.writeFile(withPrefix(path), content);
-  }
-
+  let entries = Object.entries(result.files);
   const mainFile = getMainContractFile(entries, result.info);
-
   if (options.includeMainInfo) {
-    fs.writeFile(withPrefix("main.md"), `Main file: ${mainFile}`);
+    entries.push(["main.md", `Main file: ${mainFile}`]);
+  }
+  entries = entries.map((x) => [withPrefix(x[0]), x[1]]);
+  for (const [path, content] of entries) {
+    fs.writeFile(path, content);
   }
 
   return {
