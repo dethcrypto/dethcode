@@ -56,13 +56,14 @@ export const networkNames: Record<ApiName, string> = {
 };
 
 const ETHERSCAN_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
+const OPTIMISM_KEY = "UF822UT1YY28J5EHFFIKI5SPN8752AC7VV";
 const BSCSCAN_KEY = "HFUM7BBA5MRUQCN5UMEQPUZBUPPRHIQT3Y";
 const FTMSCAN_KEY = "EH9NPZVF1HMNAQMAUZKA4VF7EC23X37DGS";
 const HECOINFO_KEY = "XEUTJF2439EP4HHD23H2AFEFQJHFGSG57R";
 const SNOWTRACE_KEY = "IQEHAJ43W674REN5XV79WF47X37VEB8PIC";
 const ARBISCAN_KEY = "X3ZWJBXC14HTIR3B9DNYGEUICEIKKZ9ENZ";
 const POLYGONSCAN_KEY = "RV4YXDXEMIHXMC7ZXB8T82G4F56FRZ1SZQ";
-const CRONOSCAN_KEY = "BGAN1CWT8E1A2XRS3FU61UP7XXFMHBWNSY"
+const CRONOSCAN_KEY = "BGAN1CWT8E1A2XRS3FU61UP7XXFMHBWNSY";
 
 // @todo this should be possible to override using VSCode settings
 export const explorerApiKeys: Record<ApiName, string> = {
@@ -72,8 +73,8 @@ export const explorerApiKeys: Record<ApiName, string> = {
   "goerli.etherscan": ETHERSCAN_KEY,
   "kovan.etherscan": ETHERSCAN_KEY,
 
-  "optimistic.etherscan": ETHERSCAN_KEY,
-  "kovan-optimistic.etherscan": ETHERSCAN_KEY,
+  "optimistic.etherscan": OPTIMISM_KEY,
+  "kovan-optimistic.etherscan": OPTIMISM_KEY,
 
   arbiscan: ARBISCAN_KEY,
   "testnet.arbiscan": ARBISCAN_KEY,
@@ -92,6 +93,6 @@ export const explorerApiKeys: Record<ApiName, string> = {
 
   snowtrace: SNOWTRACE_KEY,
   "testnet.snowtrace": SNOWTRACE_KEY,
-  
-   cronoscan: CRONOSCAN_KEY,
+
+  cronoscan: CRONOSCAN_KEY,
 };
