@@ -24,6 +24,7 @@ export const explorerApiUrls = {
   cronoscan: "https://api.cronoscan.com/api",
   basescan: "https://api.basescan.org/api",
   "goerli.basescan": "https://api-goerli.basescan.org/",
+  gnosisscan: "https://api.gnosisscan.io/api",
 };
 
 /**
@@ -57,6 +58,7 @@ export const networkNames: Record<ApiName, string> = {
   cronoscan: "cronos",
   basescan: "basescan",
   "goerli.basescan": "basescanGoerli",
+  gnosisscan: "gnosisscan",
 };
 
 const ETHERSCAN_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
@@ -69,6 +71,7 @@ const ARBISCAN_KEY = "X3ZWJBXC14HTIR3B9DNYGEUICEIKKZ9ENZ";
 const POLYGONSCAN_KEY = "RV4YXDXEMIHXMC7ZXB8T82G4F56FRZ1SZQ";
 const CRONOSCAN_KEY = "BGAN1CWT8E1A2XRS3FU61UP7XXFMHBWNSY";
 const BASESCAN_KEY = "ICQQDUA1C8R2EZY6M4QIIV7WUEZM8INNA7";
+const GNOSISSCAN_KEY = "7PWN1FIPXW6WDSGH3PIHRW1EEU4A882QSQ";
 
 // @todo this should be possible to override using VSCode settings
 export const explorerApiKeys: Record<ApiName, string> = {
@@ -103,4 +106,6 @@ export const explorerApiKeys: Record<ApiName, string> = {
 
   basescan: BASESCAN_KEY,
   "goerli.basescan": BASESCAN_KEY,
+
+  gnosisscan: GNOSISSCAN_KEY,
 };
