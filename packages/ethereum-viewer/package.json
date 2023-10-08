@@ -29,17 +29,13 @@
   },
   "displayName": "DethCode",
   "description": "View source of deployed Ethereum contracts in VSCode",
-  "publisher": "hasparus",
+  "publisher": "deth",
   "categories": [
     "Other"
   ],
-  "enableProposedApi": true,
   "enabledApiProposals": [
     "fileSearchProvider",
     "textSearchProvider"
-  ],
-  "activationEvents": [
-    "*"
   ],
   "contributes": {
     "commands": {

@@ -4,7 +4,10 @@
     "nameLong": "DethCode",
     "applicationName": "deth-viewer",
     "dataFolderName": ".deth-viewer",
-    "version": "1.82.0"
+    "version": "1.82.0",
+    "extensionEnabledApiProposals": {
+      "deth.ethereum-viewer": ["fileSearchProvider", "textSearchProvider"]
+    }
   },
   "additionalBuiltinExtensions": [
     {
@@ -14,6 +17,10 @@
     {
       "scheme": "http",
       "path": "/extensions/vyper-syntax"
+    },
+    {
+      "scheme": "http",
+      "path": "/extensions/ethereum-viewer"
     }
   ]
 }
