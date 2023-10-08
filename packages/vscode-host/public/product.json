@@ -4,6 +4,16 @@
     "nameLong": "DethCode",
     "applicationName": "deth-viewer",
     "dataFolderName": ".deth-viewer",
-    "version": "1.58.0"
-  }
+    "version": "1.82.0"
+  },
+  "additionalBuiltinExtensions": [
+    {
+      "scheme": "http",
+      "path": "/extensions/solidity-extension"
+    },
+    {
+      "scheme": "http",
+      "path": "/extensions/vyper-syntax"
+    }
+  ]
 }

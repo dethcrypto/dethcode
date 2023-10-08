@@ -45,7 +45,7 @@ export function patchForWorkingInIframe() {
 
             functionsCalledBeforeOpening[functionName]!.forEach((listener) => {
               const f = listener as UnionToIntersection<typeof listener>;
-              f(res as ReturnType<typeof f>);
+              f(res);
             });
             functionsCalledBeforeOpening[functionName] = undefined;
           }

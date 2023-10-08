@@ -1,5 +1,6 @@
 // @ts-check
 
+const { join } = require("path");
 const {
   chdir,
   log,
@@ -28,29 +29,23 @@ function compileVSCode() {
   });
   log.info(copiedFilesReport);
 
+  log.info("============ Compiling VSCode...");
   chdir("vscode");
+  execSync("yarn gulp vscode-web-min", { stdio: "inherit" });
 
-  // Adapt compilation to web
-  changeFileSync("./build/gulpfile.vscode.js", (s) =>
-    s
-      .replace(
-        /vs\/workbench\/workbench.desktop.main/g,
-        "vs/workbench/workbench.web.api"
-      )
-      .replace(
-        /buildfile.workbenchDesktop/g,
-        "buildfile.workbenchWeb,buildfile.keyboardMaps"
-      )
+  log.info("============ Copying build artifacts...");
+  copySync(
+    join(__dirname, "../vscode-web/extensions"),
+    join(__dirname, "../dist/extensions")
   );
-
-  // Compile
-  execSync("yarn gulp compile-build", { stdio: "inherit" });
-  execSync("yarn gulp minify-vscode", { stdio: "inherit" });
-  execSync("yarn compile-web", { stdio: "inherit" });
-
-  if (existsSync("../dist")) rimraf("../dist");
-  mkdirSync("../dist");
-  copySync("out-vscode-min", "../dist/vscode");
+  copySync(
+    join(__dirname, "../vscode-web/node_modules"),
+    join(__dirname, "../dist/node_modules")
+  );
+  copySync(
+    join(__dirname, "../vscode-web/out"),
+    join(__dirname, "../dist/out")
+  );
 }
 
 module.exports = { compileVSCode };

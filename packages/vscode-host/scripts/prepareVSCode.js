@@ -3,7 +3,7 @@
 const { chdir, execSync, existsSync, changeFileSync, log } = require("./util");
 const { argv } = require("./argv");
 
-const vscodeVersion = "1.58.0";
+const vscodeVersion = "1.82.0";
 
 function prepareVSCode() {
   log.info("============ Cloning VSCode...");
@@ -25,22 +25,9 @@ function prepareVSCode() {
 
   log.info("============ Installing VSCode dependencies...");
 
-  changeFileSync("./build/npm/preinstall.js", (s) =>
-    // This line in vscode/build/npm/preinstall.js checks what's the top-level
-    // script runner, not what's used to install dependencies.
-    // We're literally calling "yarn" few lines below from here.
-    s.replace(
-      `(!/yarn[\\w-.]*\\.js$|yarnpkg$/.test(process.env['npm_execpath']))`,
-      "(false)"
-    )
-  );
-
-  // update playwright version to make it work under M1 macs
-  changeFileSync("./package.json", (s) =>
-    s.replace('"playwright": "1.11.1",', '"playwright": "1.22.1",')
-  );
-
-  execSync(["yarn", argv.verbose && "--verbose"], { stdio: "inherit" });
+  if (!existsSync("node_modules")) {
+    execSync("yarn", { stdio: "inherit" });
+  }
 }
 
 module.exports = { prepareVSCode };

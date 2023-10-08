@@ -1,12 +1,8 @@
 import { Event } from "vs/base/common/event";
 import { URI, UriComponents } from "vs/base/common/uri";
 import { localize } from "vs/nls";
-import {
-  create,
-  IWorkbenchConstructionOptions,
-  IWorkspace,
-  IWorkspaceProvider,
-} from "vs/workbench/workbench.web.api";
+import { create } from "vs/workbench/workbench.web.main";
+import { IWorkspace } from "vs/platform/workspace/common/workspace";
 import { renderNotification } from "../../../deth/notification";
 import {
   CommandId,
@@ -19,7 +15,7 @@ async function main() {
   patchForWorkingInIframe();
 
   // create workbench
-  let config: IWorkbenchConstructionOptions & {
+  let config: any & {
     folderUri?: UriComponents;
     workspaceUri?: UriComponents;
   } = {};
@@ -32,7 +28,7 @@ async function main() {
   }
 
   if (Array.isArray(config.additionalBuiltinExtensions)) {
-    config.additionalBuiltinExtensions.forEach((extension) => {
+    config.additionalBuiltinExtensions.forEach((extension: any) => {
       extension.extensionLocation = URI.revive(extension.extensionLocation);
     });
   }
@@ -45,7 +41,7 @@ async function main() {
   }
 
   if (workspace) {
-    const workspaceProvider: IWorkspaceProvider = {
+    const workspaceProvider: any = {
       workspace,
       open: async (
         _workspace: IWorkspace,

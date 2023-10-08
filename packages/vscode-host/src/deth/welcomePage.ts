@@ -115,7 +115,7 @@ export class EthereumViewerWelcomePage {
     if (this.container) {
       return this.container;
     }
-    const content = marked(buildTemplate());
+    const content = marked.marked(buildTemplate());
     this.container = document.createElement("div");
     this.container.classList.add("dethWelcomePage");
     this.container.innerHTML = content;

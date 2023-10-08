@@ -58,36 +58,6 @@ function copyExtensions() {
 
   // copy default built-in extensions from VSCode repo
   copySync("extensions", "../dist/extensions", withoutNodeModules);
-
-  // #region write extensions manifest
-  log.info("Writing extensions manifest...");
-
-  const extensionsDir = readdirSync("extensions");
-  for (const extensionPath of extensionsDir) {
-    const fullPath = `extensions/${extensionPath}`;
-
-    if (!statSync(fullPath).isDirectory()) continue;
-
-    const packagePath = `${fullPath}/package.json`;
-
-    if (!existsSync(packagePath)) continue;
-
-    const nlsPath = `${fullPath}/package.nls.json`;
-
-    extensions.push({
-      extensionPath,
-      packageJSON: JSON.parse(readFileSync(packagePath, { encoding: "utf8" })),
-      packageNLS: existsSync(nlsPath)
-        ? JSON.parse(readFileSync(nlsPath, { encoding: "utf8" }))
-        : null,
-    });
-  }
-
-  writeFileSync(
-    "../dist/extensions.json",
-    JSON.stringify(extensions, null, argv.production ? null : 2)
-  );
-  // #endregion write extensions manifest
 }
 
 module.exports = { copyExtensions };
