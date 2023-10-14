@@ -3,7 +3,7 @@ import { URI, UriComponents } from "vs/base/common/uri";
 import { localize } from "vs/nls";
 import { create } from "vs/workbench/workbench.web.main";
 import { IWorkspace } from "vs/platform/workspace/common/workspace";
-import { renderNotification } from "../../../deth/notification";
+
 import {
   CommandId,
   ethViewerCommands,
@@ -51,8 +51,6 @@ async function main() {
     };
     config = { ...config, workspaceProvider };
   }
-
-  setTimeout(() => renderNotification(), 500);
 
   const apiName = ethViewerCommands.getApiName() || "etherscan";
 
