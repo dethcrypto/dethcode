@@ -58,7 +58,7 @@ async function main() {
     ...config,
     commands: getCommands(),
     configurationDefaults: {
-      "workbench.colorTheme": "Tomorrow Night Blue",
+      "workbench.colorTheme": "Dark+",
 
       // Omits ${rootName} "Untitled (Workspace)" from the title
       "window.title":
@@ -70,24 +70,6 @@ async function main() {
       tooltip: localize("playgroundTooltip", "See DethCode on GitHub"),
       command: CommandId("openRepoOnGithub"),
     },
-    // @todo extensions gallery would be lit, but we'd need a CORS proxy for it
-    // additionalBuiltinExtensions: [
-    //   ...(config.additionalBuiltinExtensions || []),
-    //   // extensions to fetch on startup
-    // ],
-    // productConfiguration: {
-    //   extensionsGallery: {
-    //     serviceUrl: "https://marketplace.visualstudio.com/_apis/public/gallery",
-    //     itemUrl: "https://marketplace.visualstudio.com/items",
-    //     resourceUrlTemplate:
-    //       "https://{publisher}.vscode-unpkg.net/{publisher}/{name}/{version}/{path}",
-    //     controlUrl:
-    //       "https://az764295.vo.msecnd.net/extensions/marketplace.json",
-    //     recommendationsUrl:
-    //       "https://az764295.vo.msecnd.net/extensions/workspaceRecommendations.json.gz",
-    //     ...{ cacheUrl: "https://vscode.blob.core.windows.net/gallery/index" },
-    //   },
-    // },
   });
 }
 
