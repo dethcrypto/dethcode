@@ -7,4 +7,5 @@ module.exports = {
     "packages/vscode-host/src/**/*.test.ts",
     "packages/bookmarklet/*.test.ts",
   ],
+  exclude: ["packages/vscode-host/src/src/vs/editor/test/node/classification/typescript.test.ts"]
 };

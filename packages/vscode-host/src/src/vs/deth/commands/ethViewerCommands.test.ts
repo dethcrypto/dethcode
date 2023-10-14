@@ -1,5 +1,5 @@
 import { expect } from "earljs";
-import { givenUrl } from "../../test/test-utils";
+import { givenUrl } from "../../../../test/test-utils";
 
 import { ethViewerCommands } from "./getCommands";
 
