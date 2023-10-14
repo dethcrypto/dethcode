@@ -29,6 +29,30 @@ function compileVSCode() {
   });
   log.info(copiedFilesReport);
 
+  /**
+   * For some weird reason typecheck doesn't pass in these files. So we need to tweak them a bit.
+   */
+  log.info("============ Fixing types in extensions...");
+  const files = [
+    "extensions/css-language-features/server/src/browser/cssServerMain.ts",
+    "extensions/html-language-features/server/src/browser/htmlServerMain.ts",
+    "extensions/json-language-features/server/src/browser/jsonServerMain.ts",
+    "extensions/markdown-language-features/server/src/browser/main.ts",
+  ];
+  files.forEach((file) => {
+    changeFileSync(join(__dirname, "../vscode/", file), (content) =>
+      content
+        .replace(
+          "const messageReader = new BrowserMessageReader(self);",
+          "const messageReader = new BrowserMessageReader(self as any);"
+        )
+        .replace(
+          "const messageWriter = new BrowserMessageWriter(self);",
+          "const messageWriter = new BrowserMessageWriter(self as any);"
+        )
+    );
+  });
+
   log.info("============ Compiling VSCode...");
   chdir("vscode");
   execSync("yarn gulp vscode-web-min", { stdio: "inherit" });
