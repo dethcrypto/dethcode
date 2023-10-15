@@ -22,7 +22,8 @@ jobs:
       - run: yarn global add node-gyp
       - run: yarn install
 
-      - run: |
+      - name: Build
+        run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             export DETH_IFRAME_URL="https://code.deth.net"
           else
