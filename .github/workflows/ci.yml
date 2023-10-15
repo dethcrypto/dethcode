@@ -11,12 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.0
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: "yarn"
+          cache: "pnpm"
 
-      - run: yarn install
+      - run: pnpm install
 
-      - run: yarn test
-      - run: yarn lint
+      - run: pnpm test
+      - run: pnpm lint

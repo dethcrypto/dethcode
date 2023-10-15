@@ -1,0 +1,46 @@
+lockfileVersion: 5.3
+
+specifiers:
+  fast-json-stable-stringify: ^2.1.0
+  p-finally: ^2.0.1
+  path-browserify: ^1.0.1
+  ts-essentials: ^9.0.0
+  typescript: ^4.5.3
+
+dependencies:
+  fast-json-stable-stringify: 2.1.0
+  p-finally: 2.0.1
+  path-browserify: 1.0.1
+  ts-essentials: 9.0.0_typescript@4.5.3
+
+devDependencies:
+  typescript: 4.5.3
+
+packages:
+
+  /fast-json-stable-stringify/2.1.0:
+    resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
+    dev: false
+
+  /p-finally/2.0.1:
+    resolution: {integrity: sha512-vpm09aKwq6H9phqRQzecoDpD8TmVyGw70qmWlyq5onxY7tqyTTFVvxMykxQSQKILBSFlbXpypIw2T1Ml7+DDtw==}
+    engines: {node: '>=8'}
+    dev: false
+
+  /path-browserify/1.0.1:
+    resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
+    dev: false
+
+  /ts-essentials/9.0.0_typescript@4.5.3:
+    resolution: {integrity: sha512-pow5YBSknf/PyoDhr8vsb93+hZah/jSzhdHA3GMjSzUuZIDZH+rV7tvN5DCbN4hi7QJXdteDv8D9HdDCSwXBUw==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    dependencies:
+      typescript: 4.5.3
+    dev: false
+
+  /typescript/4.5.3:
+    resolution: {integrity: sha512-eVYaEHALSt+s9LbvgEv4Ef+Tdq7hBiIZgii12xXJnukryt3pMgJf6aKhoCZ3FWQsu6sydEnkg11fYXLzhLBjeQ==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true

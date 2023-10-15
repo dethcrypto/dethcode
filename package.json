@@ -1,20 +1,18 @@
 {
   "license": "MIT",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "postinstall": "cd packages/vscode-host && yarn",
-    "watch": "yarn workspaces run watch",
-    "build": "yarn workspaces run build",
+    "watch": "pnpm --filter './packages/**' watch",
+    "build": "pnpm --filter './packages/**' build && cd packages/vscode-host && yarn build",
     "serve": "run-p serve:**",
     "serve:host": "cd packages/vscode-host && yarn serve",
+    "serve:entrypoint": "pnpm --filter './packages/entrypoint' serve",
     "copy-and-serve": "cd packages/vscode-host && yarn copy-and-serve",
     "lint": "eslint --ext .ts ./packages/*/src/**/*.ts",
-    "lint:fix": "yarn workspaces run lint -- --fix",
+    "lint:fix": "pnpm lint -- --fix",
     "prepare-deploy": "cp ./vercel.json ./packages/vscode-host/dist && cp ./vercel.json ./packages/entrypoint/dist",
-    "test": "mocha"
+    "test": "mocha",
+    "check": "pnpm test && pnpm lint"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.14",
@@ -47,6 +45,7 @@
     "webpack-cli": "^4.8.0"
   },
   "engines": {
-    "node": "^18.x"
+    "node": "^18.x",
+    "pnpm": ">=7.0.0"
   }
 }
