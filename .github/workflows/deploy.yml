@@ -11,23 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8.6.0
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: "pnpm"
+          cache: "yarn"
       - name: Setup Build Environment
         run: |
           sudo apt-get update
           sudo apt-get install -y libxkbfile-dev pkg-config libsecret-1-dev libkrb5-dev libxss1 dbus libgtk-3-0 libgbm1
       - run: yarn global add node-gyp
-      - run: pnpm install
+      - run: yarn install
 
       - run: yarn build
 
-      - run: pnpm prepare-deploy
+      - run: yarn prepare-deploy
 
       - uses: ngduc/vercel-deploy-action@master
         with:

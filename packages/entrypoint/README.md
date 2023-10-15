@@ -17,12 +17,12 @@ TLD (i.e. `.io`, `.com`) to `.deth.net`. )
 
 ### Scripts
 
-- **`pnpm serve`** - Starts HTTP server with the entrypoint website.
+- **`yarn serve`** - Starts HTTP server with the entrypoint website.
 
-- **`pnpm build`** - Builds the website to `./dist` directory, using localhost
+- **`yarn build`** - Builds the website to `./dist` directory, using localhost
   as the iframe `src`.
 
-- **`pnpm build:production`** - Builds the website to `./dist` directory, using
+- **`yarn build:production`** - Builds the website to `./dist` directory, using
   *https://code.deth.net* as the iframe `src`.
 
-- **`pnpm dev`** - runs `build` and `serve`.
+- **`yarn dev`** - runs `build` and `serve`.

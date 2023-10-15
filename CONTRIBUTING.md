@@ -8,7 +8,7 @@ The repository contains two packages, `ethereum-viewer` extension and the VSCode
 compilation meant for hosting it online.
 
 All packages (currently one) except of `@dethcrypto/ethereum-viewer-vscode-host`
-located in `packages/vscode-host` are managed by `pnpm`. As VSCode depends on
+located in `packages/vscode-host` are managed by `yarn`. As VSCode depends on
 Yarn, our `vscode-host` also needs Yarn.
 
 ### Step by step instructions
@@ -21,33 +21,34 @@ mkcert -install
 cd ..
 
 # install deps
-pnpm install
+yarn install
 
-pnpm build # this builds whole vscode and can take A LOT of time. If you are having issues, read below
-pnpm serve
+yarn build # this builds whole vscode and can take A LOT of time. If you are having issues, read below
+yarn serve
 ```
 
 ### Scripts
 
-- **`pnpm install`** - Installs dependencies for the workspace,
+- **`yarn install`** - Installs dependencies for the workspace,
   `ethereum-viewer` extension, and triggers `yarn install` for `vscode-host`
   through the `postinstall` script.
 
-- **`pnpm build`** - Builds all packages.
+- **`yarn build`** - Builds all packages.
 
   If you are having issues with MacOS and Python try the following:
+
   ```
   $ brew install sqlite
   $ npm config set sqlite /opt/homebrew/opt/sqlite
   $ npm config set python python3
   ```
 
-- **`pnpm watch`** - Starts webpack for `ethereum-extension` in watch mode.
+- **`yarn watch`** - Starts webpack for `ethereum-extension` in watch mode.
 
-- **`pnpm serve`** - Starts HTTP server with `vscode-host`.
+- **`yarn serve`** - Starts HTTP server with `vscode-host`.
 
-- **`pnpm dev`** - Copies `ethereum-extension` and serves `vscode-host`. Run
-  alongside `pnpm watch`.
+- **`yarn dev`** - Copies `ethereum-extension` and serves `vscode-host`. Run
+  alongside `yarn watch`.
 
 ### Resources
 
