@@ -11,15 +11,15 @@
   },
   "additionalBuiltinExtensions": [
     {
-      "scheme": "http",
+      "scheme": "https",
       "path": "/extensions/solidity-extension"
     },
     {
-      "scheme": "http",
+      "scheme": "https",
       "path": "/extensions/vyper-syntax"
     },
     {
-      "scheme": "http",
+      "scheme": "https",
       "path": "/extensions/ethereum-viewer"
     }
   ]
