@@ -23,48 +23,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libxkbfile-dev pkg-config libsecret-1-dev libkrb5-dev libxss1 dbus libgtk-3-0 libgbm1
       - run: yarn global add node-gyp
-
       - run: pnpm install
 
       - run: yarn build
 
       - run: pnpm prepare-deploy
 
-      # deployment per branch
-      # avoid uploading .bin files because superactions can't upload them
-      - if: ${{ github.ref != 'refs/heads/main' }}
-        run: |
-          find . -name "*.bin" -type f -delete
-      - uses: superactions/deploy-branch-action@action
-        if: ${{ github.ref != 'refs/heads/main' }}
-        with:
-          directory: packages/vscode-host/dist
-
-      # --- production deployments (only on main)
-      # deploy app
       - uses: ngduc/vercel-deploy-action@master
-        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           vercel-cli: vercel
-          vercel-project-id: ${{ secrets.VERCEL_APP_PROJECT_ID}}
+          vercel-project-id: prj_WQFxgyAPkR43Ym3Pl1AyOdVzXDQw
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           scope: ${{ secrets.VERCEL_ORG_ID }}
           working-directory: packages/vscode-host/dist
-          vercel-args: "--prod"
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-
-      # deploy entrypoint (no preview)
-      - uses: ngduc/vercel-deploy-action@master
-        if: ${{ github.ref == 'refs/heads/main' }}
-        with:
-          vercel-cli: vercel
-          vercel-project-id: ${{ secrets.VERCEL_ENTRYPOINT_PROJECT_ID}}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          working-directory: packages/entrypoint/dist
           vercel-args: "--prod"
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
