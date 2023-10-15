@@ -22,7 +22,14 @@ jobs:
       - run: yarn global add node-gyp
       - run: yarn install
 
-      - run: yarn build
+      - run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            export DETH_IFRAME_URL="https://code.deth.net"
+          else
+            export DETH_IFRAME_URL="https://dethcode.vercel.app"
+          fi
+
+          yarn build
 
       - run: yarn prepare-deploy
 
@@ -34,6 +41,18 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           scope: ${{ secrets.VERCEL_ORG_ID }}
           working-directory: packages/vscode-host/dist
+          vercel-args: "--prod"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+      - uses: ngduc/vercel-deploy-action@master
+        with:
+          vercel-cli: vercel
+          vercel-project-id: prj_HUIafaXOjvJCjiz3Ne5kJupck5oN
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          working-directory: packages/entrypoint/dist
           vercel-args: "--prod"
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
