@@ -25,6 +25,13 @@ async function main() {
   } else {
     const result = await fetch("/product.json");
     config = await result.json();
+    // for non https environments (like devmode), we need to tweak protocol to load extensions
+    if (location.protocol !== "https:") {
+      config.additionalBuiltinExtensions =
+        config.additionalBuiltinExtensions.map((extension: any) => {
+          extension.scheme = "http";
+        });
+    }
   }
 
   if (Array.isArray(config.additionalBuiltinExtensions)) {
@@ -73,4 +80,4 @@ async function main() {
   });
 }
 
-void main();
+main().catch(console.error);
