@@ -13,6 +13,10 @@ const fs = FileSystem();
 
 const IN_DETH_HOST = vscode.env.appName === "DethCode";
 
+/**
+ * We need to trigger activation on startup to read URL and automatically open a contract.
+ * This requires "activationEvents": ["*"]" in package.json.
+ */
 export async function activate(context: vscode.ExtensionContext) {
   fs.register(context);
 

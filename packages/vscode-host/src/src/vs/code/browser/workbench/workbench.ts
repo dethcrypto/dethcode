@@ -65,8 +65,6 @@ async function main() {
     ...config,
     commands: getCommands(),
     configurationDefaults: {
-      "workbench.colorTheme": "Dark+",
-
       // Omits ${rootName} "Untitled (Workspace)" from the title
       "window.title":
         "${dirty}${activeEditorShort}${separator}${appName}${separator}${remoteName}",

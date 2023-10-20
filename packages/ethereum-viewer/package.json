@@ -37,6 +37,9 @@
     "fileSearchProvider",
     "textSearchProvider"
   ],
+  "activationEvents": [
+    "*"
+  ],
   "contributes": {
     "commands": {
       "command": "ethereum-viewer.open",

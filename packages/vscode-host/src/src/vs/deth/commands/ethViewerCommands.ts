@@ -5,7 +5,7 @@ export const ethViewerCommands = {
     const url = new URL(window.location.href);
 
     // surge.sh doesn't seem to support rewrites, so we also read from search params.
-    const fromSearchParams = url.searchParams.get("contract");
+    const fromSearchParams = url.searchParams.get("contract") || url.searchParams.get("address");
     if (fromSearchParams?.startsWith("0x")) return fromSearchParams;
 
     let path = url.pathname.slice(1);

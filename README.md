@@ -78,3 +78,12 @@ Check out our [contributing guidelines](./CONTRIBUTING.md)
 ## Social
 
 Follow us on [Twitter](https://twitter.com/dethcrypto)!
+
+## Development
+
+```
+cd packages/vscode-host/vscode
+./scripts/code-web-deth.js # loads extensions from ./packages/vscode-host/dist/extensions
+yarn watch
+yarn watch-web
+```
