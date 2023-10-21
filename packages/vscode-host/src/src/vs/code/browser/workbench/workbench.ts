@@ -28,7 +28,7 @@ async function main() {
     // for non https environments (like devmode), we need to tweak protocol to load extensions
     if (location.protocol !== "https:") {
       config.additionalBuiltinExtensions =
-        config.additionalBuiltinExtensions.map((extension: any) => {
+        config.additionalBuiltinExtensions.forEach((extension: any) => {
           extension.scheme = "http";
         });
     }
@@ -65,8 +65,6 @@ async function main() {
     ...config,
     commands: getCommands(),
     configurationDefaults: {
-      "workbench.colorTheme": "Dark+",
-
       // Omits ${rootName} "Untitled (Workspace)" from the title
       "window.title":
         "${dirty}${activeEditorShort}${separator}${appName}${separator}${remoteName}",
