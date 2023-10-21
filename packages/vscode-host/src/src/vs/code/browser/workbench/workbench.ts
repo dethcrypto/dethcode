@@ -27,10 +27,9 @@ async function main() {
     config = await result.json();
     // for non https environments (like devmode), we need to tweak protocol to load extensions
     if (location.protocol !== "https:") {
-      config.additionalBuiltinExtensions =
-        config.additionalBuiltinExtensions.forEach((extension: any) => {
-          extension.scheme = "http";
-        });
+      config.additionalBuiltinExtensions.forEach((extension: any) => {
+        extension.scheme = "http";
+      });
     }
   }
 
