@@ -18,19 +18,14 @@ jobs:
         with:
           node-version: 18
           cache: "pnpm"
-      - run: npm install -g vercel
       - name: Setup Build Environment
         run: |
           sudo apt-get update
           sudo apt-get install -y libxkbfile-dev pkg-config libsecret-1-dev libkrb5-dev libxss1 dbus libgtk-3-0 libgbm1
       - run: yarn global add node-gyp
-      - run: pnpm install
+      - run: pnpm add -g vercel@32.5.0
 
-      - name: Restore build
-        uses: actions/cache/restore@v3
-        with:
-          path: packages/vscode-host/dist
-          key: build-vscode
+      - run: pnpm install
 
       - name: Build
         run: |
@@ -44,31 +39,36 @@ jobs:
 
       - run: pnpm prepare-deploy
 
-      - name: Save Build
-        uses: actions/cache/save@v3
-        with:
-          path: packages/vscode-host/dist
-          key: build-vscode
-
       - name: Deploy host to Vercel
-        run: |
-          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-          vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
+        uses: nick-fields/retry@v2
+        with:
+          command: |
+            cd packages/vscode-host/dist
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
 
-          cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
+            cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
 
-          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: packages/vscode-host/dist
+            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          max_attempts: 3
+          timeout_minutes: 10
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_HOST_PREVIEW_HOST_PROJECT_ID }}
 
       - name: Deploy entrypoint to Vercel
-        run: |
-          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-          vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
-          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: packages/entrypoint/dist
+        uses: nick-fields/retry@v2
+        with:
+          command: |
+            cd packages/entrypoint/dist
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
+
+            cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
+
+            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          max_attempts: 3
+          timeout_minutes: 10
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID:
