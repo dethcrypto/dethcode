@@ -299,7 +299,7 @@ export class GettingStartedPage extends EditorPane {
 			this.updateCategoryProgress();
 		}));
 
-    // is there a better way to hide hide welcome screen?
+		// is there a better way to hide hide welcome screen?
 		setTimeout(() => this.runDispatchCommand("allDone", ""), 0)
 	}
 
@@ -793,62 +793,64 @@ export class GettingStartedPage extends EditorPane {
 			$('p.subtitle.description', {}, localize({ key: 'gettingStarted.editingEvolved', comment: ['Shown as subtitle on the Welcome page.'] }, "Editing evolved"))
 		);
 
-      const examples = $(
-        "ul.examples",
-        {},
-        $(
-          "li",
-          {},
-          $(
-            "a",
-            {
-              href: "https://etherscan.deth.net/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec",
-              target: "_blank",
-            },
-            "Arbitrum ERC20 Gateway"
-          )
-        ),
-        $(
-          "li",
-          {},
-          $(
-            "a",
-            {
-              href: "https://etherscan.deth.net/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1",
-              target: "_blank",
-            },
-            "L1CrossDomainMessenger"
-          )
-        ),
-        $(
-          "li",
-          {},
-          $(
-            "a",
-            {
-              href: "https://etherscan.deth.net/address/0x6b175474e89094c44da98b954eedeac495271d0f",
-              target: "_blank",
-            },
-            "DAI Stablecoin"
-          )
-        )
-      );
+		const examples = $(
+			"ul.examples",
+			{},
+			$(
+				"li",
+				{},
+				$(
+					"a",
+					{
+						href: "https://etherscan.deth.net/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec",
+					},
+					"Arbitrum ERC20 Gateway"
+				)
+			),
+			$(
+				"li",
+				{},
+				$(
+					"a",
+					{
+						href: "https://etherscan.deth.net/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1",
+					},
+					"L1CrossDomainMessenger"
+				)
+			),
+			$(
+				"li",
+				{},
+				$(
+					"a",
+					{
+						href: "https://etherscan.deth.net/address/0x6b175474e89094c44da98b954eedeac495271d0f",
+					},
+					"DAI Stablecoin"
+				)
+			)
+		);
 
 		const leftColumn = $(
-      ".categories-column.categories-column-left",
-      {},
-      $(
-        "p",
-        {},
-        "While browsing smart contract code on Etherscan just change URL from .io to deth.net. This will open Visual Studio Code instance and fetch the verified code using Etherscan API."
-      )
-    );
-    const rightColumn = $(
-      ".categories-column.categories-column-right",
-      {},
-      $("h3", {}, "Examples:"),
-      examples
-    );
+			".categories-column.categories-column-left",
+			{},
+			$(
+				"p",
+				{},
+				"While browsing smart contract code on Etherscan just change URL from .io to .deth.net. This will open Visual Studio Code instance and fetch the verified code using Etherscan API."
+			),
+			$(
+				"p",
+				{},
+				"For more info visit our ", $("a", { href: "https://github.com/dethcrypto/dethcode", target: "_blank" }, "Github page"), "."
+			)
+		);
+		const rightColumn = $(
+			".categories-column.categories-column-right",
+			{},
+			$("h3", {}, "Examples:"),
+			examples
+		);
 
 		const startList = this.buildStartList();
 		const recentList = this.buildRecentlyOpenedList();
@@ -898,18 +900,18 @@ export class GettingStartedPage extends EditorPane {
 			}
 		};
 
-    reset(
-      this.categoriesSlide,
-      $(
-        ".gettingStartedCategoriesContainer",
-        {},
-        header,
-        leftColumn,
-        rightColumn,
-        footer
-      )
-    );
-    this.categoriesPageScrollbar?.scanDomNode();
+		reset(
+			this.categoriesSlide,
+			$(
+				".gettingStartedCategoriesContainer",
+				{},
+				header,
+				leftColumn,
+				rightColumn,
+				footer
+			)
+		);
+		this.categoriesPageScrollbar?.scanDomNode();
 
 		this.updateCategoryProgress();
 		this.registerDispatchListeners();
