@@ -26,6 +26,12 @@ jobs:
       - run: yarn global add node-gyp
       - run: pnpm install
 
+      - name: Restore build
+        uses: actions/cache/restore@v3
+        with:
+          path: packages/vscode-host/dist
+          key: build-vscode
+
       - name: Build
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
@@ -37,6 +43,12 @@ jobs:
           yarn build
 
       - run: pnpm prepare-deploy
+
+      - name: Save Build
+        uses: actions/cache/save@v3
+        with:
+          path: packages/vscode-host/dist
+          key: build-vscode
 
       - name: Deploy host to Vercel
         run: |
