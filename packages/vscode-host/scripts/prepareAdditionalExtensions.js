@@ -2,6 +2,7 @@
 
 const { chdir, execSync, existsSync, log, rimraf } = require("./util");
 const { argv } = require("./argv");
+const { writeFileSync } = require("fs");
 
 const additionalExtensions = [
   {
@@ -52,6 +53,18 @@ function prepareAdditionalExtensions() {
       } else {
         log.info(`Installing production dependencies for ${ext.name}...`);
         execSync(["yarn --production", argv.verbose && "--verbose"], options);
+      }
+
+      // create empty metadata file if doesnt exist so vscode doesnt complain
+      if (!existsSync(`./${ext.name}/package.nls.json`)) {
+        writeFileSync(
+          `./${ext.name}/package.nls.json`,
+          JSON.stringify({
+            displayName: "Deth",
+            description: "deth",
+          }),
+          "utf8"
+        );
       }
     }
   }
