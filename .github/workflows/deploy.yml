@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: 18
           cache: "pnpm"
+      - run: npm install -g vercel
       - name: Setup Build Environment
         run: |
           sudo apt-get update
@@ -37,26 +38,26 @@ jobs:
 
       - run: pnpm prepare-deploy
 
-      - uses: ngduc/vercel-deploy-action@master
-        with:
-          vercel-cli: vercel
-          vercel-project-id: prj_WQFxgyAPkR43Ym3Pl1AyOdVzXDQw
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          working-directory: packages/vscode-host/dist
-          vercel-args: "--prod"
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - name: Deploy host to Vercel
+        run: |
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
 
-      - uses: ngduc/vercel-deploy-action@master
-        with:
-          vercel-cli: vercel
-          vercel-project-id: prj_HUIafaXOjvJCjiz3Ne5kJupck5oN
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          working-directory: packages/entrypoint/dist
-          vercel-args: "--prod"
+          cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
+
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: packages/vscode-host/dist
         env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_HOST_PREVIEW_HOST_PROJECT_ID }}
+
+      - name: Deploy entrypoint to Vercel
+        run: |
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: packages/entrypoint/dist
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID:
+            ${{ secrets.VERCEL_ENTRYPOINT_PREVIEW_HOST_PROJECT_ID }}
