@@ -21,7 +21,11 @@ function compileVSCode() {
   // Use simple workbench
   let copiedFilesReport = "Copied files: \n";
   globSync("src/**/*.*", { dot: true }).forEach((file) => {
-    if (!file.endsWith('typescript.test.ts') && (file.endsWith(".test.ts") || file.includes("src/test/"))) return;
+    if (
+      !file.endsWith("typescript.test.ts") &&
+      (file.endsWith(".test.ts") || file.includes("src/test/"))
+    )
+      return;
 
     const destination = file.replace("src/", "vscode/");
     copySync(file, destination);
@@ -52,6 +56,10 @@ function compileVSCode() {
         )
     );
   });
+
+  if (process.env.SKIP_COMPILE === "1") {
+    return;
+  }
 
   log.info("============ Compiling VSCode...");
   chdir("vscode");

@@ -802,9 +802,9 @@ export class GettingStartedPage extends EditorPane {
 				$(
 					"a",
 					{
-						href: "https://etherscan.deth.net/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec",
+						href: "https://etherscan.deth.net/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1",
 					},
-					"Arbitrum ERC20 Gateway"
+					"Optimism's L1CrossDomainMessenger"
 				)
 			),
 			$(
@@ -813,9 +813,9 @@ export class GettingStartedPage extends EditorPane {
 				$(
 					"a",
 					{
-						href: "https://etherscan.deth.net/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1",
+						href: "https://etherscan.deth.net/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec",
 					},
-					"L1CrossDomainMessenger"
+					"Arbitrum ERC20 Gateway"
 				)
 			),
 			$(
