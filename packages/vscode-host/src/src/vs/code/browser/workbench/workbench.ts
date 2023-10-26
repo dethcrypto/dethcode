@@ -16,8 +16,6 @@ async function main() {
 
   const apiName = ethViewerCommands.getApiName() || "etherscan";
 
-  console.log(config);
-
   create(document.body, {
     ...config,
     settingsSyncOptions: {
@@ -39,6 +37,24 @@ async function main() {
       command: CommandId("openRepoOnGithub"),
     },
   });
+
+  const bannerKey = "banner-welcome#4-tmp";
+  const bannerBody = `Say hello to the new, improved DethCode!`
+
+  if (localStorage.getItem(bannerKey)) {
+    // do nothing, user dismissed the banner already
+    return;
+  }
+
+  const bannerDiv = document.createElement("div");
+  bannerDiv.id = "deth-code-banner";
+  bannerDiv.innerHTML = `
+  <div style="width: 100%; color: #ff34f0; background-color: black; display: flex; justify-content: space-between; align-items: center; line-height: 24px;font-size: 14px;font-family: Roboto, Arial, sans-serif;">
+    <div></div>
+    <div>${bannerBody}</div>
+    <a onclick="(() => { document.getElementById('${bannerDiv.id}').remove(); localStorage.setItem('${bannerKey}', true); return false; })();" style="padding:0 10px">x</a>
+  </div>`
+  document.body.prepend(bannerDiv);
 }
 
 

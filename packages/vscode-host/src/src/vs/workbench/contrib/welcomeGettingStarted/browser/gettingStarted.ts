@@ -789,8 +789,9 @@ export class GettingStartedPage extends EditorPane {
 		}));
 
 		const header = $('.header', {},
+			$('img.product-icon', { src: "https://github.com/dethcrypto/ethereum-code-viewer/raw/main/docs/logo.svg?raw=true", alt: 'DethCode logo', width: 100, height: 100 }),
 			$('h1.product-name.caption', {}, this.productService.nameLong),
-			$('p.subtitle.description', {}, localize({ key: 'gettingStarted.editingEvolved', comment: ['Shown as subtitle on the Welcome page.'] }, "Editing evolved"))
+			$('p.subtitle.description', {}, "Explore Ethereum smart contracts right in VSCode.")
 		);
 
 		const examples = $(
