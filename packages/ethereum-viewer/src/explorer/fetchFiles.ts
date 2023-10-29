@@ -11,7 +11,8 @@ import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
 
 const fetchEtherscanResponse = makeSolidFetch({
   async verifyResponse(response: unknown): Promise<boolean> {
-    return (response as any)?.message === "OK" ?? false;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return (response as any)?.message === "OK" || false;
   },
 });
 
