@@ -8,7 +8,11 @@
       data-domain="code.deth.net"
       src="https://plausible.io/js/plausible.js"
     ></script>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Mobile tweaks -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="/code-192.png" />
 
     <!-- Disable pinch zooming -->
     <meta
@@ -17,43 +21,38 @@
     />
 
     <!-- Workbench Icon/Manifest/CSS -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <meta id="vscode-workbench-builtin-extensions" data-settings="[]" />
-
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
     <link
-      data-name="vs/workbench/workbench.web.api"
+      data-name="vs/workbench/workbench.web.main"
       rel="stylesheet"
-      href="/vscode/vs/workbench/workbench.web.api.css"
+      href="/out/vs/workbench/workbench.web.main.css"
     />
-    <!-- Prefetch to avoid waterfall -->
-    <link rel="prefetch" href="/lib/semver-umd/lib/semver-umd.js" />
-    <!-- Built in extensions -->
   </head>
 
   <body aria-label=""></body>
 
+  <!-- Startup (do not modify order of script tags!) -->
+  <script src="/out/vs/loader.js"></script>
+  <script src="/out/vs/webPackagePaths.js"></script>
   <script>
-    fetch("/extensions.json")
-      .then((response) => response.text())
-      .then((extensionsJson) => {
-        document
-          .getElementById("vscode-workbench-builtin-extensions")
-          .setAttribute("data-settings", extensionsJson);
-      });
-
-    let baseUri = `${window.location.origin}`;
-    self.require = {
-      baseUrl: `${baseUri}/vscode/`,
-      paths: {
-        "vscode-textmate": `${baseUri}/lib/vscode-textmate/release/main`,
-        "vscode-oniguruma": `${baseUri}/lib/vscode-oniguruma/release/main`,
-        "semver-umd": `${baseUri}/lib/semver-umd/lib/semver-umd.js`,
-      },
-    };
+    Object.keys(self.webPackagePaths).map(function (key, index) {
+      self.webPackagePaths[
+        key
+      ] = `${window.location.origin}/node_modules/${key}/${self.webPackagePaths[key]}`;
+    });
+    require.config({
+      baseUrl: `${window.location.origin}/out`,
+      recordStats: true,
+      trustedTypesPolicy: window.trustedTypes?.createPolicy("amdLoader", {
+        createScriptURL(value) {
+          return value;
+        },
+      }),
+      paths: self.webPackagePaths,
+    });
   </script>
-  <script src="/vscode/vs/loader.js"></script>
-
-  <script src="/vscode/vs/workbench/workbench.web.api.nls.js"></script>
-  <script src="/vscode/vs/workbench/workbench.web.api.js"></script>
-  <script src="/vscode/vs/code/browser/workbench/workbench.js"></script>
+  <script src="/out/vs/workbench/workbench.web.main.nls.js"></script>
+  <script src="/out/vs/workbench/workbench.web.main.js"></script>
+  <script src="/out/vs/code/browser/workbench/workbench.js"></script>
 </html>

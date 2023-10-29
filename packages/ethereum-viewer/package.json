@@ -7,6 +7,7 @@
     "vscode:prepublish": "yarn run build:prod",
     "build": "webpack",
     "build:prod": "webpack --mode production --devtool hidden-source-map",
+    "build:dev": "pnpm build && mkdir -p ../vscode-host/dist/extensions/ethereum-viewer/dist  && cp -Rf ./dist/ ../vscode-host/dist/extensions/ethereum-viewer/dist && cp -f ./package.json ../vscode-host/dist/extensions/ethereum-viewer/",
     "watch": "webpack --watch",
     "pretest": "yarn run build",
     "lint": "eslint src --ext ts",
@@ -29,11 +30,10 @@
   },
   "displayName": "DethCode",
   "description": "View source of deployed Ethereum contracts in VSCode",
-  "publisher": "hasparus",
+  "publisher": "deth",
   "categories": [
     "Other"
   ],
-  "enableProposedApi": true,
   "enabledApiProposals": [
     "fileSearchProvider",
     "textSearchProvider"
@@ -45,7 +45,7 @@
     "commands": {
       "command": "ethereum-viewer.open",
       "category": "DethCode",
-      "title": "Open smart contract source code"
+      "title": "Open smart contract from etherscan"
     }
   }
 }

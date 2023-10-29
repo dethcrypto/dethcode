@@ -10,51 +10,104 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 7.1.0
-      - uses: actions/setup-node@v2
+          version: 8.6.0
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
           cache: "pnpm"
+      - name: Setup Build Environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxkbfile-dev pkg-config libsecret-1-dev libkrb5-dev libxss1 dbus libgtk-3-0 libgbm1
+      - run: yarn global add node-gyp
+      - run: pnpm add -g vercel@32.5.0
 
       - run: pnpm install
-      - run: pnpm build
+
+      - name: Build
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            export DETH_IFRAME_URL="https://code.deth.net"
+          else
+            export DETH_IFRAME_URL="https://dethcode.vercel.app"
+          fi
+
+          yarn build
 
       - run: pnpm prepare-deploy
 
-      # deployment per branch
-      - uses: superactions/deploy-branch-action@action
-        if: ${{ github.ref != 'refs/heads/main' }}
+      # --- preview deployments
+      - name: Deploy host to Vercel - STAGING
+        uses: nick-fields/retry@v2
         with:
-          directory: packages/vscode-host/dist
+          command: |
+            cd packages/vscode-host/dist
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
+
+            cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
+
+            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          max_attempts: 3
+          timeout_minutes: 10
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_HOST_PREVIEW_HOST_PROJECT_ID }}
+
+      - name: Deploy entrypoint to Vercel - STAGING
+        uses: nick-fields/retry@v2
+        with:
+          command: |
+            cd packages/entrypoint/dist
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
+
+            cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
+
+            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          max_attempts: 3
+          timeout_minutes: 10
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID:
+            ${{ secrets.VERCEL_ENTRYPOINT_PREVIEW_HOST_PROJECT_ID }}
 
       # --- production deployments (only on main)
-      # deploy app
-      - uses: ngduc/vercel-deploy-action@master
+      - name: Deploy host to Vercel - PRODUCTION
         if: ${{ github.ref == 'refs/heads/main' }}
+        uses: nick-fields/retry@v2
         with:
-          vercel-cli: vercel
-          vercel-project-id: ${{ secrets.VERCEL_APP_PROJECT_ID}}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          working-directory: packages/vscode-host/dist
-          vercel-args: "--prod"
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          command: |
+            cd packages/vscode-host/dist
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
 
-      # deploy entrypoint (no preview)
-      - uses: ngduc/vercel-deploy-action@master
-        if: ${{ github.ref == 'refs/heads/main' }}
-        with:
-          vercel-cli: vercel
-          vercel-project-id: ${{ secrets.VERCEL_ENTRYPOINT_PROJECT_ID}}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          working-directory: packages/entrypoint/dist
-          vercel-args: "--prod"
+            cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
+
+            vercel deploy --prebuilt --production --token=${{ secrets.VERCEL_TOKEN }}
+          max_attempts: 3
+          timeout_minutes: 10
         env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_APP_PROJECT_ID }}
+
+      - name: Deploy entrypoint to Vercel - PRODUCTION
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: nick-fields/retry@v2
+        with:
+          command: |
+            cd packages/entrypoint/dist
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
+
+            cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
+
+            vercel deploy --prebuilt --production --token=${{ secrets.VERCEL_TOKEN }}
+          max_attempts: 3
+          timeout_minutes: 10
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ENTRYPOINT_PROJECT_ID }}

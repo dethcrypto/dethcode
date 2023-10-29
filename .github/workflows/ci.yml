@@ -10,13 +10,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 7.1.0
-      - uses: actions/setup-node@v2
+          version: 8.6.0
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
           cache: "pnpm"
 
       - run: pnpm install

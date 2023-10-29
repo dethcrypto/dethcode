@@ -5,13 +5,9 @@
   <h2 align="center">DethCode</h2>
   <p align="center">
     <a href="https://github.com/dethcrypto/ethereum-code-viewer/actions"><img alt="Build Status" src="https://github.com/dethcrypto/ethereum-code-viewer/actions/workflows/ci.yml/badge.svg"></a>
-    <a href="https://discord.gg/wQDkeDgzgv"><img alt="Join our Discord!" src="https://img.shields.io/discord/895381864922091630.svg?color=7289da&label=deth&logo=discord&style=flat-square"></a>
   </p>
   <p align="center"><strong>View source of deployed Ethereum smart contracts in VS Code</strong></p>
   <p align="center">While on Etherscan, change <code>.io</code> to <code>.deth.net</code> and browse contracts comfortably in ephemeral VS Code instance</p>
-  <p align="center">
-    <em>💸 Enjoy using DethCode? Consider funding development via <a href="https://gitcoin.co/grants/4038/deth-typechain">GitCoin</a> 💸</em>
-  </p>
 </p>
 
 ## Usage
@@ -38,7 +34,7 @@ javascript: location.href = location.href.replace(/\.\w+(\/)/, ".deth.net/")
   supported chains][supported_explorers])
 
 [supported_explorers]:
-  https://github.com/dethcrypto/ethereum-code-viewer/blob/main/docs/supported-explorers.md
+  https://github.com/dethcrypto/dethcode/blob/main/packages/ethereum-viewer/src/explorer/networks.ts#L38
 
 ## Motivation
 
@@ -52,8 +48,25 @@ DethCode was born out of frustration, and it's here to fix all of these issues.
 In addition, it improves the experience by automatically following the
 implementation of proxies and so on.
 
+### Is it still relevant since Etherscan implements something similar?
+
+Etherscan decided that they like the idea of browsing smart contracts in
+ephemeral VSCode instances so much that they decided to make it part of the
+their offering. We don't hold a grudge against them, however this is precisely
+why DethCode needs to live on!
+
+DethCode is a fully open-source, public good that is available for anyone and is
+developed by a community. Other blockchain explorers can use it/self-host it
+instead of developing the same thing again. Furthermore, we are preparing to
+launch, new advanced features that will make DethCode the best way to browse
+ethereum's smart contracts.
+
 ## Examples
 
+- Optimism L1CrossDomainMessenger:
+  [dethcode](https://etherscan.deth.net/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1)
+  |
+  [etherscan](https://etherscan.io/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1#code)
 - Arbitrum ERC20 Gateway on mainnet:
   [dethcode](https://etherscan.deth.net/address/0xa3a7b6f88361f48403514059f1f16c8e78d60eec)
   |
@@ -62,19 +75,15 @@ implementation of proxies and so on.
   [dethcode](https://arbiscan.deth.net/address/0x09e9222e96e7b4ae2a407b98d48e330053351eee)
   |
   [arbiscan](https://arbiscan.io/address/0x09e9222e96e7b4ae2a407b98d48e330053351eee#code)
-- Optimism L1CrossDomainMessenger:
-  [dethcode](https://etherscan.deth.net/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1)
-  |
-  [etherscan](https://etherscan.io/address/0x25ace71c97b33cc4729cf772ae268934f7ab5fa1#code)
 - Dai Stablecoin:
   [dethcode](https://etherscan.deth.net/address/0x6b175474e89094c44da98b954eedeac495271d0f)
   |
   [etherscan](https://etherscan.io/address/0x6b175474e89094c44da98b954eedeac495271d0f#code)
 
-## Contributing
+## Contributing and development
 
-Check out our [contributing guidelines](./CONTRIBUTING.md)
+Check out our [contributing guide](./CONTRIBUTING.md).
 
 ## Social
 
-Follow us on [Twitter](https://twitter.com/dethcrypto)!
+Follow me on [Twitter](https://twitter.com/krzkaczor).

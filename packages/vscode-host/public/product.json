@@ -1,9 +1,0 @@
-{
-  "productConfiguration": {
-    "nameShort": "DethCode",
-    "nameLong": "DethCode",
-    "applicationName": "deth-viewer",
-    "dataFolderName": ".deth-viewer",
-    "version": "1.58.0"
-  }
-}

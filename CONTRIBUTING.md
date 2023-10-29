@@ -4,50 +4,57 @@ We welcome all kinds of contributions :)
 
 ### Repository structure and package managers
 
-The repository contains two packages, `ethereum-viewer` extension and the VSCode
-compilation meant for hosting it online.
+The repository contains few packages:
 
-All packages (currently one) except of `@dethcrypto/ethereum-viewer-vscode-host`
-located in `packages/vscode-host` are managed by `pnpm`. As VSCode depends on
-Yarn, our `vscode-host` also needs Yarn.
+- `ethereum-viewer` - VSCode extension, this is where most of the business logic
+  resides,
+- `vscode-host` - tweaked VSCode instance. Default settings were changed and
+  some features hidden. Note: since some time, vscode officially supports web
+  builds which greatly simplified this package,
+- `entrypoint` - Simple website that cointains an iframe to vscode host. It's
+  done so multiple instances of DethCode for different chains, can share the
+  same settings (because they all use a single instance under the hood).
 
-### Step by step instructions
+All packages except of `@dethcrypto/vscode-host` located in
+`packages/vscode-host` are managed by `pnpm`. As VSCode depends on Yarn, our
+`vscode-host` also needs Yarn.
 
-```sh
-# You need to create dummy certs using mkcert - https://github.com/FiloSottile/mkcert
-cd ./certs
-mkcert localhost
-mkcert -install
-cd ..
+## Development
 
-# install deps
+```
 pnpm install
 
-pnpm build # this builds whole vscode and can take A LOT of time. If you are having issues, read below
-pnpm serve
+cd packages/ethereum-viewer # build for the first time
+pnpm build
+
+cd packages/vscode-host
+node scripts/prepareVSCode.js # clones vscode into ./vscode dir
+node scripts/compileVSCode.js
+node scripts/prepareAdditionalExtensions.js # extensions like solidity and vyper support
+node scripts/copyExtensions.js
+
+cd ./vscode
+node ./scripts/code-web-deth.js # loads extensions from ./packages/vscode-host/dist/extensions
+yarn watch # in a new tab
+yarn watch-web # in a new tab
 ```
 
-### Scripts
+Changes to vscode will be automatically applied. To make them permanent copy
+them to `./packages/vscode-host/src/`.
 
-- **`pnpm install`** - Installs dependencies for the workspace,
-  `ethereum-viewer` extension, and triggers `yarn install` for `vscode-host`
-  through the `postinstall` script.
+After introducing changes to `packages/ethereum-viewer` run
+`pnpm run build:dev`.
 
-- **`pnpm build`** - Builds all packages.
+Btw. this will be improved soon ;)
 
-  If you are having issues with MacOS and Python try the following:
-  ```
-  $ brew install sqlite
-  $ npm config set sqlite /opt/homebrew/opt/sqlite
-  $ npm config set python python3
-  ```
+## Production build
 
-- **`pnpm watch`** - Starts webpack for `ethereum-extension` in watch mode.
+Note: full, production build of VSCode host is painfully slow and takes ~0.5h
+even on M1 Mac.
 
-- **`pnpm serve`** - Starts HTTP server with `vscode-host`.
-
-- **`pnpm dev`** - Copies `ethereum-extension` and serves `vscode-host`. Run
-  alongside `pnpm watch`.
+```
+pnpm build
+```
 
 ### Resources
 
@@ -59,3 +66,13 @@ terms.
 - https://code.visualstudio.com/api/extension-guides/web-extensions
 - https://code.visualstudio.com/api/references/vscode-api#FileSystemProvider
 - https://github.com/microsoft/vscode-extension-samples/blob/main/fsprovider-sample/README.md
+
+### Troubleshooting
+
+If you are having issues with MacOS and Python try the following:
+
+```
+$ brew install sqlite
+$ npm config set sqlite /opt/homebrew/opt/sqlite
+$ npm config set python python3
+```

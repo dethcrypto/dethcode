@@ -2,23 +2,24 @@
 
 const { chdir, execSync, existsSync, log, rimraf } = require("./util");
 const { argv } = require("./argv");
+const { writeFileSync } = require("fs");
 
 const additionalExtensions = [
   {
-    name: "solidity-lang",
-    repo: "https://github.com/hasparus/vscode-solidity-extenstion.git",
-    branchOrTag: "v1.3.0",
+    name: "solidity-extension",
+    repo: "https://github.com/contractshark/vscode-solidity-extension.git",
+    branchOrTag: "v1.6.0",
     getPackageJSON: () =>
       // @ts-ignore
-      require("../additional-extensions/solidity-lang/package.json"),
+      require("../additional-extensions/solidity-extension/package.json"),
   },
   {
-    name: "vscode-vyper-syntax",
-    repo: "https://github.com/dethcrypto/vscode-vyper.git",
-    branchOrTag: "minimal-extension",
+    name: "vyper-syntax",
+    repo: "https://github.com/tintinweb/vscode-vyper.git",
+    branchOrTag: "v0.0.15",
     getPackageJSON: () =>
       // @ts-ignore
-      require("../additional-extensions/vscode-vyper-syntax/package.json"),
+      require("../additional-extensions/vyper-syntax/package.json"),
   },
 ];
 
@@ -52,6 +53,18 @@ function prepareAdditionalExtensions() {
       } else {
         log.info(`Installing production dependencies for ${ext.name}...`);
         execSync(["yarn --production", argv.verbose && "--verbose"], options);
+      }
+
+      // create empty metadata file if doesnt exist so vscode doesnt complain
+      if (!existsSync(`./${ext.name}/package.nls.json`)) {
+        writeFileSync(
+          `./${ext.name}/package.nls.json`,
+          JSON.stringify({
+            displayName: "Deth",
+            description: "deth",
+          }),
+          "utf8"
+        );
       }
     }
   }
