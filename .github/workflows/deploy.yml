@@ -65,7 +65,7 @@ jobs:
           command: |
             cd packages/vscode-host/dist
             vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
+            vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
 
             cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
 
@@ -83,7 +83,7 @@ jobs:
           command: |
             cd packages/entrypoint/dist
             vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
+            vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
 
             cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
 
