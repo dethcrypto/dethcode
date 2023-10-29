@@ -38,21 +38,23 @@ async function main() {
     },
   });
 
-  const bannerKey = "banner-welcome#4-tmp";
+  const bannerKey = "banner-welcome-1";
   const bannerBody = `Say hello to the new, improved DethCode!`
 
-  if (localStorage.getItem(bannerKey)) {
-    // do nothing, user dismissed the banner already
+  if (
+    localStorage.getItem(bannerKey) ||  // user already closed the banner
+    !bannerBody || !bannerKey // banner is empty
+  ) {
     return;
   }
 
   const bannerDiv = document.createElement("div");
   bannerDiv.id = "deth-code-banner";
   bannerDiv.innerHTML = `
-  <div style="width: 100%; color: #ff34f0; background-color: black; display: flex; justify-content: space-between; align-items: center; line-height: 24px;font-size: 14px;font-family: Roboto, Arial, sans-serif;">
+  <div class="deth-banner">
     <div></div>
     <div>${bannerBody}</div>
-    <a onclick="(() => { document.getElementById('${bannerDiv.id}').remove(); localStorage.setItem('${bannerKey}', true); return false; })();" style="padding:0 10px">x</a>
+    <a class="deth-cross" onclick="(() => { document.getElementById('${bannerDiv.id}').remove(); localStorage.setItem('${bannerKey}', true); return false; })();">x</a>
   </div>`
   document.body.prepend(bannerDiv);
 }

@@ -30,6 +30,10 @@ function copyExtensions() {
     "../../ethereum-viewer/package.json",
     "../dist/extensions/ethereum-viewer/package.json"
   );
+  copySync(
+    "../../ethereum-viewer/package.nls.json",
+    "../dist/extensions/ethereum-viewer/package.nls.json"
+  );
 
   const withoutNodeModules = { filter: (src) => !src.includes("node_modules") };
 
