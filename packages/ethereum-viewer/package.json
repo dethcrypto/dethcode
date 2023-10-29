@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",
+    "fetch-retry": "^5.0.6",
     "match-sorter": "^6.3.1",
     "p-finally": "^2.0.1",
     "path-browserify": "^1.0.1",

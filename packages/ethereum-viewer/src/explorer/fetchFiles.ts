@@ -2,11 +2,19 @@ import { join } from "path";
 import { assert, StrictOmit } from "ts-essentials";
 
 import { fetch as _fetch } from "../util/fetch";
+import { makeSolidFetch } from "../util/solidFetch";
 import { prettyStringify } from "../util/stringify";
 import * as types from "./api-types";
 import { apiUrlToWebsite } from "./apiUrlToWebsite";
 import { fileExtension } from "./fileExtension";
 import { ApiName, explorerApiKeys, explorerApiUrls } from "./networks";
+
+const fetchEtherscanResponse = makeSolidFetch({
+  async verifyResponse(response: unknown): Promise<boolean> {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return (response as any)?.message === "OK" || false;
+  },
+});
 
 interface FetchFilesOptions {
   /**
@@ -27,7 +35,11 @@ interface FetchFilesOptions {
 export async function fetchFiles(
   apiName: ApiName,
   contractAddress: string,
-  { fetch = _fetch, proxyDepth = 3, skipPrefix = false }: FetchFilesOptions = {}
+  {
+    fetch = fetchEtherscanResponse,
+    proxyDepth = 3,
+    skipPrefix = false,
+  }: FetchFilesOptions = {}
 ): Promise<FetchFilesResult> {
   const apiUrl = explorerApiUrls[apiName];
   const url =

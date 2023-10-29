@@ -118,6 +118,7 @@ async function saveSingleContractFilesToFs(
   return {
     entries,
     mainFile: withPrefix(mainFile),
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     contractName: result.info.ContractName ?? "contract",
   };
 }
@@ -133,7 +134,7 @@ function getMainContractFile(
 
   if (!fileToShow) {
     const regexp = new RegExp(`contract\\s+${name}`);
-    fileToShow = files.find(([path, source]) => regexp.test(source));
+    fileToShow = files.find(([_path, source]) => regexp.test(source));
   }
 
   if (!fileToShow) fileToShow = files.sort(byPathLength)[0];

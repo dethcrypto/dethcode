@@ -116,6 +116,9 @@ importers:
       fast-json-stable-stringify:
         specifier: ^2.1.0
         version: 2.1.0
+      fetch-retry:
+        specifier: ^5.0.6
+        version: 5.0.6
       match-sorter:
         specifier: ^6.3.1
         version: 6.3.1
@@ -2076,6 +2079,10 @@ packages:
     dependencies:
       bser: 2.1.1
     dev: true
+
+  /fetch-retry@5.0.6:
+    resolution: {integrity: sha512-3yurQZ2hD9VISAhJJP9bpYFNQrHHBXE2JxxjY5aLEcDi46RmAzJE2OC9FAde0yis5ElW0jTTzs0zfg/Cca4XqQ==}
+    dev: false
 
   /file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
