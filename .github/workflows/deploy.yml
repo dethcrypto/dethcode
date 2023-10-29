@@ -57,24 +57,6 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_HOST_PREVIEW_HOST_PROJECT_ID }}
 
-      - name: Deploy entrypoint to Vercel - STAGING
-        uses: nick-fields/retry@v2
-        with:
-          command: |
-            cd packages/entrypoint/dist
-            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-            vercel build --token=${{ secrets.VERCEL_TOKEN }} # creates vercel output directory
-
-            cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
-
-            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-          max_attempts: 3
-          timeout_minutes: 10
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID:
-            ${{ secrets.VERCEL_ENTRYPOINT_PREVIEW_HOST_PROJECT_ID }}
-
       # --- production deployments (only on main)
       - name: Deploy host to Vercel - PRODUCTION
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -87,7 +69,7 @@ jobs:
 
             cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
 
-            vercel deploy --prebuilt --production --token=${{ secrets.VERCEL_TOKEN }}
+            vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
           max_attempts: 3
           timeout_minutes: 10
         env:
@@ -105,7 +87,7 @@ jobs:
 
             cp -R ./node_modules ./.vercel/output/static/ # force add node_modules to output directory
 
-            vercel deploy --prebuilt --production --token=${{ secrets.VERCEL_TOKEN }}
+            vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
           max_attempts: 3
           timeout_minutes: 10
         env:
