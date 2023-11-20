@@ -7,6 +7,7 @@ export const explorerApiUrls = {
   "rinkeby.etherscan": "https://api-rinkeby.etherscan.io/api",
   "goerli.etherscan": "https://api-goerli.etherscan.io/api",
   "kovan.etherscan": "https://api-kovan.etherscan.io/api",
+  "sepolia.etherscan": "https://api-sepolia.etherscan.io/api",
   bscscan: "https://api.bscscan.com/api",
   "testnet.bscscan": "https://api-testnet.bscscan.com/api",
   hecoinfo: "https://api.hecoinfo.com/api",
@@ -41,6 +42,7 @@ export const networkNames: Record<ApiName, string> = {
   "rinkeby.etherscan": "rinkeby",
   "goerli.etherscan": "goerli",
   "kovan.etherscan": "kovan",
+  "sepolia.etherscan": "sepolia",
   bscscan: "bsc",
   "testnet.bscscan": "bscTestnet",
   hecoinfo: "heco",
@@ -80,6 +82,7 @@ export const explorerApiKeys: Record<ApiName, string> = {
   "rinkeby.etherscan": ETHERSCAN_KEY,
   "goerli.etherscan": ETHERSCAN_KEY,
   "kovan.etherscan": ETHERSCAN_KEY,
+  "sepolia.etherscan": ETHERSCAN_KEY,
 
   "optimistic.etherscan": OPTIMISM_KEY,
   "kovan-optimistic.etherscan": OPTIMISM_KEY,
