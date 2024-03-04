@@ -25,6 +25,7 @@ export const explorerApiUrls = {
   cronoscan: "https://api.cronoscan.com/api",
   basescan: "https://api.basescan.org/api",
   "goerli.basescan": "https://api-goerli.basescan.org/",
+  "sepolia.basescan": "https://api-sepolia.basescan.org/api",
   gnosisscan: "https://api.gnosisscan.io/api",
 };
 
@@ -60,6 +61,7 @@ export const networkNames: Record<ApiName, string> = {
   cronoscan: "cronos",
   basescan: "basescan",
   "goerli.basescan": "basescanGoerli",
+  "sepolia.basescan": "basescanSepolia",
   gnosisscan: "gnosisscan",
 };
 
@@ -109,6 +111,7 @@ export const explorerApiKeys: Record<ApiName, string> = {
 
   basescan: BASESCAN_KEY,
   "goerli.basescan": BASESCAN_KEY,
+  "sepolia.basescan": BASESCAN_KEY,
 
   gnosisscan: GNOSISSCAN_KEY,
 };
