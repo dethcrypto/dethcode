@@ -27,6 +27,8 @@ export const explorerApiUrls = {
   "goerli.basescan": "https://api-goerli.basescan.org/",
   "sepolia.basescan": "https://api-sepolia.basescan.org/api",
   gnosisscan: "https://api.gnosisscan.io/api",
+  fraxscan: "https://api.fraxscan.com/api",
+  "holesky.fraxscan": "https://api-holesky.fraxscan.com/api",
 };
 
 /**
@@ -63,6 +65,8 @@ export const networkNames: Record<ApiName, string> = {
   "goerli.basescan": "basescanGoerli",
   "sepolia.basescan": "basescanSepolia",
   gnosisscan: "gnosisscan",
+  fraxscan: "frax",
+  "holesky.fraxscan": "fraxHolesky",
 };
 
 const ETHERSCAN_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
@@ -76,6 +80,7 @@ const POLYGONSCAN_KEY = "RV4YXDXEMIHXMC7ZXB8T82G4F56FRZ1SZQ";
 const CRONOSCAN_KEY = "BGAN1CWT8E1A2XRS3FU61UP7XXFMHBWNSY";
 const BASESCAN_KEY = "ICQQDUA1C8R2EZY6M4QIIV7WUEZM8INNA7";
 const GNOSISSCAN_KEY = "7PWN1FIPXW6WDSGH3PIHRW1EEU4A882QSQ";
+const FRAXSCAN_KEY = "TEUJWRCAKIXQCUR7XZRKCFRH3QHH344PAM";
 
 // @todo this should be possible to override using VSCode settings
 export const explorerApiKeys: Record<ApiName, string> = {
@@ -114,4 +119,7 @@ export const explorerApiKeys: Record<ApiName, string> = {
   "sepolia.basescan": BASESCAN_KEY,
 
   gnosisscan: GNOSISSCAN_KEY,
+
+  fraxscan: FRAXSCAN_KEY,
+  "holesky.fraxscan": FRAXSCAN_KEY,
 };
