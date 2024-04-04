@@ -3,11 +3,8 @@
  */
 export const explorerApiUrls = {
   etherscan: "https://api.etherscan.io/api",
-  "ropsten.etherscan": "https://api-ropsten.etherscan.io/api",
-  "rinkeby.etherscan": "https://api-rinkeby.etherscan.io/api",
-  "goerli.etherscan": "https://api-goerli.etherscan.io/api",
-  "kovan.etherscan": "https://api-kovan.etherscan.io/api",
   "sepolia.etherscan": "https://api-sepolia.etherscan.io/api",
+  "holesky.etherscan": "https://api-holesky.etherscan.io/api",
   bscscan: "https://api.bscscan.com/api",
   "testnet.bscscan": "https://api-testnet.bscscan.com/api",
   hecoinfo: "https://api.hecoinfo.com/api",
@@ -15,16 +12,16 @@ export const explorerApiUrls = {
   ftmscan: "https://api.ftmscan.com/api",
   "testnet.ftmscan": "https://api-testnet.ftmscan.com/api",
   "optimistic.etherscan": "https://api-optimistic.etherscan.io/api",
-  "kovan-optimistic.etherscan": "https://api-kovan-optimistic.etherscan.io/api",
+  "sepolia-optimistic.etherscan":
+    "https://api-sepolia-optimistic.etherscan.io/api",
   polygonscan: "https://api.polygonscan.com/api",
   "testnet.polygonscan": "https://api-testnet.polygonscan.com/api",
   arbiscan: "https://api.arbiscan.io/api",
-  "testnet.arbiscan": "https://api-testnet.arbiscan.io/api",
+  "sepolia.arbiscan": "https://api-sepolia.arbiscan.io/api",
   snowtrace: "https://api.snowtrace.io/api",
   "testnet.snowtrace": "https://api-testnet.snowtrace.io/api",
   cronoscan: "https://api.cronoscan.com/api",
   basescan: "https://api.basescan.org/api",
-  "goerli.basescan": "https://api-goerli.basescan.org/",
   "sepolia.basescan": "https://api-sepolia.basescan.org/api",
   gnosisscan: "https://api.gnosisscan.io/api",
   fraxscan: "https://api.fraxscan.com/api",
@@ -41,11 +38,8 @@ export type ApiName = keyof typeof explorerApiUrls;
  */
 export const networkNames: Record<ApiName, string> = {
   etherscan: "mainnet",
-  "ropsten.etherscan": "ropsten",
-  "rinkeby.etherscan": "rinkeby",
-  "goerli.etherscan": "goerli",
-  "kovan.etherscan": "kovan",
   "sepolia.etherscan": "sepolia",
+  "holesky.etherscan": "holesky",
   bscscan: "bsc",
   "testnet.bscscan": "bscTestnet",
   hecoinfo: "heco",
@@ -53,16 +47,15 @@ export const networkNames: Record<ApiName, string> = {
   ftmscan: "fantom",
   "testnet.ftmscan": "ftmTestnet",
   "optimistic.etherscan": "optimism",
-  "kovan-optimistic.etherscan": "optimismKovan",
+  "sepolia-optimistic.etherscan": "optimismSepolia",
   polygonscan: "polygon",
   "testnet.polygonscan": "polygonMumbai",
   arbiscan: "arbitrumOne",
-  "testnet.arbiscan": "arbitrumTestnet",
+  "sepolia.arbiscan": "arbitrumSepolia",
   snowtrace: "avalanche",
   "testnet.snowtrace": "avalancheTestnet",
   cronoscan: "cronos",
   basescan: "basescan",
-  "goerli.basescan": "basescanGoerli",
   "sepolia.basescan": "basescanSepolia",
   gnosisscan: "gnosisscan",
   fraxscan: "frax",
@@ -85,17 +78,14 @@ const FRAXSCAN_KEY = "TEUJWRCAKIXQCUR7XZRKCFRH3QHH344PAM";
 // @todo this should be possible to override using VSCode settings
 export const explorerApiKeys: Record<ApiName, string> = {
   etherscan: ETHERSCAN_KEY,
-  "ropsten.etherscan": ETHERSCAN_KEY,
-  "rinkeby.etherscan": ETHERSCAN_KEY,
-  "goerli.etherscan": ETHERSCAN_KEY,
-  "kovan.etherscan": ETHERSCAN_KEY,
   "sepolia.etherscan": ETHERSCAN_KEY,
+  "holesky.etherscan": ETHERSCAN_KEY,
 
   "optimistic.etherscan": OPTIMISM_KEY,
-  "kovan-optimistic.etherscan": OPTIMISM_KEY,
+  "sepolia-optimistic.etherscan": OPTIMISM_KEY,
 
   arbiscan: ARBISCAN_KEY,
-  "testnet.arbiscan": ARBISCAN_KEY,
+  "sepolia.arbiscan": ARBISCAN_KEY,
 
   bscscan: BSCSCAN_KEY,
   "testnet.bscscan": BSCSCAN_KEY,
@@ -115,7 +105,6 @@ export const explorerApiKeys: Record<ApiName, string> = {
   cronoscan: CRONOSCAN_KEY,
 
   basescan: BASESCAN_KEY,
-  "goerli.basescan": BASESCAN_KEY,
   "sepolia.basescan": BASESCAN_KEY,
 
   gnosisscan: GNOSISSCAN_KEY,
