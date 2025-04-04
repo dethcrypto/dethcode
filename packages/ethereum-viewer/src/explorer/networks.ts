@@ -28,6 +28,8 @@ export const explorerApiUrls = {
   "holesky.fraxscan": "https://api-holesky.fraxscan.com/api",
   blastscan: "https://api.blastscan.io/api",
   "sepolia.blastscan": "https://api-sepolia.blastscan.io/api",
+  sonicscan: "https://api.sonicscan.org/api",
+  "testnet.sonicscan": "https://api-testnet.sonicscan.io/api",
 };
 
 /**
@@ -64,6 +66,8 @@ export const networkNames: Record<ApiName, string> = {
   "holesky.fraxscan": "fraxHolesky",
   blastscan: "blast",
   "sepolia.blastscan": "blastSepolia",
+  sonicscan: "sonic",
+  "testnet.sonicscan": "sonicTestnet",
 };
 
 const ETHERSCAN_KEY = "862Y3WJ4JB4B34PZQRFEV3IK6SZ8GNR9N5";
@@ -79,6 +83,7 @@ const BASESCAN_KEY = "ICQQDUA1C8R2EZY6M4QIIV7WUEZM8INNA7";
 const GNOSISSCAN_KEY = "7PWN1FIPXW6WDSGH3PIHRW1EEU4A882QSQ";
 const FRAXSCAN_KEY = "TEUJWRCAKIXQCUR7XZRKCFRH3QHH344PAM";
 const BLASTSCAN_KEY = "G6DR1ZFYP54GG49SJ9GID37SFQPV96H77E";
+const SONICSCAN_KEY = "2GSCMFPM44I9YKIN4UZKYNCFJG2CB1RAHE";
 
 // @todo this should be possible to override using VSCode settings
 export const explorerApiKeys: Record<ApiName, string> = {
@@ -119,4 +124,7 @@ export const explorerApiKeys: Record<ApiName, string> = {
 
   blastscan: BLASTSCAN_KEY,
   "sepolia.blastscan": BLASTSCAN_KEY,
+
+  sonicscan: SONICSCAN_KEY,
+  "testnet.sonicscan": SONICSCAN_KEY,
 };
