@@ -29,7 +29,7 @@ export const explorerApiUrls = {
   blastscan: "https://api.blastscan.io/api",
   "sepolia.blastscan": "https://api-sepolia.blastscan.io/api",
   sonicscan: "https://api.sonicscan.org/api",
-  "testnet.sonicscan": "https://api-testnet.sonicscan.io/api",
+  "testnet.sonicscan": "https://api-testnet.sonicscan.org/api",
 };
 
 /**
