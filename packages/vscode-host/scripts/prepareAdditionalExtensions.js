@@ -52,7 +52,11 @@ function prepareAdditionalExtensions() {
         execSync(["yarn package-web", argv.verbose && "--verbose"], options);
       } else {
         log.info(`Installing production dependencies for ${ext.name}...`);
-        execSync(["yarn --production", argv.verbose && "--verbose"], options);
+        if (ext.name === 'solidity-extension') {
+          execSync(["npm install", argv.verbose && "--verbose"], options);
+        } else {
+          execSync(["yarn --production", argv.verbose && "--verbose"], options);
+        }
       }
 
       // create empty metadata file if doesnt exist so vscode doesnt complain
