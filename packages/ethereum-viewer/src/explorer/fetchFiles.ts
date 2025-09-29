@@ -42,12 +42,22 @@ export async function fetchFiles(
   }: FetchFilesOptions = {}
 ): Promise<FetchFilesResult> {
   const apiUrl = explorerApiUrls[apiName];
-  const url =
-    apiUrl +
-    "?module=contract" +
-    "&action=getsourcecode" +
-    `&address=${contractAddress}` +
-    `&apikey=${explorerApiKeys[apiName]}`;
+  let url;
+  if (apiUrl.includes("chainid=")) {
+    url =
+      apiUrl +
+      "&module=contract" +
+      "&action=getsourcecode" +
+      `&address=${contractAddress}` +
+      `&apikey=${explorerApiKeys[apiName]}`;
+  } else {
+    url =
+      apiUrl +
+      "?module=contract" +
+      "&action=getsourcecode" +
+      `&address=${contractAddress}` +
+      `&apikey=${explorerApiKeys[apiName]}`;
+  }
 
   const response = (await fetch(url)) as types.ContractSourceResponse;
 
