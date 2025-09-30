@@ -44,7 +44,7 @@ export async function fetchFiles(
   const apiUrl = explorerApiUrls[apiName];
   const url =
     apiUrl +
-    "?module=contract" +
+    "&module=contract" +
     "&action=getsourcecode" +
     `&address=${contractAddress}` +
     `&apikey=${explorerApiKeys[apiName]}`;

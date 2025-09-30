@@ -36,7 +36,7 @@ describe(fetchFiles.name, () => {
     await fetchFiles("optimistic.etherscan", "0x0", { fetch: f });
 
     const expectedPrefix =
-      "https://api-optimistic.etherscan.io/api?module=contract&action=getsourcecode&address=0x0&apikey=";
+      "https://api-optimistic.etherscan.io/api?&module=contract&action=getsourcecode&address=0x0&apikey=";
 
     assert(
       url?.startsWith(expectedPrefix),
